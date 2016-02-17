@@ -31,6 +31,8 @@
 "while"		return WHILE;
 "do"		return DO;
 "endwhile"	return ENDWHILE;
+"begin"		return BEGIN1;
+"end"		return END;
 "<"			return LESS;
 "<="		return LTEQUAL;
 ">"			return GREATER;

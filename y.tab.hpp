@@ -70,7 +70,9 @@ extern int yydebug;
     GTEQUAL = 280,
     ISEQUAL = 281,
     NOTEQUAL = 282,
-    ASSIGNMENT = 283
+    BEGIN1 = 283,
+    END = 284,
+    ASSIGNMENT = 285
   };
 #endif
 /* Tokens.  */
@@ -99,7 +101,9 @@ extern int yydebug;
 #define GTEQUAL 280
 #define ISEQUAL 281
 #define NOTEQUAL 282
-#define ASSIGNMENT 283
+#define BEGIN1 283
+#define END 284
+#define ASSIGNMENT 285
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

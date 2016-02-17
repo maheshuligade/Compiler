@@ -164,7 +164,10 @@ int evaluate(struct tnode* expressionTree)
 {	
 	//cout<<"expressionTree->Node_Type="<<expressionTree->Node_Type<<endl;
 	//cout<<"expressionTree->value="<<expressionTree->value<<endl;
-	if (expressionTree==NULL)
+	if (expressionTree!=NULL)
+	{
+	//	cout<<"expressionTree->Node_Type="<<expressionTree->Node_Type<<endl;
+	}if (expressionTree==NULL)
 	{
 		//cout<<"NULL Node"<<endl;
 		return 0;
@@ -173,52 +176,54 @@ int evaluate(struct tnode* expressionTree)
 	//cout<<"expressionTree->value="<<expressionTree->value<<endl;
 	else if (expressionTree->Node_Type==ID)
 	{
-		return expressionTree->value;
+		return Memory[Glookup(expressionTree->NAME)->Binding];
+		//return expressionTree->value;
 	}
 	else if (expressionTree->Node_Type==Node_Type_LEAF)
 	{
 		return expressionTree->value;
 	}
 	else if (expressionTree->Node_Type==Node_Type_PLUS)
-	{
-		cout<<(evaluate(expressionTree->ptr1)+evaluate(expressionTree->ptr2))<<endl;	
+	{	
+		//cout<<"IN Node_Type_PLUS"<<Glookup(expressionTree->ptr1->NAME)->Binding<<endl;
+		//cout<<"PLUS="<<(evaluate(expressionTree->ptr1)+evaluate(expressionTree->ptr2))<<endl;	
 		return (evaluate(expressionTree->ptr1)+evaluate(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_MINUS)
 	{
-		cout<<(evaluate(expressionTree->ptr1)-evaluate(expressionTree->ptr2))<<endl;	
+		//cout<<(evaluate(expressionTree->ptr1)-evaluate(expressionTree->ptr2))<<endl;	
 		return (evaluate(expressionTree->ptr1)-evaluate(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_DIV)
 	{
-		cout<<(evaluate(expressionTree->ptr1)/evaluate(expressionTree->ptr2))<<endl;	
+		//cout<<(evaluate(expressionTree->ptr1)/evaluate(expressionTree->ptr2))<<endl;	
 		return (evaluate(expressionTree->ptr1)/evaluate(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_MUL)
 	{
-		cout<<(evaluate(expressionTree->ptr1)*evaluate(expressionTree->ptr2))<<endl;	
+		//cout<<(evaluate(expressionTree->ptr1)*evaluate(expressionTree->ptr2))<<endl;	
 		return (evaluate(expressionTree->ptr1)*evaluate(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_MODULUS)
 	{
-		cout<<(evaluate(expressionTree->ptr1)%evaluate(expressionTree->ptr2))<<endl;	
+		//cout<<(evaluate(expressionTree->ptr1)%evaluate(expressionTree->ptr2))<<endl;	
 		return (evaluate(expressionTree->ptr1)%evaluate(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_POWER)
 	{
-		cout<<(pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)))<<endl;	
+		//cout<<(pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)))<<endl;	
 		return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_LT)
 	{
 		if (evaluate(expressionTree->ptr1)<evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -227,12 +232,12 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)<=evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -241,12 +246,12 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)>evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -255,12 +260,12 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)>=evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -269,12 +274,12 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)==evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -283,12 +288,12 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)!=evaluate(expressionTree->ptr2))
 		{
-			cout<<"TRUE"<<endl;
+			//cout<<"TRUE"<<endl;
 			return TRUE;
 		}
 		else
 		{
-			cout<<"FALSE"<<endl;
+			// cout<<"FALSE"<<endl;
 			return FALSE;
 		}
 		//return (pow(evaluate(expressionTree->ptr1),evaluate(expressionTree->ptr2)));	
@@ -306,14 +311,17 @@ int evaluate(struct tnode* expressionTree)
 		if (Glookup(expressionTree->NAME)==NULL)
 		{
 			//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
-			cout<<"Variable="<<(expressionTree->NAME)<<endl;
+			//cout<<"Variable="<<(expressionTree->NAME)<<endl;
 			Memory[Global_Bind_Count]=(evaluate(expressionTree->ptr2));
 			Ginstall(expressionTree->NAME,expressionTree->type,1,NULL);
 		}
 		else
 		{	
+			//cout<<"Binding="<<Glookup(expressionTree->NAME)->Binding<<endl;
 			Memory[Glookup(expressionTree->NAME)->Binding]=evaluate(expressionTree->ptr2);
 		}
+		return Memory[Glookup(expressionTree->NAME)->Binding];
+
 		//return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_READ)
@@ -334,6 +342,7 @@ int evaluate(struct tnode* expressionTree)
 		{
 			Memory[Glookup(expressionTree->ptr1->NAME)->Binding]=input;
 		}
+
 		//free(new_node);
 		
 	}else if (expressionTree->Node_Type==Node_Type_WRITE)
@@ -342,44 +351,68 @@ int evaluate(struct tnode* expressionTree)
 		//cout<<"expressionTree NAME="<<expressionTree->ptr1->NAME<<endl;
 		//struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
 		//new_node=Glookup(expressionTree->ptr1->NAME);
-		if (Glookup(expressionTree->ptr1->NAME)!=NULL)
-		{
+		//if (Glookup(expressionTree->ptr1->NAME)!=NULL)
+		//{
 			
 			//cout<<"Not NULL"<<endl;
 			//cout<<"Binding="<<new_node->Binding<<endl;
-			cout<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding]<<endl;
+			//cout<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding]<<endl;
+		//	cout<<"Node_Type_WRITE="<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding]<<" "<<expressionTree->ptr1->Node_Type<<endl;
+			cout<<evaluate(expressionTree->ptr1)<<endl;
+			//return evaluate(expressionTree->ptr1);
 			//free(new_node);
 			//Ginstall(expressionTree->NAME,expressionTree->type,1,NULL);
-		}
+	//	}
 		//cout<<alphabet[evaluate(expressionTree->ptr1)]<<endl;
 		//free(new_node);
+			return 0;
 		
 	}
 	else if (expressionTree->Node_Type==Node_Type_IF)
 	{	
 		cout<<"IN if"<<endl;
 		cout<<"Node_Type="<<(expressionTree->ptr2)->ptr1->Node_Type<<endl;
-		if (evaluate(expressionTree->ptr1))
+		if (expressionTree->value=='i')
 		{
-			evaluate(expressionTree->ptr2);
-			cout<<"After evaluate"<<endl;
-			/*cout<<"value"<<(evaluate(expressionTree->ptr2->ptr2-))<<endl;
-			cout<<"Variable="<<(expressionTree->ptr2->ptr1->NAME)<<endl;*/
+			if (evaluate(expressionTree->ptr1))
+			{
+				return evaluate(expressionTree->ptr2);
+				cout<<"After evaluate"<<endl;
+				/*cout<<"value"<<(evaluate(expressionTree->ptr2->ptr2-))<<endl;
+				cout<<"Variable="<<(expressionTree->ptr2->ptr1->NAME)<<endl;*/
+			}
 		}
-	}else if (expressionTree->Node_Type==Node_Type_WHILE)
+		else if (expressionTree->value=='I')
+		{
+			 if (evaluate(expressionTree->ptr1))
+			{
+				return evaluate(expressionTree->ptr2);
+				cout<<"After evaluate"<<endl;
+				/*cout<<"value"<<(evaluate(expressionTree->ptr2->ptr2-))<<endl;
+				cout<<"Variable="<<(expressionTree->ptr2->ptr1->NAME)<<endl;*/
+			}
+			else
+			{
+				return evaluate(expressionTree->ptr3);
+			}
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_WHILE)
 	{	
+	//	cout<<"Node_Type_WHILE="<<expressionTree->ptr1->Node_Type<<endl;
 		
 		while(evaluate(expressionTree->ptr1))
 		{
-			evaluate(expressionTree->ptr2);		
+
+		 	evaluate(expressionTree->ptr2);		
 		}
 	}
-
 	else if (expressionTree->Node_Type==Node_Type_DUMMY)
 	{
 
 		evaluate(expressionTree->ptr1);
 		evaluate(expressionTree->ptr2);
+		return 0;
 	}
 	
 }
