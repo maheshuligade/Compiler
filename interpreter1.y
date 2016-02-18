@@ -1,0 +1,169 @@
+%{
+	#include <iostream>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include "exptree.hpp"
+	extern 	int alphabet[200];
+	extern 	int yyleng;
+	extern struct Gsymbol *Gsymbol_table;
+	using namespace std;
+	extern int Memory[1000];
+	int i;
+	int yylex();
+	int yyerror(char const *s);
+	
+%}
+
+%token PLUS MINUS DIV MUL SEMICOLON READ WRITE EQUAL NUM ID MODULUS POWER
+%token IF THEN ELSE ENDIF WHILE DO ENDWHILE
+%token LESS LTEQUAL GREATER GTEQUAL ISEQUAL NOTEQUAL
+%token BEGIN1 END MAIN INTEGER BOOLEAN
+%left MINUS PLUS
+%left DIV MUL MODULUS
+%right POWER
+%nonassoc ASSIGNMENT NOTEQUAL ISEQUAL LESS LTEQUAL GREATER GTEQUAL
+
+%%
+
+// MAIN_BLOCK:INTEGER MAIN '(' ')' '{' BODY '}' {$$=$6;evaluate($$);}
+BODY: BEGIN1 Slist END 	{
+							$$=$2;
+							evaluate($$);
+							cout<<"Memory"<<endl;
+							for (int i = 0; i < 20; i++)
+							{
+								cout<<i<<" "<<Memory[i]<<" "<<endl;
+							}
+							exit(0);
+						}
+Slist:Slist Stmt 	{		
+
+							$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+							$$->ptr1=$1;
+							$$->ptr2=$2;
+
+					}
+	|Stmt			{$$=$1;}
+	;
+Stmt:IDS EQUAL expr SEMICOLON		{ 
+										$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
+										
+									}
+	|TYPE IDS SEMICOLON				{
+
+										//$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$2,NULL,NULL);
+										Ginstall($2->NAME,$1->Node_Type,evaluate($2->ptr2),NULL);
+										//cout<<"size="<<evaluate($2->ptr2)<<endl;
+									}
+	|READ'('IDS')'	SEMICOLON  		{
+										
+										$$=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
+									}
+	|WRITE'('expr')' SEMICOLON		{
+										
+										$$=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
+									}
+	|IF '('expr')'THEN Slist ENDIF SEMICOLON{
+												
+												$$=Make_Node(TYPE_VOID,Node_Type_IF,'i',NULL,$3,$6,NULL,NULL);
+											}
+	|IF '('expr')'THEN Slist ELSE Slist ENDIF SEMICOLON{	
+														
+														$$=Make_Node(TYPE_VOID,Node_Type_IF,'I',NULL,$3,$6,$8,NULL);
+													}
+	|WHILE '('expr')'DO Slist ENDWHILE SEMICOLON{
+													
+													$$=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,$3,$6,NULL,NULL);
+												}
+	;
+	
+
+expr:expr PLUS expr		{	
+							$$=Make_Node(TYPE_VOID,Node_Type_PLUS,'+',NULL,$1,$3,NULL,NULL);
+						}
+	|expr MINUS expr	{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_MINUS,'-',NULL,$1,$3,NULL,NULL);
+						}
+
+	|expr DIV expr		{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_DIV,'/',NULL,$1,$3,NULL,NULL);
+						}
+	|expr MUL expr		{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_MUL,'*',NULL,$1,$3,NULL,NULL);
+						}
+	|expr POWER expr	{	
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_POWER,'^',NULL,$1,$3,NULL,NULL);
+						}
+	|expr MODULUS expr	{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
+						}
+	|'('expr')'			{$$=$2;}
+	|NUM				{$$=$1;}
+	|IDS				{$$=$1; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
+	|MINUS expr 		{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
+						}
+	|PLUS expr 			{
+							
+							$$=Make_Node(TYPE_VOID,Node_Type_PLUS,'+',NULL,makeLeafNode(0),$2,NULL,NULL);
+						}
+	|expr LESS expr		{
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_LT,'<',NULL,$1,$3,NULL,NULL);
+						}
+	|expr LTEQUAL expr {
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_LE,'L',NULL,$1,$3,NULL,NULL);
+						}
+	|expr GREATER expr {
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_GT,'>',NULL,$1,$3,NULL,NULL);
+						}
+	|expr GTEQUAL expr {
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_GE,'G',NULL,$1,$3,NULL,NULL);
+						}
+	|expr NOTEQUAL expr {
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,$1,$3,NULL,NULL);
+						}
+	|expr ISEQUAL expr {
+							
+							$$=Make_Node(TYPE_BOOLEAN,TYPE_INT,'E',NULL,$1,$3,NULL,NULL);
+						}
+	;
+IDS:ID 					{
+							//$$=$1;//=Make_Node(TYPE_VOID,Node_Type_ARRAY,1,$1->NAME,$1,NULL,NULL,NULL);
+							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+						}
+	|ID'['expr']'		{
+							//$$=$1;
+							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+							//Ginstall($1->NAME,$1->Node_Type,evaluate($3),NULL);
+							//cout<<"size="<<evaluate($3)<<endl;
+						}
+	;
+TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
+	|BOOLEAN   {$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
+	;
+
+%%
+
+int yyerror(char const *s)
+{
+	cout<<s<<endl;
+	return 0;
+}
+
+int main()
+{
+	yyparse();
+	return 0;
+}	

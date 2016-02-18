@@ -1,0 +1,33 @@
+integer main()
+{
+	begin
+		a[0]=1;
+		a[1]=5;
+		a[2]=7;
+		a[3]=8;
+		a[4]=9;
+		a[5]=-1;
+		a[6]=0;
+		a[7]=10;
+		a[8]=2;
+		a[9]=2;
+		a[10]=3;
+
+		b=0;
+		c=0;
+		while(b<10)do
+			while(b<10)do
+				
+				b=b+1;
+			endwhile;
+			c=c+1;
+		endwhile;
+
+		b=0;
+		while(b<10)do
+			write(a[b]);
+			b=b+1;
+		endwhile;
+	end
+
+}
