@@ -18,26 +18,37 @@
 %token PLUS MINUS DIV MUL SEMICOLON READ WRITE EQUAL NUM ID MODULUS POWER
 %token IF THEN ELSE ENDIF WHILE DO ENDWHILE
 %token LESS LTEQUAL GREATER GTEQUAL ISEQUAL NOTEQUAL
-%token BEGIN1 END MAIN INTEGER BOOLEAN
+%token BEGIN1 END MAIN INTEGER BOOLEAN 
+%token NOT OR AND
+%token TRUE FALSE
+
+%right ASSIGNMENT 
+%left OR 
+%left AND
+%left NOTEQUAL ISEQUAL 
+%left LESS LTEQUAL GREATER GTEQUAL
 %left MINUS PLUS
-%left DIV MUL MODULUS
+%left DIV MUL 
+%left MODULUS
 %right POWER
-%nonassoc ASSIGNMENT NOTEQUAL ISEQUAL LESS LTEQUAL GREATER GTEQUAL
+%right NOT
 
 %%
 
-// MAIN_BLOCK:INTEGER MAIN '(' ')' '{' BODY '}' {$$=$6;evaluate($$);}
+MAIN_BLOCK:INTEGER MAIN '(' ')' '{' BODY '}' {$$=$6;evaluate($$);}
 BODY: BEGIN1 Slist END 	{
 							$$=$2;
-							evaluate($$);
-							cout<<"Memory"<<endl;
-							for (int i = 0; i < 20; i++)
-							{
-								cout<<i<<" "<<Memory[i]<<" "<<endl;
-							}
-							exit(0);
+							// evaluate($$);
+							// cout<<"Memory"<<endl;
+							// for (int i = 0; i < 20; i++)
+							// {
+							// 	cout<<i<<" "<<Memory[i]<<" "<<endl;
+							// }
+							// exit(0);
 						}
-Slist:Slist Stmt 	{		
+Slist: Stmts	{$$=$1;}
+	 | 			{$$=NULL;}
+Stmts:Stmts Stmt 	{		
 
 							$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 							$$->ptr1=$1;
@@ -45,6 +56,7 @@ Slist:Slist Stmt 	{
 
 					}
 	|Stmt			{$$=$1;}
+	
 	;
 Stmt:IDS EQUAL expr SEMICOLON		{ 
 										$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
@@ -134,9 +146,27 @@ expr:expr PLUS expr		{
 							
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,$1,$3,NULL,NULL);
 						}
-	|expr ISEQUAL expr {
+	|expr ISEQUAL expr  {
 							
-							$$=Make_Node(TYPE_BOOLEAN,TYPE_INT,'E',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_EQ,'E',NULL,$1,$3,NULL,NULL);
+						}						
+	|NOT expr 		{
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_NOT,'L',NULL,$2,NULL,NULL,NULL);
+						}						
+	|expr OR expr 		{
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_OR,'L',NULL,$1,$3,NULL,NULL);
+						}
+	|expr AND expr		{
+							
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_AND,'L',NULL,$1,$3,NULL,NULL);
+						}
+	|TRUE				{
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,$1,NULL,NULL,NULL);
+						}
+	|FALSE				{
+							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
 						}
 	;
 IDS:ID 					{

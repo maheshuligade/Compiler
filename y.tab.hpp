@@ -75,7 +75,12 @@ extern int yydebug;
     MAIN = 285,
     INTEGER = 286,
     BOOLEAN = 287,
-    ASSIGNMENT = 288
+    NOT = 288,
+    OR = 289,
+    AND = 290,
+    TRUE = 291,
+    FALSE = 292,
+    ASSIGNMENT = 293
   };
 #endif
 /* Tokens.  */
@@ -109,7 +114,12 @@ extern int yydebug;
 #define MAIN 285
 #define INTEGER 286
 #define BOOLEAN 287
-#define ASSIGNMENT 288
+#define NOT 288
+#define OR 289
+#define AND 290
+#define TRUE 291
+#define FALSE 292
+#define ASSIGNMENT 293
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

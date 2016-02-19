@@ -40,6 +40,11 @@
 "main"		return MAIN;
 "integer"	return INTEGER;
 "boolean"	return BOOLEAN;
+"NOT"		return NOT;
+"OR"		return OR;
+"AND"		return AND;
+"FALSE"		return FALSE;
+"TRUE"		return TRUE;
 "<"			return LESS;
 "<="		return LTEQUAL;
 ">"			return GREATER;

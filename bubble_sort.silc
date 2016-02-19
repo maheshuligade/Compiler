@@ -1,6 +1,10 @@
 integer main()
 {
 	begin
+		integer a[11];
+		integer b;
+		integer c;
+		integer d;
 		a[0]=1;
 		a[1]=5;
 		a[2]=7;
@@ -15,19 +19,38 @@ integer main()
 
 		b=0;
 		c=0;
-		while(b<10)do
+		while(c<=10)do
+			b=0;
 			while(b<10)do
-				
+				if(a[b]>a[b+1])then
+					d=a[b];
+					a[b]=a[b+1];
+					a[b+1]=d;
+				endif;
 				b=b+1;
 			endwhile;
 			c=c+1;
 		endwhile;
 
 		b=0;
-		while(b<10)do
+		while(b<=10)do
 			write(a[b]);
 			b=b+1;
 		endwhile;
+
+
+		if(a[0]==1 AND a[7]==10)then
+		 write(a[10]);
+		endif;
+
+
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+
+		if(FALSE)then
+		 write(a[10]);
+		endif;
 	end
 
 }

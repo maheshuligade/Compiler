@@ -210,66 +210,109 @@ int evaluate(struct tnode* expressionTree)
 	{
 		if (evaluate(expressionTree->ptr1)<evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_LE)
 	{
 		if (evaluate(expressionTree->ptr1)<=evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_GT)
 	{
 		if (evaluate(expressionTree->ptr1)>evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_GE)
 	{
 		if (evaluate(expressionTree->ptr1)>=evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_EQ)
 	{
 		if (evaluate(expressionTree->ptr1)==evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_NE)
 	{
 		if (evaluate(expressionTree->ptr1)!=evaluate(expressionTree->ptr2))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_NOT)
+	{
+		if (!evaluate(expressionTree->ptr1))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_OR)
+	{
+		if (evaluate(expressionTree->ptr1) || evaluate(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_AND)
+	{
+		if (evaluate(expressionTree->ptr1)&&evaluate(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}else if (expressionTree->Node_Type==Node_Type_BOOLEAN_CONSTANT)
+	{
+		if (expressionTree->value==1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
@@ -312,7 +355,7 @@ int evaluate(struct tnode* expressionTree)
 		// 	//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
 		// 	//cout<<"Variable="<<(expressionTree->NAME)<<endl;
 		// 	Memory[Global_Bind_Count]=(evaluate(expressionTree->ptr2));
-		// 	Ginstall(expressionTree->NAME,expressionTree->type,1,NULL);
+		// 	Ginstall(expressionTree->NAME,expreZssionTree->type,1,NULL);
 		// }
 		// else
 		// {	
@@ -339,15 +382,20 @@ int evaluate(struct tnode* expressionTree)
 	{
 		int input=0;
 		cin>>input;
+		//cout<<"IN read"<<endl;
 		if (Glookup(expressionTree->ptr1->NAME)==NULL)
 		{
-			Memory[Global_Bind_Count]=input;
-			Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
+			//Memory[Global_Bind_Count]=input;
+			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
+			cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+			return -1;
 		}
 		else
 		{
-			Memory[Glookup(expressionTree->ptr1->NAME)->Binding]=input;
+
+			Memory[Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1]=input;
 		}
+		//cout<<"READ="<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2)+1]<<endl;
 
 		
 		
@@ -364,7 +412,9 @@ int evaluate(struct tnode* expressionTree)
 		// }
 		// else
 		// {
+			// Memory[1]=24;
 			cout<<evaluate(expressionTree->ptr1)<<endl;
+
 
 		// }
 		//cout<<(expressionTree->ptr1->value);
@@ -407,7 +457,8 @@ int evaluate(struct tnode* expressionTree)
 			}
 			else
 			{
-				return evaluate(expressionTree->ptr3);
+				return evaluate
+				(expressionTree->ptr3);
 			}
 		}
 	}
