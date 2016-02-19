@@ -176,8 +176,7 @@ IDS:ID 					{
 	|ID'['expr']'		{
 							//$$=$1;
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
-							//Ginstall($1->NAME,$1->Node_Type,evaluate($3),NULL);
-							//cout<<"size="<<evaluate($3)<<endl;
+							
 						}
 	;
 TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
