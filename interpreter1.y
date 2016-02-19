@@ -170,7 +170,6 @@ expr:expr PLUS expr		{
 						}
 	;
 IDS:ID 					{
-							//$$=$1;//=Make_Node(TYPE_VOID,Node_Type_ARRAY,1,$1->NAME,$1,NULL,NULL,NULL);
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
 						}
 	|ID'['expr']'		{
