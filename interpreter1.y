@@ -9,9 +9,10 @@
 	extern struct Gsymbol *Gsymbol_table;
 	using namespace std;
 	extern int Memory[1000];
+	extern FILE *yyin;
 	int i;
 	int yylex();
-	int yyerror(char const *s);
+	char input_file_name[100];
 	
 %}
 
@@ -37,7 +38,8 @@
 %%
 PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {evaluate($3);}
 
-GLOBAL_DEF_BLOCK:		{$$=NULL;}
+GLOBAL_DEF_BLOCK:DECL ENDDECL {$$=NULL;}
+				|		{$$=NULL;}
 				;
 FUNC_DEF_BLOCK:			{$$=NULL;}
 				;
@@ -210,6 +212,7 @@ IDS:ID 					{
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
 							
 						}
+	
 	;
 TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 	|BOOLEAN   {$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
@@ -219,12 +222,24 @@ TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 
 int yyerror(char const *s)
 {
-	cout<<s<<endl;
+	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<s<<endl;
 	return 0;
 }
 
-int main()
-{
+int main(int argc,char const *argv[])
+{	
+	FILE *fp;
+	if (argc < 2)
+	{
+		cout<<"silc:fatal error: no input files\ncompilation terminated."<<endl;
+		exit(-1);
+	}
+	else if (argc>1)
+	{
+		fp=fopen(argv[1],"r");
+		yyin=fp;
+		strcpy(input_file_name,argv[1]);
+	}
 	yyparse();
 	return 0;
 }	

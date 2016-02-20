@@ -59,6 +59,10 @@ void Linstall(char * NAME,int TYPE);
 
 /*To evaluate an expression tree*/
 int evaluate(struct tnode* expressionTree);
+extern 	int yyerror(char const *s);
+extern int yylineno;
+extern int column_no;
+extern char input_file_name[100];
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2
@@ -89,4 +93,3 @@ int evaluate(struct tnode* expressionTree);
 #define Node_Type_OR						27
 #define Node_Type_AND						28
 #define Node_Type_BOOLEAN_CONSTANT			29
-
