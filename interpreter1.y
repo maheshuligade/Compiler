@@ -35,12 +35,18 @@
 %right NOT
 
 %%
+PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {evaluate($3);}
 
-MAIN_BLOCK:INTEGER MAIN '(' ')' '{' LOCAL_DEF_BLOCK BODY '}' {$$=$7;evaluate($$);}
+GLOBAL_DEF_BLOCK:		{$$=NULL;}
+				;
+FUNC_DEF_BLOCK:			{$$=NULL;}
+				;
 
+MAIN_BLOCK:INTEGER MAIN '(' ')' '{' LOCAL_DEF_BLOCK BODY '}' {$$=$7;/*evaluate($$);*/}
+			;
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL {$$=$2;}
 				|							{$$=NULL;}
-
+				;
 LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		
 
 													$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
