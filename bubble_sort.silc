@@ -1,10 +1,12 @@
 integer main()
 {
-	begin
+	decl
 		integer a[11];
 		integer b;
 		integer c;
 		integer d;
+	enddecl
+	begin
 		a[0]=1;
 		a[1]=5;
 		a[2]=7;

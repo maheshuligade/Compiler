@@ -20,6 +20,7 @@
 %token LESS LTEQUAL GREATER GTEQUAL ISEQUAL NOTEQUAL
 %token BEGIN1 END MAIN INTEGER BOOLEAN 
 %token NOT OR AND
+%token DECL ENDDECL
 %token TRUE FALSE
 
 %right ASSIGNMENT 
@@ -35,7 +36,33 @@
 
 %%
 
-MAIN_BLOCK:INTEGER MAIN '(' ')' '{' BODY '}' {$$=$6;evaluate($$);}
+MAIN_BLOCK:INTEGER MAIN '(' ')' '{' LOCAL_DEF_BLOCK BODY '}' {$$=$7;evaluate($$);}
+
+LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL {$$=$2;}
+				|							{$$=NULL;}
+
+LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		
+
+													$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+													$$->ptr1=$1;
+													$$->ptr2=$2;
+
+												}
+	|LOCAL_DEF_LIST								{$$=$1;}
+	
+	;
+LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {
+										Ginstall($2->NAME,$1->Node_Type,evaluate($2->ptr2),NULL);
+										
+									}
+
+// LOCAL_DEF_LIST:LOCAL_DEF_LIST LOCAL_DECL {}
+			 	
+// LOCAL_DECL:TYPE LID_LIST						{}
+// LID_LIST:	ID	SEMICOLON						{}
+// 		|ID [expr] SEMICOLON					{}
+
+
 BODY: BEGIN1 Slist END 	{
 							$$=$2;
 							// evaluate($$);
@@ -62,12 +89,12 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 										
 									}
-	|TYPE IDS SEMICOLON				{
+	// |TYPE IDS SEMICOLON {
 
-										//$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$2,NULL,NULL);
-										Ginstall($2->NAME,$1->Node_Type,evaluate($2->ptr2),NULL);
-										//cout<<"size="<<evaluate($2->ptr2)<<endl;
-									}
+	// 									//$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$2,NULL,NULL);
+	// 									Ginstall($2->NAME,$1->Node_Type,evaluate($2->ptr2),NULL);
+	// 									//cout<<"size="<<evaluate($2->ptr2)<<endl;
+	// 								}
 	|READ'('IDS')'	SEMICOLON  		{
 										
 										$$=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);

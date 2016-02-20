@@ -45,6 +45,8 @@
 "AND"		return AND;
 "FALSE"		return FALSE;
 "TRUE"		return TRUE;
+"decl"		return DECL;
+"enddecl"	return ENDDECL;
 "<"			return LESS;
 "<="		return LTEQUAL;
 ">"			return GREATER;

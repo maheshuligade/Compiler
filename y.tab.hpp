@@ -78,9 +78,11 @@ extern int yydebug;
     NOT = 288,
     OR = 289,
     AND = 290,
-    TRUE = 291,
-    FALSE = 292,
-    ASSIGNMENT = 293
+    DECL = 291,
+    ENDDECL = 292,
+    TRUE = 293,
+    FALSE = 294,
+    ASSIGNMENT = 295
   };
 #endif
 /* Tokens.  */
@@ -117,9 +119,11 @@ extern int yydebug;
 #define NOT 288
 #define OR 289
 #define AND 290
-#define TRUE 291
-#define FALSE 292
-#define ASSIGNMENT 293
+#define DECL 291
+#define ENDDECL 292
+#define TRUE 293
+#define FALSE 294
+#define ASSIGNMENT 295
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
