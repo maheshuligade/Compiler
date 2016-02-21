@@ -4,7 +4,7 @@
 	#include "exptree.hpp"
 	#include "y.tab.hpp"
 	using namespace std;
-	int yyerror(char const *s);
+	int yyerror(string s);
 	int number;
 	int column_no=0;
 	struct tnode *a;

@@ -69,10 +69,10 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#include "exptree.hpp"
+	using namespace std;
 	extern 	int alphabet[200];
 	extern 	int yyleng;
 	extern struct Gsymbol *Gsymbol_table;
-	using namespace std;
 	extern int Memory[1000];
 	extern FILE *yyin;
 	int i;
@@ -516,7 +516,7 @@ static const yytype_uint8 yyrline[] =
       59,    62,    74,    84,    85,    86,    93,    96,   106,   110,
      114,   118,   122,   129,   132,   137,   141,   145,   149,   153,
      154,   155,   156,   160,   164,   168,   172,   176,   180,   184,
-     188,   192,   196,   200,   203,   207,   210,   217,   218
+     188,   192,   196,   200,   203,   208,   211,   218,   219
 };
 #endif
 
@@ -1740,7 +1740,7 @@ yyreduce:
     break;
 
   case 45:
-#line 207 "interpreter1.y" /* yacc.c:1646  */
+#line 208 "interpreter1.y" /* yacc.c:1646  */
     {
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[0])->NAME,(yyvsp[0]),makeLeafNode(1),NULL,NULL);
 						}
@@ -1748,7 +1748,7 @@ yyreduce:
     break;
 
   case 46:
-#line 210 "interpreter1.y" /* yacc.c:1646  */
+#line 211 "interpreter1.y" /* yacc.c:1646  */
     {
 							//$$=$1;
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[-3])->NAME,(yyvsp[-3]),(yyvsp[-1]),NULL,NULL);
@@ -1758,13 +1758,13 @@ yyreduce:
     break;
 
   case 47:
-#line 217 "interpreter1.y" /* yacc.c:1646  */
+#line 218 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 #line 1764 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 218 "interpreter1.y" /* yacc.c:1646  */
+#line 219 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
 #line 1770 "y.tab.cpp" /* yacc.c:1646  */
     break;
@@ -1998,12 +1998,12 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 221 "interpreter1.y" /* yacc.c:1906  */
+#line 222 "interpreter1.y" /* yacc.c:1906  */
 
 
-int yyerror(char const *s)
+int yyerror(string s)
 {
-	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<s<<endl;
+	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<"error:"<<s<<endl;
 	return 0;
 }
 

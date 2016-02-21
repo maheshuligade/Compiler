@@ -1,3 +1,4 @@
+#include <string>
 typedef struct tnode
 {
 	int type;							//Interger ,Boolean or Void (for statements) 
@@ -59,10 +60,11 @@ void Linstall(char * NAME,int TYPE);
 
 /*To evaluate an expression tree*/
 int evaluate(struct tnode* expressionTree);
-extern 	int yyerror(char const *s);
+extern 	int yyerror(std::string s);
 extern int yylineno;
 extern int column_no;
 extern char input_file_name[100];
+extern char error_output[200];	
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2

@@ -5,12 +5,15 @@
 #include "y.tab.hpp"
 #include <stdio.h>
 #include <iostream>
+using namespace std;
 int alphabet[200]={0};
 struct Gsymbol *Gsymbol_table=NULL;
 struct Lsymbol *Lsymbol_table=NULL;
 int Memory[1000000];
 int Global_Bind_Count=0;
-using namespace std;
+char error_output[200];	
+string types_array[5]={"void","boolean","integer"};
+
 int k;
 
 struct tnode* makeLeafNode(int n)
@@ -33,22 +36,34 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	
 	struct tnode *new_node;
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
-	new_node->type=type;
-	new_node->Node_Type=Node_Type;
-	new_node->NAME=(char *)malloc(20*sizeof(char));
-	if(NAME!=NULL)
+	if (Node_Type==Node_Type_ASSIGNMENT)
 	{
+		// if (Glookup(NAME)==NULL)
+		// {	
+		// 	yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
+			new_node=NULL;
+		// }
 		
-		strcpy(new_node->NAME,NAME);
 	}
 	else
 	{
-		new_node->NAME=NULL;
+		new_node->type=type;
+		new_node->Node_Type=Node_Type;
+		new_node->NAME=(char *)malloc(20*sizeof(char));
+		if(NAME!=NULL)
+		{
+			
+			strcpy(new_node->NAME,NAME);
+		}
+		else
+		{
+			new_node->NAME=NULL;
+		}
+		new_node->value=value;
+		new_node->ptr1=ptr1;
+		new_node->ptr2=ptr2;
+		new_node->ptr3=ptr3;
 	}
-	new_node->value=value;
-	new_node->ptr1=ptr1;
-	new_node->ptr2=ptr2;
-	new_node->ptr3=ptr3;
 	return new_node;
 
 }
@@ -100,16 +115,24 @@ struct Gsymbol *Glookup(char *NAME)
 }
 
 void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List)
-{
-	struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
-	new_node->NAME=(char *)malloc(20*sizeof(char));
-	strcpy(new_node->NAME,NAME);
-	new_node->TYPE=TYPE;
-	new_node->size=size;
-	new_node->Binding=Global_Bind_Count;
-	new_node->Next=Gsymbol_table;
-	Gsymbol_table=new_node;
-	Global_Bind_Count+=size;
+{	
+
+	if (Glookup(NAME)==NULL)
+	{
+		struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
+		new_node->NAME=(char *)malloc(20*sizeof(char));
+		strcpy(new_node->NAME,NAME);
+		new_node->TYPE=TYPE;
+		new_node->size=size;
+		new_node->Binding=Global_Bind_Count;
+		new_node->Next=Gsymbol_table;
+		Gsymbol_table=new_node;
+		Global_Bind_Count+=size;
+	}
+	else
+	{
+		yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
+	}
 	
 }
 

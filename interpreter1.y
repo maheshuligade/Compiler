@@ -4,10 +4,10 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#include "exptree.hpp"
+	using namespace std;
 	extern 	int alphabet[200];
 	extern 	int yyleng;
 	extern struct Gsymbol *Gsymbol_table;
-	using namespace std;
 	extern int Memory[1000];
 	extern FILE *yyin;
 	int i;
@@ -203,6 +203,7 @@ expr:expr PLUS expr		{
 	|FALSE				{
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
 						}
+	
 	;
 IDS:ID 					{
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
@@ -220,9 +221,9 @@ TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 
 %%
 
-int yyerror(char const *s)
+int yyerror(string s)
 {
-	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<s<<endl;
+	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<"error:"<<s<<endl;
 	return 0;
 }
 
