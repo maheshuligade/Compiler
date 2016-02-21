@@ -36,17 +36,18 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	
 	struct tnode *new_node;
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
+	/*Problem faund
 	if (Node_Type==Node_Type_ASSIGNMENT)
 	{
-		// if (Glookup(NAME)==NULL)
-		// {	
-		// 	yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
+		if (Glookup(NAME)==NULL)
+		{	
+			yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
 			new_node=NULL;
-		// }
+		}
 		
 	}
-	else
-	{
+	else*/
+	//{	
 		new_node->type=type;
 		new_node->Node_Type=Node_Type;
 		new_node->NAME=(char *)malloc(20*sizeof(char));
@@ -63,7 +64,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		new_node->ptr1=ptr1;
 		new_node->ptr2=ptr2;
 		new_node->ptr3=ptr3;
-	}
+	//}
 	return new_node;
 
 }
@@ -363,6 +364,7 @@ int evaluate(struct tnode* expressionTree)
 				// Memory[Global_Bind_Count + Glookup(expressionTree->NAME)->Binding+evaluate(expressionTree->ptr1->ptr2)]=(evaluate(expressionTree->ptr2));
 				//cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
 				cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<expressionTree->NAME<<" was not declared in this scope"<<endl;
+				exit(0);
 				return -1;
 			}
 			else
@@ -503,5 +505,6 @@ int evaluate(struct tnode* expressionTree)
 		evaluate(expressionTree->ptr2);
 		return 0;
 	}
+	return -1;	
 	
 }
