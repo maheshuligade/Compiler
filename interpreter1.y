@@ -36,7 +36,7 @@
 %right NOT
 
 %%
-PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {evaluate($3);}
+PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {type_check($3);/*evaluate($3);*/}
 
 GLOBAL_DEF_BLOCK:DECL ENDDECL {$$=NULL;}
 				|		{$$=NULL;}
@@ -60,7 +60,7 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{
 	
 	;
 LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {
-										Ginstall($2->NAME,$1->Node_Type,evaluate($2->ptr2),NULL);
+										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),NULL);
 										
 									}
 
@@ -199,9 +199,11 @@ expr:expr PLUS expr		{
 						}
 	|TRUE				{
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,$1,NULL,NULL,NULL);
+
 						}
 	|FALSE				{
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
+
 						}
 	
 	;

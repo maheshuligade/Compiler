@@ -11,7 +11,8 @@ struct Gsymbol *Gsymbol_table=NULL;
 struct Lsymbol *Lsymbol_table=NULL;
 int Memory[1000000];
 int Global_Bind_Count=0;
-char error_output[200];	
+char error_output[200];
+int no_of_error=0;
 string types_array[5]={"void","boolean","integer"};
 
 int k;
@@ -36,35 +37,74 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	
 	struct tnode *new_node;
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
-	/*Problem faund
+	// Problem found
 	if (Node_Type==Node_Type_ASSIGNMENT)
 	{
 		if (Glookup(NAME)==NULL)
 		{	
 			yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
 			new_node=NULL;
+			no_of_error++;
+			//return new_node;
 		}
 		
 	}
-	else*/
-	//{	
-		new_node->type=type;
-		new_node->Node_Type=Node_Type;
-		new_node->NAME=(char *)malloc(20*sizeof(char));
-		if(NAME!=NULL)
-		{
+	// else if (Node_Type==Node_Type_IF && ptr1->type!=TYPE_BOOLEAN)
+	// {		
+	// 		if (ptr1->Node_Type==Node_Type_ARRAY && Glookup(NAME)->TYPE!=TYPE_BOOLEAN)
+	// 		{
+	// 			yyerror("if  requires boolean type condition.");
+
+	// 		}
+	// 		cout<<ptr1->type<<endl;
 			
-			strcpy(new_node->NAME,NAME);
-		}
-		else
-		{
-			new_node->NAME=NULL;
-		}
-		new_node->value=value;
-		new_node->ptr1=ptr1;
-		new_node->ptr2=ptr2;
-		new_node->ptr3=ptr3;
-	//}
+	// 		// cout<<Glookup(NAME)->TYPE<<endl;
+	// 		yyerror("if statement requires boolean type condition.");
+	// 		no_of_error++;
+	// }
+	// else if (Node_Type==Node_Type_WHILE	&& ptr1->type!=TYPE_BOOLEAN)
+	// {
+	// 		yyerror("while loop requires boolean type condition.");
+	// 		no_of_error++;
+	// }
+	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
+	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+			//cout<<evaluate(ptr1)<<endl;
+			yyerror("compairing different types.");
+			no_of_error++;
+	}
+	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
+	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+			//cout<<evaluate(ptr1)<<endl;
+			yyerror("compairing different types.");
+			no_of_error++;
+	}
+	else if (Node_Type==Node_Type_PLUS	&& ptr1->type!=ptr2->type)
+	{		
+			cout<<ptr1->type<<endl;
+			yyerror("can't add "+ types_array[ptr1->type-21] + " to " + types_array[ptr2->type]);
+			no_of_error++;
+	}
+	
+
+
+	new_node->type=type;
+	new_node->Node_Type=Node_Type;
+	new_node->NAME=(char *)malloc(20*sizeof(char));
+	if(NAME!=NULL)
+	{
+		
+		strcpy(new_node->NAME,NAME);
+	}
+	else
+	{
+		new_node->NAME=NULL;
+	}
+	new_node->value=value;
+	new_node->ptr1=ptr1;
+	new_node->ptr2=ptr2;
+	new_node->ptr3=ptr3;
+	
 	return new_node;
 
 }
@@ -508,3 +548,289 @@ int evaluate(struct tnode* expressionTree)
 	return -1;	
 	
 }
+
+
+
+
+
+
+int type_check(struct tnode* expressionTree)
+{	
+	
+	if (expressionTree!=NULL)
+	{
+		// cout<<"Node_Type="<<expressionTree->Node_Type<<endl;
+	}
+	if (expressionTree==NULL)
+	{
+		
+		return 0;
+	}
+	
+	
+	else if (expressionTree->Node_Type==ID)
+	{
+		if (expressionTree->ptr1!=NULL)
+		{
+					//cout<<"Node_Type_ARRAY="<<expressionTree->ptr1->Node_Type<<endl;
+		
+		}
+		// if (expressionTree->ptr1->Node_Type==Node_Type_ARRAY)
+		// {
+	
+		// 	return Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)];
+		// }
+		// else
+		{
+			return Memory[Glookup(expressionTree->NAME)->Binding];
+		}	
+	}
+	else if (expressionTree->Node_Type==Node_Type_LEAF)
+	{
+		return expressionTree->value;
+	}
+	else if (expressionTree->Node_Type==Node_Type_PLUS)
+	{
+		
+		return (type_check(expressionTree->ptr1)+type_check(expressionTree->ptr2));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_MINUS)
+	{
+		
+		return (type_check(expressionTree->ptr1)-type_check(expressionTree->ptr2));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_DIV)
+	{
+		
+		return (type_check(expressionTree->ptr1)/type_check(expressionTree->ptr2));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_MUL)
+	{
+		return (type_check(expressionTree->ptr1)*type_check(expressionTree->ptr2));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_MODULUS)
+	{
+		return (type_check(expressionTree->ptr1)%type_check(expressionTree->ptr2));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_POWER)
+	{
+		return (pow(type_check(expressionTree->ptr1),type_check(expressionTree->ptr2)));	
+	}
+	else if (expressionTree->Node_Type==Node_Type_LT)
+	{
+		if (type_check(expressionTree->ptr1)<type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_LE)
+	{
+		if (type_check(expressionTree->ptr1)<=type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_GT)
+	{
+		if (type_check(expressionTree->ptr1)>type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_GE)
+	{
+		if (type_check(expressionTree->ptr1)>=type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_EQ)
+	{
+		if (type_check(expressionTree->ptr1)==type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_NE)
+	{
+		if (type_check(expressionTree->ptr1)!=type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_NOT)
+	{
+		if (!type_check(expressionTree->ptr1))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_OR)
+	{
+		if (type_check(expressionTree->ptr1) || type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_AND)
+	{
+		if (type_check(expressionTree->ptr1)&&type_check(expressionTree->ptr2))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}else if (expressionTree->Node_Type==Node_Type_BOOLEAN_CONSTANT)
+	{
+		if (expressionTree->value==1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
+	{
+		if (expressionTree->ptr1->Node_Type==Node_Type_ARRAY)
+		{
+			if (Glookup(expressionTree->NAME)==NULL)
+			{
+
+				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+				return -1;
+			}
+			Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)]=evaluate(expressionTree->ptr2);
+			
+		}
+		
+	}
+	else if (expressionTree->Node_Type==Node_Type_ARRAY)
+	{
+		if (expressionTree->value=='A')
+		{
+			//return type_check(expressionTree->ptr2);
+			return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
+		}
+		else
+		{
+			return expressionTree->value;
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_READ)
+	{
+		int input=0;
+		cin>>input;
+		//cout<<"IN read"<<endl;
+		if (Glookup(expressionTree->ptr1->NAME)==NULL)
+		{
+			//Memory[Global_Bind_Count]=input;
+			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
+			cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+			return -1;
+		}
+		else
+		{
+
+			Memory[Glookup(expressionTree->ptr1->NAME)->Binding + type_check(expressionTree->ptr2) +1]=input;
+		}
+		//cout<<"READ="<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding + type_check(expressionTree->ptr2)+1]<<endl;
+
+		
+		
+	}else if (expressionTree->Node_Type==Node_Type_WRITE)
+	{
+		
+			if (no_of_error==0)
+			{
+			
+				cout<<type_check(expressionTree->ptr1)<<endl;
+
+
+			}
+			return 0;
+		
+	}
+	else if (expressionTree->Node_Type==Node_Type_IF)
+	{	
+		
+		
+		if (expressionTree->value=='i')
+		{
+			if (type_check(expressionTree->ptr1))
+			{
+				return type_check(expressionTree->ptr2);
+			}
+		}
+		else if (expressionTree->value=='I')
+		{
+			 if (type_check(expressionTree->ptr1))
+			{
+				return type_check(expressionTree->ptr2);
+				
+			}
+			else
+			{
+				return type_check(expressionTree->ptr3);
+			}
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_WHILE)
+	{	
+		
+		if (expressionTree->ptr1->type!=TYPE_BOOLEAN)
+		{
+			yyerror("while loop requires boolean type condition.");
+			no_of_error++;
+			//exit(-2);
+		}
+		while(type_check(expressionTree->ptr1))
+		{
+
+		 	type_check(expressionTree->ptr2);	
+		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_DUMMY)
+	{
+ 
+		type_check(expressionTree->ptr1);
+		type_check(expressionTree->ptr2);
+		return 0;
+	}
+	return -1;	
+	}

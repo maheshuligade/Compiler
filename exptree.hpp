@@ -60,11 +60,14 @@ void Linstall(char * NAME,int TYPE);
 
 /*To evaluate an expression tree*/
 int evaluate(struct tnode* expressionTree);
+/*To type_check an expression tree*/
+int type_check(struct tnode* expressionTree);
 extern 	int yyerror(std::string s);
-extern int yylineno;
 extern int column_no;
+extern char error_output[200];
 extern char input_file_name[100];
-extern char error_output[200];	
+extern int yylineno;
+
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2

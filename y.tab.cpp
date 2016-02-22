@@ -511,7 +511,7 @@ static const yytype_uint8 yyrline[] =
       59,    62,    74,    84,    85,    86,    93,    96,   106,   110,
      114,   118,   122,   129,   132,   137,   141,   145,   149,   153,
      154,   155,   156,   160,   164,   168,   172,   176,   180,   184,
-     188,   192,   196,   200,   203,   208,   211,   218,   219
+     188,   192,   196,   200,   204,   210,   213,   220,   221
 };
 #endif
 
@@ -1513,7 +1513,7 @@ yyreduce:
     {
         case 2:
 #line 39 "interpreter1.y"
-    {evaluate((yyvsp[(3) - (3)]));}
+    {type_check((yyvsp[(3) - (3)]));/*evaluate($3);*/}
     break;
 
   case 3:
@@ -1565,7 +1565,7 @@ yyreduce:
   case 11:
 #line 62 "interpreter1.y"
     {
-										Ginstall((yyvsp[(2) - (3)])->NAME,(yyvsp[(1) - (3)])->Node_Type,evaluate((yyvsp[(2) - (3)])->ptr2),NULL);
+										Ginstall((yyvsp[(2) - (3)])->NAME,(yyvsp[(1) - (3)])->type,evaluate((yyvsp[(2) - (3)])->ptr2),NULL);
 										
 									}
     break;
@@ -1812,25 +1812,27 @@ yyreduce:
 #line 200 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
+
 						}
     break;
 
   case 44:
-#line 203 "interpreter1.y"
+#line 204 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
+
 						}
     break;
 
   case 45:
-#line 208 "interpreter1.y"
+#line 210 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[(1) - (1)])->NAME,(yyvsp[(1) - (1)]),makeLeafNode(1),NULL,NULL);
 						}
     break;
 
   case 46:
-#line 211 "interpreter1.y"
+#line 213 "interpreter1.y"
     {
 							//$$=$1;
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[(1) - (4)])->NAME,(yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),NULL,NULL);
@@ -1839,18 +1841,18 @@ yyreduce:
     break;
 
   case 47:
-#line 218 "interpreter1.y"
+#line 220 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 48:
-#line 219 "interpreter1.y"
+#line 221 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1854 "y.tab.cpp"
+#line 1856 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2064,7 +2066,7 @@ yyreturn:
 }
 
 
-#line 222 "interpreter1.y"
+#line 224 "interpreter1.y"
 
 
 int yyerror(string s)
