@@ -21,7 +21,7 @@ integer main()
 		a[10]=3;
 		f=TRUE;
 
-		a[12]=3;
+
 
 		b=0;
 		c=0;

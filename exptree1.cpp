@@ -55,16 +55,12 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’is out of bound.");
 			no_of_error++;
 		}
-		
-		else if (Node_Type==Node_Type_ASSIGNMENT && ptr2->type==TYPE_BOOLEAN)
-		{	
-			
-			//cout<<"type="<<ptr2->type<<endl;
-			if (value!=FALSE || value!=TRUE)
-			{
+		else if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
+		{
 				yyerror("boolean Type can be TRUE or FALSE");
-			}
+				no_of_error++;
 		}
+	
 		
 	}
 	// else if (Node_Type==Node_Type_IF && ptr1->type!=TYPE_BOOLEAN)
