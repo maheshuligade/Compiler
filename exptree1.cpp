@@ -52,7 +52,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		else if (Glookup(NAME)->size<evaluate(ptr1->ptr2))
 		{	
 			//If Array is outof bound
-			yyerror(std::string ("Array ") + ("‘") + NAME + "’is out of bound.");
+			yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
 			no_of_error++;
 		}
 		else if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
@@ -172,6 +172,12 @@ struct Gsymbol *Glookup(char *NAME)
 void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List)
 {	
 
+	if (size==0)
+	{	
+			//If Array is 0 size
+			yyerror(std::string ("Array ") + ("‘") + NAME + "’ can not be zero size.");
+			no_of_error++;
+	 }
 	if (Glookup(NAME)==NULL)
 	{
 		struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
@@ -188,6 +194,7 @@ void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List)
 	{
 		yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
 	}
+	 
 	
 }
 

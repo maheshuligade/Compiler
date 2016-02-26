@@ -5,7 +5,7 @@ integer main()
 		integer b;
 		integer c;
 		integer d;
-		boolean f;
+		boolean f[0];
 	enddecl
 	begin
 		a[0]=1;
@@ -19,7 +19,8 @@ integer main()
 		a[8]=2;
 		a[9]=2;
 		a[10]=3;
-		f=TRUE;
+		f[0]=TRUE;
+		f[1]=TRUE;
 
 
 
