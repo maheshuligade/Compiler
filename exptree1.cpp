@@ -39,13 +39,31 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
 	// Problem found
 	if (Node_Type==Node_Type_ASSIGNMENT)
-	{
+	{	
+
 		if (Glookup(NAME)==NULL)
 		{	
+			//If the varible is not decraired
 			yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
 			new_node=NULL;
 			no_of_error++;
 			//return new_node;
+		}
+		else if (Glookup(NAME)->size<evaluate(ptr1->ptr2))
+		{	
+			//If Array is outof bound
+			yyerror(std::string ("Array ") + ("‘") + NAME + "’is out of bound.");
+			no_of_error++;
+		}
+		
+		else if (Node_Type==Node_Type_ASSIGNMENT && ptr2->type==TYPE_BOOLEAN)
+		{	
+			
+			//cout<<"type="<<ptr2->type<<endl;
+			if (value!=FALSE || value!=TRUE)
+			{
+				yyerror("boolean Type can be TRUE or FALSE");
+			}
 		}
 		
 	}
@@ -409,6 +427,7 @@ int evaluate(struct tnode* expressionTree)
 			}
 			else
 			{	
+				cout<<"ptr1"<<endl;
 				//cout<<"Binding="<<Glookup(expressionTree->NAME)->Binding<<endl;
 				Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)]=evaluate(expressionTree->ptr2);
 			}

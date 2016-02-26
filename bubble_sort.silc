@@ -21,6 +21,8 @@ integer main()
 		a[10]=3;
 		f=TRUE;
 
+		a[12]=3;
+
 		b=0;
 		c=0;
 		while(c<=10)do
@@ -55,7 +57,7 @@ integer main()
 		if(FALSE)then
 		 write(a[10]);
 		endif;
-		if(TRUE<1)then
+		if(TRUE)then
 		 write(a[10]);
 		endif;
 	end

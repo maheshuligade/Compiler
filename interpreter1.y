@@ -94,8 +94,8 @@ Stmts:Stmts Stmt 	{
 	
 	;
 Stmt:IDS EQUAL expr SEMICOLON		{ 
-										$$=Make_Node(TYPE_VOID,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
-										
+										$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
+										// cout<<"ptr1="<<endl;
 									}
 	// |TYPE IDS SEMICOLON {
 
