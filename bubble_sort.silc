@@ -5,7 +5,7 @@ integer main()
 		integer b;
 		integer c;
 		integer d;
-		boolean f[0];
+		boolean f;
 	enddecl
 	begin
 		a[0]=1;
@@ -19,16 +19,13 @@ integer main()
 		a[8]=2;
 		a[9]=2;
 		a[10]=3;
-		f[0]=TRUE;
-		f[1]=TRUE;
-
-
-
+		f=TRUE;
+		d=d+f;
 		b=0;
 		c=0;
 		while(c<=10)do
 			b=0;
-			while(b<10)do
+				while(b<10)do
 				if(a[b]>a[b+1])then
 					d=a[b];
 					a[b]=a[b+1];
@@ -58,9 +55,12 @@ integer main()
 		if(FALSE)then
 		 write(a[10]);
 		endif;
-		if(TRUE)then
+		if(a[6])then
 		 write(a[10]);
 		endif;
+		while(a[6])do
+			write(a[6]);
+		endwhile;
 	end
 
 }

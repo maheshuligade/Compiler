@@ -74,7 +74,7 @@ LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {
 BODY: BEGIN1 Slist END 	{
 							$$=$2;
 							// evaluate($$);
-							// cout<<"Memory"<<endl;
+							// 	<<"Memory"<<endl;
 							// for (int i = 0; i < 20; i++)
 							// {
 							// 	cout<<i<<" "<<Memory[i]<<" "<<endl;
@@ -88,6 +88,7 @@ Stmts:Stmts Stmt 	{
 							$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 							$$->ptr1=$1;
 							$$->ptr2=$2;
+							
 
 					}
 	|Stmt			{$$=$1;}

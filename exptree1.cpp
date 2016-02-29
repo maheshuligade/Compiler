@@ -62,20 +62,49 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		}
 	
 		
-	}
-	// else if (Node_Type==Node_Type_IF && ptr1->type!=TYPE_BOOLEAN)
-	// {		
-	// 		if (ptr1->Node_Type==Node_Type_ARRAY && Glookup(NAME)->TYPE!=TYPE_BOOLEAN)
-	// 		{
-	// 			yyerror("if  requires boolean type condition.");
+	 }
+	else if (Node_Type==Node_Type_IF)
+	{		
+			//cout<<"evaluate="<<evaluate(ptr1)<<endl;
+			//cout<<"TYPE"<<ptr1->type<<endl;
 
-	// 		}
-	// 		cout<<ptr1->type<<endl;
+			if (evaluate(ptr1)!=0 && evaluate(ptr1)!=1)
+			{
+				yyerror("if statement requires boolean type condition.");
+				no_of_error++;
+			}
+			else if (ptr1->type!=TYPE_BOOLEAN)
+			{
+				yyerror("if statement requires boolean type condition.");
+				no_of_error++;
+			}
+			// if (ptr1->Node_Type==Node_Type_ARRAY && Memory[Glookup(ptr1->NAME)->Binding]!=0 && Memory[Glookup(ptr1->NAME)->Binding]!=1)
+			// {
+			// 	cout<<"Type="<< Glookup(ptr1->NAME)->TYPE<<endl;
+			// 	yyerror("if  requires boolean type condition.");
+
+			// }
+			//cout<<"ptr2"<<evaluate(ptr1)<<endl;
+			//cout<<Glookup(ptr1->NAME)->Binding<<" "<<Memory[Glookup(ptr1->NAME)->Binding+1]<<endl;
+			//	cout<<Memory[15]<<endl;
+			// cout<<Glookup(NAME)->TYPE<<endl;
 			
-	// 		// cout<<Glookup(NAME)->TYPE<<endl;
-	// 		yyerror("if statement requires boolean type condition.");
-	// 		no_of_error++;
-	// }
+	}	
+	else if (Node_Type==Node_Type_WHILE)
+	{		
+
+			if (evaluate(ptr1)!=0 && evaluate(ptr1)!=1)
+			{
+				yyerror("while statement requires boolean type condition.");
+				no_of_error++;
+			}
+			else if (ptr1->type!=TYPE_BOOLEAN)
+			{
+				yyerror("while statement requires boolean type condition.");
+				no_of_error++;
+			}
+			
+	}	
 	// else if (Node_Type==Node_Type_WHILE	&& ptr1->type!=TYPE_BOOLEAN)
 	// {
 	// 		yyerror("while loop requires boolean type condition.");
@@ -430,7 +459,7 @@ int evaluate(struct tnode* expressionTree)
 			}
 			else
 			{	
-				cout<<"ptr1"<<endl;
+				//cout<<"ptr1"<<endl;
 				//cout<<"Binding="<<Glookup(expressionTree->NAME)->Binding<<endl;
 				Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)]=evaluate(expressionTree->ptr2);
 			}
@@ -613,7 +642,7 @@ int type_check(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_PLUS)
 	{
-		
+		//cout<<"expressionTree->ptr1->type="<<expressionTree->ptr1->type<<" expressionTree->ptr2->type="<<expressionTree->ptr2->type<<endl;
 		return (type_check(expressionTree->ptr1)+type_check(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_MINUS)
@@ -742,9 +771,13 @@ int type_check(struct tnode* expressionTree)
 		{
 			return true;
 		}
-		else
+		else if (expressionTree->value==0)
 		{
 			return false;
+		}
+		else
+		{
+			return -1;
 		}
 	}
 	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
@@ -835,12 +868,12 @@ int type_check(struct tnode* expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_WHILE)
 	{	
 		
-		if (expressionTree->ptr1->type!=TYPE_BOOLEAN)
-		{
-			yyerror("while loop requires boolean type condition.");
-			no_of_error++;
-			//exit(-2);
-		}
+		// if (expressionTree->ptr1->type!=TYPE_BOOLEAN)
+		// {
+		// 	yyerror("while loop requires boolean type condition.");
+		// 	no_of_error++;
+		// 	//exit(-2);
+		// }
 		while(type_check(expressionTree->ptr1))
 		{
 
