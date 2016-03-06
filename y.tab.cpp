@@ -78,7 +78,7 @@
 	extern int no_of_error;
 	int i;
 	int yylex();
-	char input_file_name[100];
+	char input_file_name[100],sim_code_filename[100];
 	
 
 #line 85 "y.tab.cpp" /* yacc.c:339  */
@@ -2053,7 +2053,7 @@ int yyerror(string s)
 
 int main(int argc,char const *argv[])
 {	
-	FILE *fp;
+	FILE *fp,*sim_code_file;
 	if (argc < 2)
 	{
 		cout<<"silc:fatal error: no input files\ncompilation terminated."<<endl;
@@ -2062,9 +2062,17 @@ int main(int argc,char const *argv[])
 	else if (argc>1)
 	{
 		fp=fopen(argv[1],"r");
-		yyin=fp;
 		strcpy(input_file_name,argv[1]);
+		strcpy(sim_code_filename,argv[1]);
+		change_extension(sim_code_filename);
+		sim_code_file=fopen(sim_code_filename,"w");
+		yyin=fp;
 	}
 	yyparse();
+	fclose(sim_code_file);
+	if (no_of_error!=0)
+	{
+		remove(sim_code_filename);
+	}
 	return 0;
 }	

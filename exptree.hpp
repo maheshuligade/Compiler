@@ -56,6 +56,7 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List)
 struct Lsymbol *Llookup(char *NAME);
 void Linstall(char * NAME,int TYPE);
 
+void change_extension(char *filename);
 
 
 
