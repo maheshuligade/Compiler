@@ -42,7 +42,11 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	
 	if (Node_Type==Node_Type_ASSIGNMENT)
 	{	
-
+		// if (Glookup($1->NAME)->size <= evaluate($3))
+		// {
+		// 	cout<<"Array     "<<endl;
+		// }
+		//cout<<"NAME="<<NAME<<" size="<<Glookup(NAME)->size<<" Index="<<evaluate(ptr1->ptr2)<<endl;
 		if (Glookup(NAME)==NULL)
 		{	
 			//If the varible is not decraired
@@ -54,6 +58,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		else if (Glookup(NAME)->size<evaluate(ptr1->ptr2))
 		{	
 			//If Array is outof bound
+			
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
 			no_of_error++;
 		}
@@ -247,7 +252,7 @@ struct Gsymbol *Glookup(char *NAME)
 	return temp;
 }
 
-void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List)
+void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List)
 {	
 
 	if (size==0)
@@ -263,6 +268,7 @@ void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List)
 		strcpy(new_node->NAME,NAME);
 		new_node->TYPE=TYPE;
 		new_node->size=size;
+		new_node->value=value;
 		new_node->Binding=Global_Bind_Count;
 		new_node->Next=Gsymbol_table;
 		Gsymbol_table=new_node;
@@ -521,7 +527,7 @@ int evaluate(struct tnode* expressionTree)
 		// 	//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
 		// 	//cout<<"Variable="<<(expressionTree->NAME)<<endl;
 		// 	Memory[Global_Bind_Count]=(evaluate(expressionTree->ptr2));
-		// 	Ginstall(expressionTree->NAME,expreZssionTree->type,1,NULL);
+		// 	Ginstall(expressionTree->NAME,expressionTree->type,1,NULL);
 		// }
 		// else
 		// {	
@@ -534,7 +540,7 @@ int evaluate(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
 	{
-		if (expressionTree->value=='A')
+		if (expressionTree->value=='A'||expressionTree->value=='a')
 		{
 			//return evaluate(expressionTree->ptr2);
 			return Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr2)];
@@ -701,7 +707,11 @@ int type_check(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_DIV)
 	{
-		
+		if (type_check(expressionTree->ptr2)==0)
+		{
+			yyerror(string("Divide by zero,floating point exception."));
+			exit(-1);
+		}
 		return (type_check(expressionTree->ptr1)/type_check(expressionTree->ptr2));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_MUL)
@@ -840,13 +850,13 @@ int type_check(struct tnode* expressionTree)
 				return -1;
 			}
 			Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)]=evaluate(expressionTree->ptr2);
-			
+			//cout<<"Array= "<<expressionTree->NAME<<" = "<< evaluate(expressionTree->ptr1->ptr2)<<endl;
 		}
 		
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
 	{
-		if (expressionTree->value=='A')
+		if (expressionTree->value=='A'||expressionTree->value=='a')
 		{
 			//return type_check(expressionTree->ptr2);
 			return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];

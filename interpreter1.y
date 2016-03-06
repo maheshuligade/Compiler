@@ -68,7 +68,8 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{
 	;
 LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {	
 									  // $2->type=$1->type;	
-										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),NULL);
+										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),$2->value,NULL);
+										
 										
 									}
 
@@ -232,11 +233,27 @@ expr:expr PLUS expr		{
 						}
 	
 	;
-IDS:ID 					{
-							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+IDS:ID 					{	
+							if (Glookup($1->NAME)!=NULL)
+							{	
+								if (Glookup($1->NAME)->size > 1)
+								{
+									yyerror(string("‘") + $1->NAME + "’ was declared as array.");
+									no_of_error++;
+								}	
+							}
+							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
 						}
 	|ID'['expr']'		{
 							//$$=$1;
+							if (Glookup($1->NAME)!=NULL)
+							{	
+								if (Glookup($1->NAME)->value=='a')
+								{
+									yyerror(string("‘") + $1->NAME + "’ is not a array.");
+									no_of_error++;
+								}	
+							}
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
 							
 						}

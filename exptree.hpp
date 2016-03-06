@@ -24,6 +24,7 @@ struct Gsymbol
 	/*The TYPE field must be a Type_Struct if the user defined types are allowed*/
 	int size;		//Size field of arrays
 	int Binding;	//Address of the Identifier in the Memory
+	int value;		//For variables and array to detect
 	struct Arg_Struct *Arg_List;//Argument list of the functions
 	/*The Arg_Struct must  store the name and type of the each argument*/
 	struct Gsymbol *Next;	//Pointer to the next Symbol Table Entry
@@ -50,7 +51,7 @@ struct tnode* makeOperatorNode(char c,struct tnode* left,struct tnode* right);
 struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* ptr1,struct tnode* ptr2,struct tnode *ptr3);
 
 struct Gsymbol *Glookup(char *NAME);
-void Ginstall(char * NAME,int TYPE,int size,struct Arg_List *Arg_List);
+void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List);
 
 struct Lsymbol *Llookup(char *NAME);
 void Linstall(char * NAME,int TYPE);
