@@ -12,7 +12,7 @@
 %}
 
 %%
-[0-9]+		{column_no+=yyleng; number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=TYPE_VOID; return NUM;}
+[0-9]+		{column_no+=yyleng; number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=TYPE_VOID; yylval->type=TYPE_INT;return NUM;}
 "+"			{column_no+=yyleng; return PLUS;}
 "-"			{column_no+=yyleng; return MINUS;}
 "/"			{column_no+=yyleng; return DIV;}
@@ -58,7 +58,7 @@
 "%"			{column_no+=yyleng; return MODULUS;}
 "^"			{column_no+=yyleng; return POWER;}
 " "			{column_no+=yyleng;}
-[a-zA-Z]+[a-zA-Z0-9]*	{a=Make_Node(TYPE_VOID,ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;return ID;}	
+[a-zA-Z]+[a-zA-Z0-9]*	{a=Make_Node(ID,ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;return ID;}	
 .			{yyerror("Unknown Character\n");exit(1);}
 %%
 

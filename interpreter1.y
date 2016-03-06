@@ -10,6 +10,7 @@
 	extern struct Gsymbol *Gsymbol_table;
 	extern int Memory[1000];
 	extern FILE *yyin;
+	extern int no_of_error;
 	int i;
 	int yylex();
 	char input_file_name[100];
@@ -36,7 +37,13 @@
 %right NOT
 
 %%
-PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {type_check($3);/*evaluate($3);*/}
+PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {	
+														if (no_of_error==0)
+														{
+															type_check($3);
+															/*evaluate($3);*/
+														}
+													}
 
 GLOBAL_DEF_BLOCK:DECL ENDDECL {$$=NULL;}
 				|		{$$=NULL;}
@@ -59,7 +66,8 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{
 	|LOCAL_DEF_LIST								{$$=$1;}
 	
 	;
-LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {
+LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {	
+									  // $2->type=$1->type;	
 										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),NULL);
 										
 									}
@@ -95,8 +103,18 @@ Stmts:Stmts Stmt 	{
 	
 	;
 Stmt:IDS EQUAL expr SEMICOLON		{ 
-										$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
-										// cout<<"ptr1="<<endl;
+										//$1->type=$3->type;
+										// if ($1->type==TYPE_VOID)
+										// {
+										// 	//cout<<"Glookup(ptr1->NAME)="<<Glookup($1->NAME)->TYPE<<endl;
+										// 	$$=Make_Node(Glookup($1->NAME)->TYPE,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
+										// }
+										// else
+										// {
+											//cout<<"expr Node_Type="<<$3->Node_Type<<endl;
+											$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
+											// cout<<"ptr1="<<endl;
+										//}
 									}
 	// |TYPE IDS SEMICOLON {
 
@@ -128,39 +146,45 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	
 
 expr:expr PLUS expr		{	
-							$$=Make_Node(TYPE_VOID,Node_Type_PLUS,'+',NULL,$1,$3,NULL,NULL);
+							// //if ($1->type==TYPE_VOID)
+							// {
+							// 	cout<<"Glookup(ptr1->NAME)="<<Glookup($3->NAME)->TYPE<<endl;
+							// 	//$$=Make_Node(Glookup($1->NAME)->TYPE,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
+							// }
+							//cout<<"ptr1->type="<<$1->type<<" ptr2->type="<<$3->type<<endl;
+							$$=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MINUS expr	{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_MINUS,'-',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,$1,$3,NULL,NULL);
 						}
 
 	|expr DIV expr		{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_DIV,'/',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_DIV,'/',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MUL expr		{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_MUL,'*',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_MUL,'*',NULL,$1,$3,NULL,NULL);
 						}
 	|expr POWER expr	{	
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_POWER,'^',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_POWER,'^',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MODULUS expr	{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
 						}
 	|'('expr')'			{$$=$2;}
 	|NUM				{$$=$1;}
 	|IDS				{$$=$1; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
 	|MINUS expr 		{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
 						}
 	|PLUS expr 			{
 							
-							$$=Make_Node(TYPE_VOID,Node_Type_PLUS,'+',NULL,makeLeafNode(0),$2,NULL,NULL);
+							$$=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,makeLeafNode(0),$2,NULL,NULL);
 						}
 	|expr LESS expr		{
 							

@@ -6,8 +6,16 @@ integer main()
 		integer c;
 		integer d;
 		boolean f;
+		boolean g[2];
+		integer h[2];
+		integer i;
 	enddecl
 	begin
+		d=d+f;
+		d=1+TRUE;
+		h=2;
+		i[1]=2;
+		g[1]=TRUE;	
 		a[0]=1;
 		a[1]=5;
 		a[2]=7;
@@ -42,7 +50,6 @@ integer main()
 			b=b+1;
 		endwhile;
 
-
 		if(a[0]==1 AND a[7]==10)then
 		 write(a[10]);
 		endif;
@@ -55,10 +62,13 @@ integer main()
 		if(FALSE)then
 		 write(a[10]);
 		endif;
-		if(a[6])then
+		if(TRUE)then
 		 write(a[10]);
 		endif;
-		while(a[6])do
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		while(FALSE)do
 			write(a[6]);
 		endwhile;
 	end

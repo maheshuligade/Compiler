@@ -13,6 +13,7 @@ int Memory[1000000];
 int Global_Bind_Count=0;
 char error_output[200];
 int no_of_error=0;
+int ptr1_type,ptr2_type;
 string types_array[5]={"void","boolean","integer"};
 
 int k;
@@ -68,16 +69,16 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			//cout<<"evaluate="<<evaluate(ptr1)<<endl;
 			//cout<<"TYPE"<<ptr1->type<<endl;
 
-			if (evaluate(ptr1)!=0 && evaluate(ptr1)!=1)
+			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1)||(ptr1->type!=TYPE_BOOLEAN))
 			{
 				yyerror("if statement requires boolean type condition.");
 				no_of_error++;
 			}
-			else if (ptr1->type!=TYPE_BOOLEAN)
-			{
-				yyerror("if statement requires boolean type condition.");
-				no_of_error++;
-			}
+			// else if (ptr1->type!=TYPE_BOOLEAN)
+			// {
+			// 	yyerror("if statement requires boolean type condition.");
+			// 	no_of_error++;
+			// }
 			// if (ptr1->Node_Type==Node_Type_ARRAY && Memory[Glookup(ptr1->NAME)->Binding]!=0 && Memory[Glookup(ptr1->NAME)->Binding]!=1)
 			// {
 			// 	cout<<"Type="<< Glookup(ptr1->NAME)->TYPE<<endl;
@@ -92,15 +93,18 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	}	
 	else if (Node_Type==Node_Type_WHILE)
 	{		
-
-			if (evaluate(ptr1)!=0 && evaluate(ptr1)!=1)
+			//cout<<"ptr1->type="<<ptr1->type<<endl;
+			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1))
 			{
-				yyerror("while statement requires boolean type condition.");
+				yyerror("while loop requires boolean type condition.");
 				no_of_error++;
 			}
-			else if (ptr1->type!=TYPE_BOOLEAN)
+			else if (ptr1->type==TYPE_VOID)
 			{
-				yyerror("while statement requires boolean type condition.");
+				if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+				{
+					yyerror("while loop requires boolean type condition.");
+				}
 				no_of_error++;
 			}
 			
@@ -110,24 +114,92 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	// 		yyerror("while loop requires boolean type condition.");
 	// 		no_of_error++;
 	// }
-	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
-	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-			//cout<<evaluate(ptr1)<<endl;
-			yyerror("compairing different types.");
-			no_of_error++;
-	}
-	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
-	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-			//cout<<evaluate(ptr1)<<endl;
-			yyerror("compairing different types.");
-			no_of_error++;
-	}
-	else if (Node_Type==Node_Type_PLUS	&& ptr1->type!=ptr2->type)
+	// else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
+	// {		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+	// 		//cout<<evaluate(ptr1)<<endl;
+	// 		yyerror("compairing different types.");
+	// 		no_of_error++;
+	// }
+	// else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
+	// {		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+	// 		//cout<<evaluate(ptr1)<<endl;
+	// 		yyerror("compairing different types.");
+	// 		no_of_error++;
+	// }
+	else if (Node_Type==Node_Type_PLUS)
 	{		
-			cout<<ptr1->type<<endl;
-			yyerror("can't add "+ types_array[ptr1->type-21] + " to " + types_array[ptr2->type]);
-			no_of_error++;
+
+			// && ptr1->type!=ptr2->type
+			// cout<<"ptr1->type="<<ptr1->type<<" ptr2->type="<<ptr1->type<<endl;
+			// //yyerror("can't add "+ types_array[ptr1->type-21] + " to " + types_array[ptr2->type]);
+			// //yyerror(std::string("can't add ") + "different type");
+			// //no_of_error++;
+			// cout<<"Glookup(ptr1->NAME)->TYPE="<<Glookup(ptr1->NAME)->TYPE<<endl;
+			// if (Glookup(ptr1->NAME)->TYPE!=Glookup(ptr2->NAME)->TYPE)
+			// {
+			// 	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
+			//  	no_of_error++;
+			// }
+			// else if ( ptr1->type!=ptr2->type)
+			// {
+			// 	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
+			//  	no_of_error++;
+			// }
+			// if (ptr1->Node_Type==TYPE_VOID)
+			// {
+			// 	if (Glookup(ptr1->NAME)->TYPE!=TYPE_INT)
+			// 	{
+			 		// yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
+			 		// no_of_error++;
+
+			 		
+			// 	}
+				//no_of_error++;
+			// }
+
+			// if (ptr2->Node_Type==TYPE_VOID)
+			// {
+			// 	if (Glookup(ptr1->NAME)->TYPE!=TYPE_INT)
+			// 	{
+			// 		yyerror(std::string("can't add ") + "different type");
+			// 	}
+			// 	no_of_error++;
+			// }
+
+
+			if (ptr1->Node_Type==Node_Type_ARRAY)
+			{
+				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+			}
+			else
+			{
+				ptr1_type=ptr1->type;
+			}
+
+
+			if (ptr2->Node_Type==Node_Type_ARRAY)
+			{
+				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+			}
+			else
+			{
+				ptr2_type=ptr2->type;
+			}
+
+			cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			if (ptr1_type!=ptr2_type)
+			{	
+				yyerror("Adding different types.");
+				no_of_error++;				
+			}
 	}
+	// else if (Node_Type==Node_Type_MINUS	&& Glookup(ptr1->NAME)->TYPE!=Glookup(ptr2->NAME)->TYPE)
+	// {		
+
+	//  	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
+	// 	no_of_error++;
+			 		
+	// }
 	
 
 

@@ -92,9 +92,10 @@ extern int yylineno;
 #define TYPE_VOID							21
 #define TYPE_BOOLEAN						22
 #define TYPE_INT							23
-#define Node_Type_DUMMY						24
-#define Node_Type_ARRAY						25
-#define Node_Type_NOT						26
-#define Node_Type_OR						27
-#define Node_Type_AND						28
-#define Node_Type_BOOLEAN_CONSTANT			29
+#define Type_ARRAY 							24
+#define Node_Type_DUMMY						25
+#define Node_Type_ARRAY						26
+#define Node_Type_NOT						27
+#define Node_Type_OR						28
+#define Node_Type_AND						29
+#define Node_Type_BOOLEAN_CONSTANT			30
