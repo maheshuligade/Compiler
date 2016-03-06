@@ -39,7 +39,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	
 	struct tnode *new_node;
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
-	// Problem found
+	
 	if (Node_Type==Node_Type_ASSIGNMENT)
 	{	
 
@@ -49,7 +49,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
 			new_node=NULL;
 			no_of_error++;
-			//return new_node;
+			
 		}
 		else if (Glookup(NAME)->size<evaluate(ptr1->ptr2))
 		{	
@@ -67,34 +67,18 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	 }
 	else if (Node_Type==Node_Type_IF)
 	{		
-			//cout<<"evaluate="<<evaluate(ptr1)<<endl;
-			//cout<<"TYPE"<<ptr1->type<<endl;
-
+	
 			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1)||(ptr1->type!=TYPE_BOOLEAN))
 			{
 				yyerror("if statement requires boolean type condition.");
 				no_of_error++;
 			}
-			// else if (ptr1->type!=TYPE_BOOLEAN)
-			// {
-			// 	yyerror("if statement requires boolean type condition.");
-			// 	no_of_error++;
-			// }
-			// if (ptr1->Node_Type==Node_Type_ARRAY && Memory[Glookup(ptr1->NAME)->Binding]!=0 && Memory[Glookup(ptr1->NAME)->Binding]!=1)
-			// {
-			// 	cout<<"Type="<< Glookup(ptr1->NAME)->TYPE<<endl;
-			// 	yyerror("if  requires boolean type condition.");
-
-			// }
-			//cout<<"ptr2"<<evaluate(ptr1)<<endl;
-			//cout<<Glookup(ptr1->NAME)->Binding<<" "<<Memory[Glookup(ptr1->NAME)->Binding+1]<<endl;
-			//	cout<<Memory[15]<<endl;
-			// cout<<Glookup(NAME)->TYPE<<endl;
+			
 			
 	}	
 	else if (Node_Type==Node_Type_WHILE)
 	{		
-			//cout<<"ptr1->type="<<ptr1->type<<endl;
+		
 			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1))
 			{
 				yyerror("while loop requires boolean type condition.");
@@ -110,16 +94,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			}
 			
 	}	
-	// else if (Node_Type==Node_Type_WHILE	&& ptr1->type!=TYPE_BOOLEAN)
-	// {
-	// 		yyerror("while loop requires boolean type condition.");
-	// 		no_of_error++;
-	// }
 	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
-	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-			//cout<<evaluate(ptr1)<<endl;
-			// yyerror("compairing different types.");
-			// no_of_error++;
+	{		
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
 				ptr1_type=Glookup(ptr1->NAME)->TYPE;
@@ -139,7 +115,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				ptr2_type=ptr2->type;
 			}
 
-			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
 			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
@@ -147,10 +122,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			}
 	}
 	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
-	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-			//cout<<evaluate(ptr1)<<endl;
-			// yyerror("compairing different types.");
-			// no_of_error++;
+	{	
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
 				ptr1_type=Glookup(ptr1->NAME)->TYPE;
@@ -170,7 +142,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				ptr2_type=ptr2->type;
 			}
 
-			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+		
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
 			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
@@ -180,44 +152,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
 	{		
 
-			// && ptr1->type!=ptr2->type
-			// cout<<"ptr1->type="<<ptr1->type<<" ptr2->type="<<ptr1->type<<endl;
-			// //yyerror("can't add "+ types_array[ptr1->type-21] + " to " + types_array[ptr2->type]);
-			// //yyerror(std::string("can't add ") + "different type");
-			// //no_of_error++;
-			// cout<<"Glookup(ptr1->NAME)->TYPE="<<Glookup(ptr1->NAME)->TYPE<<endl;
-			// if (Glookup(ptr1->NAME)->TYPE!=Glookup(ptr2->NAME)->TYPE)
-			// {
-			// 	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
-			//  	no_of_error++;
-			// }
-			// else if ( ptr1->type!=ptr2->type)
-			// {
-			// 	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
-			//  	no_of_error++;
-			// }
-			// if (ptr1->Node_Type==TYPE_VOID)
-			// {
-			// 	if (Glookup(ptr1->NAME)->TYPE!=TYPE_INT)
-			// 	{
-			 		// yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
-			 		// no_of_error++;
-
-			 		
-			// 	}
-				//no_of_error++;
-			// }
-
-			// if (ptr2->Node_Type==TYPE_VOID)
-			// {
-			// 	if (Glookup(ptr1->NAME)->TYPE!=TYPE_INT)
-			// 	{
-			// 		yyerror(std::string("can't add ") + "different type");
-			// 	}
-			// 	no_of_error++;
-			// }
-
-
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
 				ptr1_type=Glookup(ptr1->NAME)->TYPE;
@@ -237,22 +171,13 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				ptr2_type=ptr2->type;
 			}
 
-			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
 			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("Arithmetic Operations of  different types.");
 				no_of_error++;				
 			}
 	}
-
-	// else if (Node_Type==Node_Type_MINUS	&& Glookup(ptr1->NAME)->TYPE!=Glookup(ptr2->NAME)->TYPE)
-	// {		
-
-	//  	yyerror(std::string("can't add ") + types_array[Glookup(ptr1->NAME)->TYPE -21] + " and " + types_array[Glookup(ptr2->NAME)->TYPE -21]);
-	// 	no_of_error++;
-			 		
-	// }
-	
 
 
 	new_node->type=type;
