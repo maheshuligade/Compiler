@@ -25,6 +25,7 @@ struct tnode* makeLeafNode(int n)
 	new_leaf_node->Node_Type=Node_Type_LEAF;
 	new_leaf_node->NAME=(char *)malloc(sizeof(char));
 	new_leaf_node->NAME=NULL;
+	new_leaf_node->type=TYPE_INT;
 	new_leaf_node->value=n;
 	new_leaf_node->ptr1=NULL;
 	new_leaf_node->ptr2=NULL;
@@ -126,7 +127,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	// 		yyerror("compairing different types.");
 	// 		no_of_error++;
 	// }
-	else if (Node_Type==Node_Type_PLUS)
+	else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
 	{		
 
 			// && ptr1->type!=ptr2->type
@@ -186,13 +187,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				ptr2_type=ptr2->type;
 			}
 
-			cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
-			if (ptr1_type!=ptr2_type)
-			{	
-				yyerror("Adding different types.");
+			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+				yyerror("Arithmetic Operations of  different types.");
 				no_of_error++;				
 			}
 	}
+
 	// else if (Node_Type==Node_Type_MINUS	&& Glookup(ptr1->NAME)->TYPE!=Glookup(ptr2->NAME)->TYPE)
 	// {		
 
