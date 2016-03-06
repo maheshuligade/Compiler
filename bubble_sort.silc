@@ -12,8 +12,8 @@ integer main()
 	enddecl
 	begin
 		
-		h=2;
-		i[1]=2;
+		h[1]=2;
+		i=2;
 		g[1]=TRUE;	
 		a[0]=1;
 		a[1]=5;
