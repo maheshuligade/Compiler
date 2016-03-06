@@ -115,18 +115,68 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	// 		yyerror("while loop requires boolean type condition.");
 	// 		no_of_error++;
 	// }
-	// else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
-	// {		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-	// 		//cout<<evaluate(ptr1)<<endl;
-	// 		yyerror("compairing different types.");
-	// 		no_of_error++;
-	// }
-	// else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
-	// {		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
-	// 		//cout<<evaluate(ptr1)<<endl;
-	// 		yyerror("compairing different types.");
-	// 		no_of_error++;
-	// }
+	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
+	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+			//cout<<evaluate(ptr1)<<endl;
+			// yyerror("compairing different types.");
+			// no_of_error++;
+			if (ptr1->Node_Type==Node_Type_ARRAY)
+			{
+				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+			}
+			else
+			{
+				ptr1_type=ptr1->type;
+			}
+
+
+			if (ptr2->Node_Type==Node_Type_ARRAY)
+			{
+				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+			}
+			else
+			{
+				ptr2_type=ptr2->type;
+			}
+
+			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+				yyerror("compairing different types.");
+				no_of_error++;				
+			}
+	}
+	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
+	{		//cout<<"ptr1="<<ptr1->type<<"ptr2="<<ptr2->type<<endl;
+			//cout<<evaluate(ptr1)<<endl;
+			// yyerror("compairing different types.");
+			// no_of_error++;
+			if (ptr1->Node_Type==Node_Type_ARRAY)
+			{
+				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+			}
+			else
+			{
+				ptr1_type=ptr1->type;
+			}
+
+
+			if (ptr2->Node_Type==Node_Type_ARRAY)
+			{
+				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+			}
+			else
+			{
+				ptr2_type=ptr2->type;
+			}
+
+			//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+				yyerror("compairing different types.");
+				no_of_error++;				
+			}
+	}
 	else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
 	{		
 
