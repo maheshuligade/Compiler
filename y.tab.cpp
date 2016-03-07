@@ -76,12 +76,14 @@
 	extern int Memory[1000];
 	extern FILE *yyin;
 	extern int no_of_error;
+	int BP=1535;
+	int SP=1535;
 	int i;
 	int yylex();
 	char input_file_name[100],sim_code_filename[100];
 	
 
-#line 85 "y.tab.cpp" /* yacc.c:339  */
+#line 87 "y.tab.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -212,7 +214,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 216 "y.tab.cpp" /* yacc.c:358  */
+#line 218 "y.tab.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -513,11 +515,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    40,    40,    48,    49,    51,    54,    56,    57,    59,
-      66,    69,    83,    93,    94,    95,   103,   106,   126,   130,
-     134,   138,   142,   149,   158,   163,   167,   171,   175,   179,
-     180,   181,   182,   186,   190,   194,   198,   202,   206,   210,
-     214,   218,   222,   226,   230,   236,   247,   262,   263
+       0,    42,    42,    50,    51,    53,    56,    58,    59,    61,
+      68,    71,    85,    95,    96,    97,   105,   108,   128,   132,
+     136,   140,   144,   151,   160,   165,   169,   173,   177,   181,
+     182,   183,   184,   188,   192,   196,   200,   204,   208,   212,
+     216,   220,   224,   228,   232,   238,   249,   264,   265
 };
 #endif
 
@@ -1387,7 +1389,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 40 "interpreter1.y" /* yacc.c:1646  */
+#line 42 "interpreter1.y" /* yacc.c:1646  */
     {	
 														if (no_of_error==0)
 														{
@@ -1395,47 +1397,47 @@ yyreduce:
 															/*evaluate($3);*/
 														}
 													}
-#line 1399 "y.tab.cpp" /* yacc.c:1646  */
+#line 1401 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 48 "interpreter1.y" /* yacc.c:1646  */
+#line 50 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=NULL;}
-#line 1405 "y.tab.cpp" /* yacc.c:1646  */
+#line 1407 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 49 "interpreter1.y" /* yacc.c:1646  */
+#line 51 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=NULL;}
-#line 1411 "y.tab.cpp" /* yacc.c:1646  */
+#line 1413 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 51 "interpreter1.y" /* yacc.c:1646  */
+#line 53 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=NULL;}
-#line 1417 "y.tab.cpp" /* yacc.c:1646  */
+#line 1419 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 54 "interpreter1.y" /* yacc.c:1646  */
+#line 56 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[-1]);/*evaluate($$);*/}
-#line 1423 "y.tab.cpp" /* yacc.c:1646  */
+#line 1425 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 56 "interpreter1.y" /* yacc.c:1646  */
+#line 58 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[-1]);}
-#line 1429 "y.tab.cpp" /* yacc.c:1646  */
+#line 1431 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 57 "interpreter1.y" /* yacc.c:1646  */
+#line 59 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=NULL;}
-#line 1435 "y.tab.cpp" /* yacc.c:1646  */
+#line 1437 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 59 "interpreter1.y" /* yacc.c:1646  */
+#line 61 "interpreter1.y" /* yacc.c:1646  */
     {		
 
 													(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1443,28 +1445,28 @@ yyreduce:
 													(yyval)->ptr2=(yyvsp[0]);
 
 												}
-#line 1447 "y.tab.cpp" /* yacc.c:1646  */
+#line 1449 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 66 "interpreter1.y" /* yacc.c:1646  */
+#line 68 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 1453 "y.tab.cpp" /* yacc.c:1646  */
+#line 1455 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 69 "interpreter1.y" /* yacc.c:1646  */
+#line 71 "interpreter1.y" /* yacc.c:1646  */
     {	
 									  // $2->type=$1->type;	
 										Ginstall((yyvsp[-1])->NAME,(yyvsp[-2])->type,evaluate((yyvsp[-1])->ptr2),(yyvsp[-1])->value,NULL);
 										
 										
 									}
-#line 1464 "y.tab.cpp" /* yacc.c:1646  */
+#line 1466 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 83 "interpreter1.y" /* yacc.c:1646  */
+#line 85 "interpreter1.y" /* yacc.c:1646  */
     {
 							(yyval)=(yyvsp[-1]);
 							// evaluate($$);
@@ -1475,23 +1477,23 @@ yyreduce:
 							// }
 							// exit(0);
 						}
-#line 1479 "y.tab.cpp" /* yacc.c:1646  */
+#line 1481 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 93 "interpreter1.y" /* yacc.c:1646  */
+#line 95 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 1485 "y.tab.cpp" /* yacc.c:1646  */
+#line 1487 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 94 "interpreter1.y" /* yacc.c:1646  */
+#line 96 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=NULL;}
-#line 1491 "y.tab.cpp" /* yacc.c:1646  */
+#line 1493 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 95 "interpreter1.y" /* yacc.c:1646  */
+#line 97 "interpreter1.y" /* yacc.c:1646  */
     {		
 
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1500,17 +1502,17 @@ yyreduce:
 							
 
 					}
-#line 1504 "y.tab.cpp" /* yacc.c:1646  */
+#line 1506 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 103 "interpreter1.y" /* yacc.c:1646  */
+#line 105 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 1510 "y.tab.cpp" /* yacc.c:1646  */
+#line 1512 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 106 "interpreter1.y" /* yacc.c:1646  */
+#line 108 "interpreter1.y" /* yacc.c:1646  */
     { 
 										//$1->type=$3->type;
 										// if ($1->type==TYPE_VOID)
@@ -1525,56 +1527,56 @@ yyreduce:
 											// cout<<"ptr1="<<endl;
 										//}
 									}
-#line 1529 "y.tab.cpp" /* yacc.c:1646  */
+#line 1531 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 126 "interpreter1.y" /* yacc.c:1646  */
+#line 128 "interpreter1.y" /* yacc.c:1646  */
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,(yyvsp[-2]),NULL,NULL,NULL);
 									}
-#line 1538 "y.tab.cpp" /* yacc.c:1646  */
+#line 1540 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 130 "interpreter1.y" /* yacc.c:1646  */
+#line 132 "interpreter1.y" /* yacc.c:1646  */
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,(yyvsp[-2]),NULL,NULL,NULL);
 									}
-#line 1547 "y.tab.cpp" /* yacc.c:1646  */
+#line 1549 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 134 "interpreter1.y" /* yacc.c:1646  */
+#line 136 "interpreter1.y" /* yacc.c:1646  */
     {
 												
 												(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'i',NULL,(yyvsp[-5]),(yyvsp[-2]),NULL,NULL);
 											}
-#line 1556 "y.tab.cpp" /* yacc.c:1646  */
+#line 1558 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 138 "interpreter1.y" /* yacc.c:1646  */
+#line 140 "interpreter1.y" /* yacc.c:1646  */
     {	
 														
 														(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'I',NULL,(yyvsp[-7]),(yyvsp[-4]),(yyvsp[-2]),NULL);
 													}
-#line 1565 "y.tab.cpp" /* yacc.c:1646  */
+#line 1567 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 142 "interpreter1.y" /* yacc.c:1646  */
+#line 144 "interpreter1.y" /* yacc.c:1646  */
     {
 													
 													(yyval)=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,(yyvsp[-5]),(yyvsp[-2]),NULL,NULL);
 												}
-#line 1574 "y.tab.cpp" /* yacc.c:1646  */
+#line 1576 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 149 "interpreter1.y" /* yacc.c:1646  */
+#line 151 "interpreter1.y" /* yacc.c:1646  */
     {	
 							// //if ($1->type==TYPE_VOID)
 							// {
@@ -1584,191 +1586,191 @@ yyreduce:
 							//cout<<"ptr1->type="<<$1->type<<" ptr2->type="<<$3->type<<endl;
 							(yyval)=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1588 "y.tab.cpp" /* yacc.c:1646  */
+#line 1590 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 158 "interpreter1.y" /* yacc.c:1646  */
+#line 160 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1597 "y.tab.cpp" /* yacc.c:1646  */
+#line 1599 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 163 "interpreter1.y" /* yacc.c:1646  */
+#line 165 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_DIV,'/',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1606 "y.tab.cpp" /* yacc.c:1646  */
+#line 1608 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 167 "interpreter1.y" /* yacc.c:1646  */
+#line 169 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MUL,'*',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1615 "y.tab.cpp" /* yacc.c:1646  */
+#line 1617 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 171 "interpreter1.y" /* yacc.c:1646  */
+#line 173 "interpreter1.y" /* yacc.c:1646  */
     {	
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_POWER,'^',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1624 "y.tab.cpp" /* yacc.c:1646  */
+#line 1626 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 175 "interpreter1.y" /* yacc.c:1646  */
+#line 177 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1633 "y.tab.cpp" /* yacc.c:1646  */
+#line 1635 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 179 "interpreter1.y" /* yacc.c:1646  */
+#line 181 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[-1]);}
-#line 1639 "y.tab.cpp" /* yacc.c:1646  */
+#line 1641 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 180 "interpreter1.y" /* yacc.c:1646  */
+#line 182 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]);}
-#line 1645 "y.tab.cpp" /* yacc.c:1646  */
+#line 1647 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 181 "interpreter1.y" /* yacc.c:1646  */
+#line 183 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=(yyvsp[0]); /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
-#line 1651 "y.tab.cpp" /* yacc.c:1646  */
+#line 1653 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 182 "interpreter1.y" /* yacc.c:1646  */
+#line 184 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),(yyvsp[0]),NULL,NULL);
 						}
-#line 1660 "y.tab.cpp" /* yacc.c:1646  */
+#line 1662 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 186 "interpreter1.y" /* yacc.c:1646  */
+#line 188 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,makeLeafNode(0),(yyvsp[0]),NULL,NULL);
 						}
-#line 1669 "y.tab.cpp" /* yacc.c:1646  */
+#line 1671 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 190 "interpreter1.y" /* yacc.c:1646  */
+#line 192 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LT,'<',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1678 "y.tab.cpp" /* yacc.c:1646  */
+#line 1680 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 194 "interpreter1.y" /* yacc.c:1646  */
+#line 196 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LE,'L',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1687 "y.tab.cpp" /* yacc.c:1646  */
+#line 1689 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 198 "interpreter1.y" /* yacc.c:1646  */
+#line 200 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GT,'>',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1696 "y.tab.cpp" /* yacc.c:1646  */
+#line 1698 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 202 "interpreter1.y" /* yacc.c:1646  */
+#line 204 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GE,'G',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1705 "y.tab.cpp" /* yacc.c:1646  */
+#line 1707 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 206 "interpreter1.y" /* yacc.c:1646  */
+#line 208 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1714 "y.tab.cpp" /* yacc.c:1646  */
+#line 1716 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 210 "interpreter1.y" /* yacc.c:1646  */
+#line 212 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_EQ,'E',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1723 "y.tab.cpp" /* yacc.c:1646  */
+#line 1725 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 214 "interpreter1.y" /* yacc.c:1646  */
+#line 216 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NOT,'L',NULL,(yyvsp[0]),NULL,NULL,NULL);
 						}
-#line 1732 "y.tab.cpp" /* yacc.c:1646  */
+#line 1734 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 218 "interpreter1.y" /* yacc.c:1646  */
+#line 220 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_OR,'L',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1741 "y.tab.cpp" /* yacc.c:1646  */
+#line 1743 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 222 "interpreter1.y" /* yacc.c:1646  */
+#line 224 "interpreter1.y" /* yacc.c:1646  */
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_AND,'L',NULL,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 						}
-#line 1750 "y.tab.cpp" /* yacc.c:1646  */
+#line 1752 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 226 "interpreter1.y" /* yacc.c:1646  */
+#line 228 "interpreter1.y" /* yacc.c:1646  */
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,(yyvsp[0]),NULL,NULL,NULL);
 
 						}
-#line 1759 "y.tab.cpp" /* yacc.c:1646  */
+#line 1761 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 230 "interpreter1.y" /* yacc.c:1646  */
+#line 232 "interpreter1.y" /* yacc.c:1646  */
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,(yyvsp[0]),NULL,NULL,NULL);
 
 						}
-#line 1768 "y.tab.cpp" /* yacc.c:1646  */
+#line 1770 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 236 "interpreter1.y" /* yacc.c:1646  */
+#line 238 "interpreter1.y" /* yacc.c:1646  */
     {	
 							if (Glookup((yyvsp[0])->NAME)!=NULL)
 							{	
@@ -1780,11 +1782,11 @@ yyreduce:
 							}
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',(yyvsp[0])->NAME,(yyvsp[0]),makeLeafNode(1),NULL,NULL);
 						}
-#line 1784 "y.tab.cpp" /* yacc.c:1646  */
+#line 1786 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 247 "interpreter1.y" /* yacc.c:1646  */
+#line 249 "interpreter1.y" /* yacc.c:1646  */
     {
 							//$$=$1;
 							if (Glookup((yyvsp[-3])->NAME)!=NULL)
@@ -1798,23 +1800,23 @@ yyreduce:
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[-3])->NAME,(yyvsp[-3]),(yyvsp[-1]),NULL,NULL);
 							
 						}
-#line 1802 "y.tab.cpp" /* yacc.c:1646  */
+#line 1804 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 262 "interpreter1.y" /* yacc.c:1646  */
+#line 264 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
-#line 1808 "y.tab.cpp" /* yacc.c:1646  */
+#line 1810 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 263 "interpreter1.y" /* yacc.c:1646  */
+#line 265 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
-#line 1814 "y.tab.cpp" /* yacc.c:1646  */
+#line 1816 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1818 "y.tab.cpp" /* yacc.c:1646  */
+#line 1820 "y.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2042,7 +2044,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 266 "interpreter1.y" /* yacc.c:1906  */
+#line 268 "interpreter1.y" /* yacc.c:1906  */
 
 
 int yyerror(string s)
@@ -2066,10 +2068,16 @@ int main(int argc,char const *argv[])
 		strcpy(sim_code_filename,argv[1]);
 		change_extension(sim_code_filename);
 		sim_code_file=fopen(sim_code_filename,"w");
+		fprintf(sim_code_file, "START\n");
+		fprintf(sim_code_file, "MOV BP,1535\n");
+		fprintf(sim_code_file, "MOV SP,1535\n");
 		yyin=fp;
 	}
+	
 	yyparse();
+	fprintf(sim_code_file, "HALT\n");
 	fclose(sim_code_file);
+	
 	if (no_of_error!=0)
 	{
 		remove(sim_code_filename);

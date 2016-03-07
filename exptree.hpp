@@ -57,7 +57,7 @@ struct Lsymbol *Llookup(char *NAME);
 void Linstall(char * NAME,int TYPE);
 
 void change_extension(char *filename);
-
+int codegen(struct tnode *expressionTree);
 
 
 /*To evaluate an expression tree*/
@@ -69,6 +69,8 @@ extern int column_no;
 extern char error_output[200];
 extern char input_file_name[100];
 extern int yylineno;
+extern int BP;
+extern int SP;
 
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1

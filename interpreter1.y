@@ -11,6 +11,8 @@
 	extern int Memory[1000];
 	extern FILE *yyin;
 	extern int no_of_error;
+	int BP=1535;
+	int SP=1535;
 	int i;
 	int yylex();
 	char input_file_name[100],sim_code_filename[100];
@@ -286,10 +288,16 @@ int main(int argc,char const *argv[])
 		strcpy(sim_code_filename,argv[1]);
 		change_extension(sim_code_filename);
 		sim_code_file=fopen(sim_code_filename,"w");
+		fprintf(sim_code_file, "START\n");
+		fprintf(sim_code_file, "MOV BP,1535\n");
+		fprintf(sim_code_file, "MOV SP,1535\n");
 		yyin=fp;
 	}
+	
 	yyparse();
+	fprintf(sim_code_file, "HALT\n");
 	fclose(sim_code_file);
+	
 	if (no_of_error!=0)
 	{
 		remove(sim_code_filename);
