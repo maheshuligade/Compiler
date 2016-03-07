@@ -5,11 +5,5 @@ integer main()
 	enddecl
 	begin
 		a=0;
-		if(2)then
-			write(a);
-		endif;
-		while(2)do
-			write(a);
-		endwhile;
 	end
 }

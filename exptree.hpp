@@ -71,7 +71,6 @@ extern char input_file_name[100];
 extern int yylineno;
 extern int BP;
 extern int SP;
-
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2
