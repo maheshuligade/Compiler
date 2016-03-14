@@ -1,4 +1,5 @@
 #include <string>
+
 typedef struct tnode
 {
 	int type;							//Interger ,Boolean or Void (for statements) 
@@ -71,6 +72,8 @@ extern char input_file_name[100];
 extern int yylineno;
 extern int BP;
 extern int SP;
+extern 	FILE *fp,*sim_code_file;
+extern int Memory[1000000];
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2

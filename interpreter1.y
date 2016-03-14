@@ -8,7 +8,7 @@
 	extern 	int alphabet[200];
 	extern 	int yyleng;
 	extern struct Gsymbol *Gsymbol_table;
-	extern int Memory[1000];
+	// extern int Memory[1000];
 	extern FILE *yyin;
 	extern int no_of_error;
 	int BP=1535;
@@ -16,7 +16,7 @@
 	int i;
 	int yylex();
 	char input_file_name[100],sim_code_filename[100];
-	
+	FILE *fp,*sim_code_file;
 %}
 
 %token PLUS MINUS DIV MUL SEMICOLON READ WRITE EQUAL NUM ID MODULUS POWER
@@ -276,7 +276,7 @@ int yyerror(string s)
 
 int main(int argc,char const *argv[])
 {	
-	FILE *fp,*sim_code_file;
+	
 	if (argc < 2)
 	{
 		cout<<"silc:fatal error: no input files\ncompilation terminated."<<endl;

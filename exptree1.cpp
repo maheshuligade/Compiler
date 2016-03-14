@@ -15,7 +15,7 @@ char error_output[200];
 int no_of_error=0;
 int ptr1_type,ptr2_type;
 string types_array[5]={"void","boolean","integer"};
-
+extern FILE *sim_code_file;
 int k;
 
 struct tnode* makeLeafNode(int n)
@@ -629,8 +629,7 @@ int evaluate(struct tnode* expressionTree)
 			}
 			else
 			{
-				return evaluate
-				(expressionTree->ptr3);
+				return evaluate(expressionTree->ptr3);
 			}
 		}
 	}
@@ -894,8 +893,10 @@ int type_check(struct tnode* expressionTree)
 			{
 			
 				cout<<type_check(expressionTree->ptr1)<<endl;
-
-
+				// fprintf(sim_code_file, "MOV R1,%d\n",evaluate(expressionTree->ptr1));
+				// fprintf(sim_code_file, "OUT R1\n");
+				//fprintf(sim_code_file," %d", evaluate(expressionTree->ptr1));
+				//fprintf(sim_code_file, "\n");
 			}
 			return 0;
 		

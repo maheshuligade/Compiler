@@ -4,6 +4,10 @@ integer main()
 	integer a;
 	enddecl
 	begin
-		a=0;
+		a=5;
+		write(a);
+		if(a<7)then
+			write(a);
+		endif;
 	end
 }
