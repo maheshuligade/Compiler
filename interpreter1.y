@@ -290,8 +290,8 @@ int main(int argc,char const *argv[])
 		change_extension(sim_code_filename);
 		sim_code_file=fopen(sim_code_filename,"w");
 		fprintf(sim_code_file, "START\n");
-		fprintf(sim_code_file, "MOV BP,1535\n");
-		fprintf(sim_code_file, "MOV SP,1535\n");
+		//fprintf(sim_code_file, "MOV BP,1535\n");
+		//fprintf(sim_code_file, "MOV SP,1535\n");
 		yyin=fp;
 	}
 	
