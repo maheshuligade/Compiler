@@ -206,7 +206,12 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_READ)
 	{
-	
+		reg_1=get_reg();
+		int MEMORY_LOC=Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1;
+		fprintf(sim_code_file, "IN R%d\n",reg_1);
+		fprintf(sim_code_file, "MOV [%d],R%d\n",MEMORY_LOC,reg_1);
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_IF)
 	{	
