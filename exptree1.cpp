@@ -892,7 +892,7 @@ int type_check(struct tnode* expressionTree)
 			if (no_of_error==0)
 			{
 			
-				cout<<type_check(expressionTree->ptr1)<<endl;
+				//cout<<type_check(expressionTree->ptr1)<<endl;
 				// fprintf(sim_code_file, "MOV R1,%d\n",evaluate(expressionTree->ptr1));
 				// fprintf(sim_code_file, "OUT R1\n");
 				//fprintf(sim_code_file," %d", evaluate(expressionTree->ptr1));
