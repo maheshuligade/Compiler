@@ -2,12 +2,21 @@ integer main()
 {
 	decl
 	integer a;
+	integer b;
 	enddecl
 	begin
 		a=5;
+		b=6;
+		
+		read(a);
+		read(b);
 		write(a);
-		if(a<7)then
+		write(b);
+
+		if(a<b)then
 			write(a);
+		else
+			write(b);	
 		endif;
 	end
 }

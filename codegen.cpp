@@ -8,7 +8,7 @@ int reg=0;
 int left_value,right_value;
 int reg_no=0;
 int label_no=0;
-int label_1,label_2;
+int label_1,label_2,label_3;
 int reg_1,reg_2;
 void change_extension(char *filename)
 {	
@@ -60,14 +60,16 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_LT)
 	{
-		if (codegen(expressionTree->ptr1)<codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		
+		reg_1=get_reg();
+		reg_2=get_reg();
+		
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,codegen(expressionTree->ptr1));
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,codegen(expressionTree->ptr2));
+		fprintf(sim_code_file, "LT R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+
 	}
 	else if (expressionTree->Node_Type==Node_Type_LE)
 	{
@@ -197,6 +199,7 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_WRITE)
 	{
+		
 		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
 		base value (Binding)  plus the offset value*/
 		
@@ -206,9 +209,11 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "OUT R%d\n",reg_1);
 		free_reg();
 		return 0;
+
 	}
 	else if (expressionTree->Node_Type==Node_Type_READ)
 	{	
+		
 		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
 		 base value (Binding)  plus the offset value*/
 		
@@ -218,27 +223,53 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "MOV [%d],R%d\n",MEMORY_LOC,reg_1);
 		free_reg();
 		return 0;
+
 	}
 	else if (expressionTree->Node_Type==Node_Type_IF)
 	{	
+		
 		if (expressionTree->value=='i')
-		{
+		{	
+			
+			/*Checkthe condition is true if it is true then execute if part else execute else part*/
+			
 			label_1=get_label();
-			label_2=get_label();
+
+			fprintf(sim_code_file, "\n");
 			left_value=codegen(expressionTree->ptr1);
-			cout<<"value="<<left_value<<endl;
-			fprintf(sim_code_file, "LABEL%d:\n",label_1);
+			fprintf(sim_code_file, "JZ R%d,LABEL%d\n",reg_1,label_1);
 			
 			right_value=codegen(expressionTree->ptr2);
-			fprintf(sim_code_file, "CMP %d,0\n",left_value);
-			fprintf(sim_code_file, "JNZ LABEL%d\n",label_1);
+			fprintf(sim_code_file, "LABEL%d:\n",label_1);
+
 		}
 		else if (expressionTree->value=='I')
 		{
 			
+			/*Checkthe condition is true if it is true then execute if part else execute else part*/
+			
+			label_1=get_label();
+			label_2=get_label();
+
+			fprintf(sim_code_file, "\n");
+			left_value=codegen(expressionTree->ptr1);
+
+			//if part
+			fprintf(sim_code_file, "JZ R%d,LABEL%d\n",reg_1,label_1);
+			right_value=codegen(expressionTree->ptr2);
+			fprintf(sim_code_file, "JMP LABEL%d\n",label_2);
+
+			//else part
+			fprintf(sim_code_file, "LABEL%d:\n",label_1);
+			codegen(expressionTree->ptr3);
+
+			//Next to if else part
+			fprintf(sim_code_file, "LABEL%d:\n",label_2);
+
 		}
 		
 		return 0;
+	
 	}
 	else if(expressionTree->Node_Type==Node_Type_DUMMY)
 	{
