@@ -18,5 +18,18 @@ integer main()
 		else
 			write(b);	
 		endif;
+
+		a=a+b;
+
+		write(a);
+
+
+		a=4;
+
+		while(a<5)do
+			write(a);
+			a=a+1;
+		endwhile;
+
 	end
 }
