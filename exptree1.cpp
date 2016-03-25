@@ -868,7 +868,7 @@ int type_check(struct tnode* expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_READ)
 	{
 		int input=0;
-		cin>>input;
+		//cin>>input;
 		//cout<<"IN read"<<endl;
 		if (Glookup(expressionTree->ptr1->NAME)==NULL)
 		{
