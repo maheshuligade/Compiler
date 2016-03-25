@@ -235,10 +235,14 @@ int codegen(struct tnode *expressionTree)
 			
 			label_1=get_label();
 
+			//Condition part
 			fprintf(sim_code_file, "\n");
 			left_value=codegen(expressionTree->ptr1);
+
+			//if part
 			fprintf(sim_code_file, "JZ R%d,LABEL%d\n",reg_1,label_1);
 			
+			//Next to if else part
 			right_value=codegen(expressionTree->ptr2);
 			fprintf(sim_code_file, "LABEL%d:\n",label_1);
 
@@ -251,6 +255,7 @@ int codegen(struct tnode *expressionTree)
 			label_1=get_label();
 			label_2=get_label();
 
+			//Condition part
 			fprintf(sim_code_file, "\n");
 			left_value=codegen(expressionTree->ptr1);
 
