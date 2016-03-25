@@ -197,15 +197,21 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_WRITE)
 	{
-		// cout<<"expressionTree->Value="<<Memory[1]<<codegen(expressionTree->ptr1)<<endl;
+		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
+		base value (Binding)  plus the offset value*/
+		
 		reg_1=get_reg();
-		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,codegen(expressionTree->ptr1));
+		int MEMORY_LOC=Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1;
+		fprintf(sim_code_file, "MOV R%d,[%d]\n",reg_1,MEMORY_LOC);
 		fprintf(sim_code_file, "OUT R%d\n",reg_1);
 		free_reg();
 		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_READ)
-	{
+	{	
+		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
+		 base value (Binding)  plus the offset value*/
+		
 		reg_1=get_reg();
 		int MEMORY_LOC=Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1;
 		fprintf(sim_code_file, "IN R%d\n",reg_1);
