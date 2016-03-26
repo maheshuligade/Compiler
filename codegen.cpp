@@ -53,20 +53,21 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==ID)
 	{
+
 		reg_1=get_reg();
 		fprintf(sim_code_file, "MOV R%d,[%d]\n",reg_1,Glookup(expressionTree->NAME)->Binding);
-		// /cout<<"Memory="<<Memory[Glookup(expressionTree->NAME)->Binding]<<endl;
 		free_reg();
 		return Memory[Glookup(expressionTree->NAME)->Binding];
+
 	}
 	else if (expressionTree->Node_Type==Node_Type_LEAF)
 	{
+
 		reg_1=get_reg();
 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,expressionTree->value);
 		free_reg();
 		
 		return reg_1;
-		// return expressionTree->value;
 	}
 	else if (expressionTree->Node_Type==Node_Type_LT)
 	{
@@ -75,8 +76,6 @@ int codegen(struct tnode *expressionTree)
 		codegen(expressionTree->ptr2);
 		reg_2=get_reg();
 		codegen(expressionTree->ptr1);
-		//fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,codegen(expressionTree->ptr1));
-		//fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,codegen(expressionTree->ptr2));
 		fprintf(sim_code_file, "LT R%d,R%d\n",reg_1,reg_2);
 		free_reg();
 		free_reg();
@@ -85,58 +84,58 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_LE)
 	{
-		if (codegen(expressionTree->ptr1)<=codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=get_reg();		
+		codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "LE R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_GT)
 	{
-		if (codegen(expressionTree->ptr1)>codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=get_reg();		
+		codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "GT R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_GE)
 	{
-		if (codegen(expressionTree->ptr1)>=codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=get_reg();		
+		codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "GE R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_EQ)
 	{
-		if (codegen(expressionTree->ptr1)==codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=get_reg();		
+		codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "EQ R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_NE)
 	{
-		if (codegen(expressionTree->ptr1)!=codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=get_reg();		
+		codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "NE R%d,R%d\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_NOT)
 	{
@@ -221,7 +220,6 @@ int codegen(struct tnode *expressionTree)
 
 		reg_1=get_reg();
 		left_value=codegen(expressionTree->ptr1);
-		// cout<<"Node_Type="<<(expressionTree->ptr2)->Node_Type<<endl;
 		reg_2=get_reg();
 		right_value=codegen(expressionTree->ptr2);
 		fprintf(sim_code_file, "ADD R%d,R%d\n\n",reg_1,reg_2);
