@@ -7,7 +7,7 @@ integer main()
 	begin
 			a=15;
 			b=6;
-			a=a*b;
+			a=a%b;
 
 			write(a);
 
