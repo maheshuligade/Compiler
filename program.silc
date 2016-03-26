@@ -5,28 +5,31 @@ integer main()
 	integer b;
 	enddecl
 	begin
-		a=5;
-		b=6;
-		
-		read(a);
-		read(b);
-		write(a);
-		write(b);
+			a=15;
+			b=6;
+			a=a*b;
 
-		if(a<b)then
 			write(a);
-		else
-			write(b);	
-		endif;
 
-		a=a+b;
+			read(a);
+			read(b);
+			write(a);
+			write(b);
 
-		write(a);
+			if(a<b)then
+				write(a);
+			else
+				write(b);	
+			endif;
 
-		a=a+1;
+			a=a+b;
 
-		write(a);
-		
+			write(a);
+
+			a=a+1;
+
+			write(a);
+
 		a=4;
 
 		while(a<5)do
