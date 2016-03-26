@@ -243,6 +243,22 @@ int codegen(struct tnode *expressionTree)
 		return reg_1;
 
 	}
+	else if (expressionTree->Node_Type==Node_Type_DIV)
+	{
+
+		fprintf(sim_code_file, "\n");
+
+		reg_1=get_reg();
+		left_value=codegen(expressionTree->ptr2);
+		reg_2=get_reg();
+		right_value=codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "DIV R%d,R%d\n\n",reg_1,reg_2);
+		free_reg();
+		free_reg();
+		return reg_1;
+
+
+	}
 	else if (expressionTree->Node_Type==Node_Type_WRITE)
 	{
 		
