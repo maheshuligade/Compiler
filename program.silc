@@ -3,8 +3,10 @@ integer main()
 	decl
 	integer a;
 	integer b;
+	boolean c;
 	enddecl
 	begin
+		
 			a=15;
 			b=6;
 			a=a%b;
