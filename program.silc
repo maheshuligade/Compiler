@@ -9,35 +9,12 @@ integer main()
 		
 			a=15;
 			b=6;
-			a=a%b;
+			
 
-			write(a);
-
-			read(a);
-			read(b);
-			write(a);
-			write(b);
-
-			if(a<b)then
+			if(a<b AND b < 5)then
 				write(a);
-			else
-				write(b);	
+			
 			endif;
-
-			a=a+b;
-
-			write(a);
-
-			a=a+1;
-
-			write(a);
-
-		a=4;
-
-		while(a<5)do
-			write(a);
-			a=a+1;
-		endwhile;
 
 	end
 }
