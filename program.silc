@@ -11,8 +11,8 @@ integer main()
 			b=6;
 			
 
-			
-			if(true)then
+			c=TRUE;
+			if(c)then
 				write(a);
 			endif;
 

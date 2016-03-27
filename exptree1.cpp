@@ -72,18 +72,25 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	 }
 	else if (Node_Type==Node_Type_IF)
 	{		
-			
-			if ((is_boolean(ptr1))||(ptr1->type!=TYPE_BOOLEAN))
+
+			if ((!is_boolean(ptr1)))
 			{
 				yyerror("if statement requires boolean type condition.");
 				no_of_error++;
+			}
+			else if (ptr1->type==TYPE_VOID)
+			{
+				if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+				{
+					yyerror("if statement requires boolean type condition.");
+				}
 			}
 			
 	}	
 	else if (Node_Type==Node_Type_WHILE)
 	{		
 		
-			if (is_boolean(ptr1))
+			if (!is_boolean(ptr1))
 			{
 				yyerror("while loop requires boolean type condition.");
 				no_of_error++;

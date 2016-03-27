@@ -155,8 +155,8 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_BOOLEAN_CONSTANT)
 	{	
-		reg_1=codegen(expressionTree->ptr1);
-		
+		// reg_1=codegen(expressionTree->ptr1);
+		reg_1=get_reg();
 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,expressionTree->value);
 		return reg_1;
 	}

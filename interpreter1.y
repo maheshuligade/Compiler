@@ -44,7 +44,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {
 														{
 															type_check($3);
 															/*evaluate($3);*/
-															// codegen($3);
+															codegen($3);
 														}
 													}
 
