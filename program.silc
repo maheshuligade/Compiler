@@ -11,10 +11,13 @@ integer main()
 			b=6;
 			
 
-			if(a<b OR b < 15)then
-				write(a);
 			
+			if(NOT (a<5))then
+				write(a);
+			else
+				write(b);	
 			endif;
+
 
 	end
 }

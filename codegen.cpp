@@ -128,14 +128,13 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_NOT)
 	{
-		if (!codegen(expressionTree->ptr1))
-		{
-			return true;
-		}	
-		else
-		{
-			return false;
-		}
+		reg_1=codegen(expressionTree->ptr1);
+		reg_2=get_reg();
+
+		fprintf(sim_code_file, "MOV R%d,0\n",reg_2);
+		fprintf(sim_code_file, "EQ R%d,R%d\n",reg_2,reg_1);
+		free_reg();
+		return reg_2;
 	}
 	else if (expressionTree->Node_Type==Node_Type_OR)
 	{
