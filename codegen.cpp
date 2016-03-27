@@ -139,14 +139,11 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_OR)
 	{
-		if (codegen(expressionTree->ptr1) || codegen(expressionTree->ptr2))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		reg_1=codegen(expressionTree->ptr2);
+		reg_2=codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "ADD R%d,R%d\n\n",reg_2,reg_1);
+		free_reg();
+		return reg_2;
 	}
 	else if (expressionTree->Node_Type==Node_Type_AND)
 	{

@@ -8,12 +8,12 @@ integer main()
 	begin
 		
 			a=15;
-			b=16;
+			b=6;
 			
-			if(a<b AND b < 5)then
+
+			if(a<b OR b < 15)then
 				write(a);
-			else
-				write(b);	
+			
 			endif;
 
 	end
