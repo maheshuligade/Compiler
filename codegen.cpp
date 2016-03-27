@@ -154,16 +154,8 @@ int codegen(struct tnode *expressionTree)
 		reg_2=codegen(expressionTree->ptr1);
 		fprintf(sim_code_file, "MUL R%d,R%d\n\n",reg_2,reg_1);
 		free_reg();
-		// free_reg();
 		return reg_2;
-		// if (codegen(expressionTree->ptr1)&&codegen(expressionTree->ptr2))
-		// {
-		// 	return true;
-		// }
-		// else
-		// {
-		// 	return false;
-		// }
+		
 	}
 	else if (expressionTree->Node_Type==Node_Type_BOOLEAN_CONSTANT)
 	{
