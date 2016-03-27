@@ -72,19 +72,18 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	 }
 	else if (Node_Type==Node_Type_IF)
 	{		
-	
-			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1)||(ptr1->type!=TYPE_BOOLEAN))
+			
+			if ((is_boolean(ptr1))||(ptr1->type!=TYPE_BOOLEAN))
 			{
 				yyerror("if statement requires boolean type condition.");
 				no_of_error++;
 			}
 			
-			
 	}	
 	else if (Node_Type==Node_Type_WHILE)
 	{		
 		
-			if ((evaluate(ptr1)!=0 && evaluate(ptr1)!=1))
+			if (is_boolean(ptr1))
 			{
 				yyerror("while loop requires boolean type condition.");
 				no_of_error++;
@@ -857,7 +856,13 @@ int type_check(struct tnode* expressionTree)
 	{
 		if (expressionTree->value=='A'||expressionTree->value=='a')
 		{
-			//return type_check(expressionTree->ptr2);
+				
+			if (Glookup(expressionTree->NAME)==NULL)
+			{
+				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+				return -1;
+
+			}
 			return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
 		}
 		else
@@ -948,4 +953,16 @@ int type_check(struct tnode* expressionTree)
 		return 0;
 	}
 	return -1;	
+}
+
+
+int is_boolean(struct tnode* expressionTree)
+{
+	int return_value;
+	return_value=type_check(expressionTree);
+	if (return_value==0 || return_value==1)
+	{
+		return 1;
 	}
+	return 0;
+}

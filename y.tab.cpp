@@ -1521,7 +1521,7 @@ yyreduce:
 														{
 															type_check((yyvsp[(3) - (3)]));
 															/*evaluate($3);*/
-															codegen((yyvsp[(3) - (3)]));
+															// codegen($3);
 														}
 													}
     break;

@@ -12,7 +12,7 @@ integer main()
 			
 
 			
-			if(TRUE)then
+			if(true)then
 				write(a);
 			endif;
 
