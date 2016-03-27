@@ -12,10 +12,8 @@ integer main()
 			
 
 			
-			if(NOT (a<5))then
+			if(TRUE)then
 				write(a);
-			else
-				write(b);	
 			endif;
 
 
