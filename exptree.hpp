@@ -63,6 +63,8 @@ int codegen(struct tnode *expressionTree);
 
 /*To evaluate an expression tree*/
 int evaluate(struct tnode* expressionTree);
+/*To check whether it returns boolean value for type_check in if and while for undefined variable in conditon*/
+int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
 extern 	int yyerror(std::string s);
