@@ -12,6 +12,7 @@ int label_no=0;
 int MEMORY_LOC;
 void change_extension(char *filename)
 {	
+	/*This Function changes the extension of the input_source_program.silc to input_source_program.sim*/
 	int i,j;
 
 	for (i = 0; filename[i]!='\n'; i++)
@@ -29,21 +30,26 @@ void change_extension(char *filename)
 }
 
 int get_reg()
-{
+{	
+	/*This Function allocates the least unused register and returns its value*/
 	return reg_no++;
 }
 
 void free_reg()
-{
+{	
+	/*This Function deallocates the max unused register and returns its value*/
 	reg_no--;
 }
 int get_label()
 {
+	/*This Function returns least unused label no which is used in the if and while*/
 	return label_no++;
 }
 
 int codegen(struct tnode *expressionTree)
 {	
+	/*This function generates the sim machine code.*/
+
 	int reg_1,reg_2;
 	int label_1,label_2,label_3;
 
@@ -387,8 +393,10 @@ int codegen(struct tnode *expressionTree)
 
 int get_location(struct tnode *expressionTree)
 {
+	/*This function gives the codegen for  the location,where location = base address + offset*/
+
 	int reg_1,reg_2;
-	
+
 	if (expressionTree->value=='A')
 	{	
 			reg_1=get_reg();
