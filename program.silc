@@ -10,14 +10,13 @@ integer main()
 	enddecl
 	begin
 		
+		d[0]=1;
+	
 		
-		d[8]=5;
 
-		write(d[8]);
+		b=0;
+	
 
-		e=0;
-		
-		e=e+1;
 	end
 }
 

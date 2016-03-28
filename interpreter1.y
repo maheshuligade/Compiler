@@ -246,6 +246,7 @@ IDS:ID 					{
 								}	
 							}
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+							
 						}
 	|ID'['expr']'		{
 							//$$=$1;

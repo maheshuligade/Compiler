@@ -514,7 +514,7 @@ static const yytype_uint16 yyrline[] =
       69,    72,    86,    96,    97,    98,   106,   109,   129,   133,
      137,   141,   145,   152,   161,   166,   170,   174,   178,   182,
      183,   184,   185,   189,   193,   197,   201,   205,   209,   213,
-     217,   221,   225,   229,   233,   239,   250,   265,   266
+     217,   221,   225,   229,   233,   239,   251,   266,   267
 };
 #endif
 
@@ -1865,11 +1865,12 @@ yyreduce:
 								}	
 							}
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',(yyvsp[(1) - (1)])->NAME,(yyvsp[(1) - (1)]),makeLeafNode(1),NULL,NULL);
+							
 						}
     break;
 
   case 46:
-#line 250 "interpreter1.y"
+#line 251 "interpreter1.y"
     {
 							//$$=$1;
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
@@ -1886,18 +1887,18 @@ yyreduce:
     break;
 
   case 47:
-#line 265 "interpreter1.y"
+#line 266 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 48:
-#line 266 "interpreter1.y"
+#line 267 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1901 "y.tab.cpp"
+#line 1902 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2111,7 +2112,7 @@ yyreturn:
 }
 
 
-#line 269 "interpreter1.y"
+#line 270 "interpreter1.y"
 
 
 int yyerror(string s)
