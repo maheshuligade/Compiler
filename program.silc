@@ -12,10 +12,14 @@ integer main()
 
 	
 
-		b=213;
+		b=2;
 		read(b);
 
 		write(b);
+
+		if(b<5)then
+			write(b);
+		endif;
 	end
 }
 
