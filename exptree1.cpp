@@ -127,7 +127,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			}
 
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			{	
+				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
 				no_of_error++;				
 			}
@@ -155,7 +156,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 		
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			{	
+				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
 				no_of_error++;				
 			}
@@ -184,7 +186,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+			{	
+				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("Arithmetic Operations of  different types.");
 				no_of_error++;				
 			}

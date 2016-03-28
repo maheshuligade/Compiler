@@ -67,6 +67,8 @@ int evaluate(struct tnode* expressionTree);
 int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
+
+int get_location(struct tnode *expressionTree);
 extern 	int yyerror(std::string s);
 extern int column_no;
 extern char error_output[200];
