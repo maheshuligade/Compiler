@@ -70,6 +70,54 @@ integer main()
 			write(a[6]);
 		endwhile;
 
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+
+		if(FALSE)then
+		 write(a[10]);
+		endif;
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+
+		if(FALSE)then
+		 write(a[10]);
+		endif;
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+
+		if(FALSE)then
+		 write(a[10]);
+		endif;
+		if(TRUE)then
+		 write(a[10]);
+		endif;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
+		while(FALSE)do
+			write(a[6]);
+		endwhile;
 		write(b);
 	end
 

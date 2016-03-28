@@ -447,7 +447,7 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "JMP LABEL%d\n",label_1);
 		fprintf(sim_code_file, "LABEL%d:\n",label_2);
 		// cout<<"label_1="<<label_1<<"label_2="<<label_2<<endl;
-		
+		free_reg();
 		return label_1;
 
 	}
