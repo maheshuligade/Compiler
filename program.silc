@@ -4,18 +4,22 @@ integer main()
 	integer a;
 	integer b;
 	boolean c;
+	integer d[11];
+	integer e;
+	integer f;
 	enddecl
 	begin
 		
-			a=15;
-			b=6;
-			
+		
+		d[8]=5;
 
-			c=TRUE;
-			if(c)then
-				write(a);
-			endif;
+		write(d[8]);
 
-
+		e=0;
+		
+		e=e+1;
 	end
 }
+
+
+		

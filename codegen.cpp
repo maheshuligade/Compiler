@@ -56,10 +56,10 @@ int codegen(struct tnode *expressionTree)
 	{
 
 		reg_1=get_reg();
-		fprintf(sim_code_file, "MOV R%d,[%d]\n",reg_1,Glookup(expressionTree->NAME)->Binding);
-		free_reg();
-		return Memory[Glookup(expressionTree->NAME)->Binding];
-
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,Glookup(expressionTree->NAME)->Binding);
+		//free_reg();
+		//return Memory[Glookup(expressionTree->NAME)->Binding];
+		return reg_1;
 	}
 	else if (expressionTree->Node_Type==Node_Type_LEAF)
 	{
@@ -165,11 +165,15 @@ int codegen(struct tnode *expressionTree)
 	{
 
 			reg_1=codegen(expressionTree->ptr2);
-		
-			MEMORY_LOC=Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2);
+			reg_2=codegen(expressionTree->ptr1);
+			// MEMORY_LOC=Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2);
 
-			fprintf(sim_code_file, "MOV [%d],R%d\n",MEMORY_LOC,reg_1);
+			// fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,evaluate(expressionTree->ptr1->ptr2));
+			//fprintf(sim_code_file, "ADD R%d,R%d\n",reg_2,reg_1);
+			fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_2,reg_1);
 			free_reg();
+			free_reg();
+			
 			return reg_1;
 
 	}
@@ -178,13 +182,18 @@ int codegen(struct tnode *expressionTree)
 		if (expressionTree->value=='a'||expressionTree->value=='A')
 		{	
 
-			reg_1=get_reg();
-
-			MEMORY_LOC=Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2) + 1;
+			// fprintf(sim_code_file, "\n");
+			//reg_1=get_reg();
+			reg_1=codegen(expressionTree->ptr2);
+			reg_2=codegen(expressionTree->ptr1);
+			//MEMORY_LOC=Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2) + 1;
 	
-			fprintf(sim_code_file, "MOV R%d,[%d]\n",reg_1,MEMORY_LOC);
+			// fprintf(sim_code_file, "\n");
+			fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+			//fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,MEMORY_LOC);
 
-			//free_reg();
+			// fprintf(sim_code_file, "\n");
+			free_reg();
 			
 			return reg_1;
 		}
@@ -279,13 +288,29 @@ int codegen(struct tnode *expressionTree)
 		
 		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
 		base value (Binding)  plus the offset value*/
-		
-		reg_1=get_reg();
-		MEMORY_LOC=Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1;
-		fprintf(sim_code_file, "MOV R%d,[%d]\n",reg_1,MEMORY_LOC);
-		fprintf(sim_code_file, "OUT R%d\n",reg_1);
-		free_reg();
-		return 0;
+		fprintf(sim_code_file, "\n");
+
+		reg_1=codegen(expressionTree->ptr1);
+		reg_2=get_reg();
+		// MEMORY_LOC =Glookup(expressionTree->ptr1->NAME)->Binding + evaluate(expressionTree->ptr2) +1;
+		fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
+		fprintf(sim_code_file, "OUT R%d\n",reg_2);
+		//free_reg();
+
+
+		fprintf(sim_code_file, "\n");
+
+		return reg_1;
+
+		// //reg_1=get_reg();
+		// 	reg_1=codegen(expressionTree->ptr2);
+		// 	reg_2=codegen(expressionTree->ptr1);
+		// 	//MEMORY_LOC=Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2) + 1;
+	
+		// 	// fprintf(sim_code_file, "\n");
+		// 	fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+		// 	fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,MEMORY_LOC);
+
 
 	}
 	else if (expressionTree->Node_Type==Node_Type_READ)
