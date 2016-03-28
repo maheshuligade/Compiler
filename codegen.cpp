@@ -331,6 +331,7 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
 		fprintf(sim_code_file, "OUT R%d\n",reg_2);
 		free_reg();
+		free_reg();
 
 
 		fprintf(sim_code_file, "\n");
@@ -370,7 +371,7 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "IN R%d\n",reg_1);
 		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_2,reg_1);
 		free_reg();
-
+		free_reg();
 
 		fprintf(sim_code_file, "\n");
 
@@ -446,7 +447,7 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "JMP LABEL%d\n",label_1);
 		fprintf(sim_code_file, "LABEL%d:\n",label_2);
 		// cout<<"label_1="<<label_1<<"label_2="<<label_2<<endl;
-
+		
 		return label_1;
 
 	}
