@@ -13,10 +13,9 @@ integer main()
 	
 
 		b=213;
+		read(b);
+
 		write(b);
-		if(b< 2)then
-			write(b);
-		endif;
 	end
 }
 
