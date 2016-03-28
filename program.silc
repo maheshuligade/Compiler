@@ -9,14 +9,14 @@ integer main()
 	integer f;
 	enddecl
 	begin
-		
-		d[0]=1;
-	
-		
 
-		b=0;
 	
 
+		b=213;
+		write(b);
+		if(b< 2)then
+			write(b);
+		endif;
 	end
 }
 
