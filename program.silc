@@ -1,10 +1,19 @@
+decl
+	integer a,j,k,l;
+	integer b;
+	boolean c;
+	integer d[11];
+	integer e;
+	integer f;
+	integer g,h;
+enddecl
+
 integer main()
 {
 	decl
 	integer a,j,k,l;
 	integer b;
 	boolean c;
-	integer d[11];
 	integer e;
 	integer f;
 	integer g,h;
