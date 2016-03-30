@@ -50,12 +50,15 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		if (Glookup(NAME)==NULL)
 		{	
 			//If the varible is not decraired
-			yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
-			new_node=NULL;
-			no_of_error++;
+			if(Llookup(NAME)==NULL)
+			{
+				yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
+				//new_node=NULL;
+				no_of_error++;
+			}
 			
 		}
-		else if (Glookup(NAME)->size<evaluate(ptr1->ptr2))
+		else if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
 		{	
 			//If Array is outof bound
 			
@@ -89,7 +92,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	}	
 	else if (Node_Type==Node_Type_WHILE)
 	{		
-		
+
 			if (!is_boolean(ptr1))
 			{
 				yyerror("while loop requires boolean type condition.");
@@ -108,18 +111,33 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
 	{		
 			if (ptr1->Node_Type==Node_Type_ARRAY)
-			{
-				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+			{	
+				
+				if (Llookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+				}
+				else if(Glookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Glookup(ptr1->NAME)->TYPE;
+				}
 			}
 			else
 			{
 				ptr1_type=ptr1->type;
 			}
 
-
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
-				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				
+				if (Llookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+				}
+				else if(Glookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				}
 			}
 			else
 			{
@@ -137,7 +155,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	{	
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
-				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+				if (Llookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+				}
+				else if(Glookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Glookup(ptr1->NAME)->TYPE;
+				}
 			}
 			else
 			{
@@ -147,7 +172,15 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
-				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				
+				if (Llookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+				}
+				else if(Glookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				}
 			}
 			else
 			{
@@ -167,7 +200,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
-				ptr1_type=Glookup(ptr1->NAME)->TYPE;
+				if (Llookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+				}
+				else if(Glookup(ptr1->NAME)!=NULL)
+				{
+					ptr1_type=Glookup(ptr1->NAME)->TYPE;
+				}
 			}
 			else
 			{
@@ -177,7 +217,15 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
-				ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				
+				if (Llookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+				}
+				else if(Glookup(ptr2->NAME)!=NULL)
+				{
+					ptr2_type=Glookup(ptr2->NAME)->TYPE;
+				}
 			}
 			else
 			{
@@ -192,7 +240,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				no_of_error++;				
 			}
 	}
-
+	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
 
 	new_node->type=type;
 	new_node->Node_Type=Node_Type;
@@ -293,30 +341,42 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List)
 
 struct Lsymbol *Llookup(char *NAME)
 {
-
-	/*struct Lsymbol *temp=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
+	struct Lsymbol *temp=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
 	temp=Lsymbol_table;
+
 	while(temp!=NULL)
 	{
-		if (strcpy(temp->NAME,NAME)==0)
+		if (strcmp(temp->NAME,NAME)==0)
 		{
-			return temp;
+		 	return temp;
 		}
 		temp=temp->Next;
-	}*/
-	return NULL;
+	}
+
+	return temp;
+
 }
 
 void Linstall(char * NAME,int TYPE)
 {
-	/*struct Lsymbol *new_node=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
-	struct Lsymbol *temp=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
-	temp=Lsymbol_table;
-	while(temp!=NULL)
+	
+	if (Llookup(NAME)==NULL)
 	{
-	 
-		temp=temp->Next;
-	}*/
+		struct Lsymbol *new_node=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
+		new_node->NAME=(char *)malloc(20*sizeof(char));
+		strcpy(new_node->NAME,NAME);
+		new_node->TYPE=TYPE;
+		new_node->size=1;
+		new_node->value='a';
+		new_node->Binding=Global_Bind_Count;
+		new_node->Next=Lsymbol_table;
+		Lsymbol_table=new_node;
+		Global_Bind_Count+=1;
+	}
+	else
+	{
+		yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
+	}
 
 }
 
@@ -508,7 +568,7 @@ int evaluate(struct tnode* expressionTree)
 		{
 			//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
 
-			if (Glookup(expressionTree->NAME)==NULL)
+			if (Glookup(expressionTree->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
 			{
 				//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
 				//cout<<"Variable="<<(expressionTree->NAME)<<endl;
@@ -564,7 +624,7 @@ int evaluate(struct tnode* expressionTree)
 		int input=0;
 		cin>>input;
 		//cout<<"IN read"<<endl;
-		if (Glookup(expressionTree->ptr1->NAME)==NULL)
+		if (Glookup(expressionTree->ptr1->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
 		{
 			//Memory[Global_Bind_Count]=input;
 			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
@@ -735,7 +795,7 @@ int type_check(struct tnode* expressionTree)
 		return (pow(type_check(expressionTree->ptr1),type_check(expressionTree->ptr2)));	
 	}
 	else if (expressionTree->Node_Type==Node_Type_LT)
-	{
+	{	
 		if (type_check(expressionTree->ptr1)<type_check(expressionTree->ptr2))
 		{
 			return true;
@@ -851,7 +911,7 @@ int type_check(struct tnode* expressionTree)
 	{
 		if (expressionTree->ptr1->Node_Type==Node_Type_ARRAY)
 		{
-			if (Glookup(expressionTree->NAME)==NULL)
+			if (Glookup(expressionTree->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
 			{
 
 				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
@@ -863,15 +923,19 @@ int type_check(struct tnode* expressionTree)
 		
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
-	{
+	{	
 		if (expressionTree->value=='A'||expressionTree->value=='a')
-		{
-				
+		{	
+
 			if (Glookup(expressionTree->NAME)==NULL)
 			{
-				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+				if (Llookup(expressionTree->NAME)==NULL)
+				{
+					yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+					
+				}
+				
 				return -1;
-
 			}
 			return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
 		}
@@ -885,10 +949,11 @@ int type_check(struct tnode* expressionTree)
 		int input=0;
 		//cin>>input;
 		//cout<<"IN read"<<endl;
-		if (Glookup(expressionTree->ptr1->NAME)==NULL)
+		if (Glookup(expressionTree->ptr1->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
 		{
 			//Memory[Global_Bind_Count]=input;
 			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
+
 			cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
 			return -1;
 		}
@@ -968,6 +1033,7 @@ int type_check(struct tnode* expressionTree)
 
 int is_boolean(struct tnode* expressionTree)
 {
+	/*This fuction returns the boolean value TRUE or FALSE after evaluating logical expression expressionTree.*/
 	int return_value;
 	return_value=type_check(expressionTree);
 	if (return_value==0 || return_value==1)

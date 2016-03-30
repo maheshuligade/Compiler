@@ -37,6 +37,8 @@ struct Lsymbol
 	char *NAME;		//Name of the identifier
 	int TYPE;		//Type can be integer or boolean
 	/*The TYPE field must be a Type_Struct if the user defined types are allowed*/
+	int value;		//For variables and array to detect typecheck
+	int size;		//Size field of arrays typecheck
 	int Binding;	//Address of the Identifier in the Memory
 	struct Lsymbol *Next;	//Pointer to the next Symbol Table Entry
 };

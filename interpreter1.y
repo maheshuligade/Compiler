@@ -105,7 +105,15 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 												temp=$2;
 												while (temp!=NULL)
 												{
-													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													// cout<<"evaluate="<<evaluate(temp->ptr2)<<endl;
+													//cout<<"Value="<<char(temp->value)<<endl;
+													//cout<<"NAME="<<temp->NAME<<endl;
+													//Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													//if (temp->value!='A')
+													{
+														Linstall(temp->NAME,$1->type);
+													}
+													
 													temp=temp->Arg_List;
 												}
 
