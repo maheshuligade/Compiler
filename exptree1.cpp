@@ -54,7 +54,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{
 				yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
 				//new_node=NULL;
-				no_of_error++;
 			}
 			
 		}
@@ -63,12 +62,10 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			//If Array is outof bound
 			
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
-			no_of_error++;
 		}
 		else if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
 		{
 				yyerror("boolean Type can be TRUE or FALSE");
-				no_of_error++;
 		}
 	
 		
@@ -79,7 +76,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if ((!is_boolean(ptr1)))
 			{
 				yyerror("if statement requires boolean type condition.");
-				no_of_error++;
 			}
 			else if (ptr1->type==TYPE_VOID)
 			{
@@ -96,7 +92,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (!is_boolean(ptr1))
 			{
 				yyerror("while loop requires boolean type condition.");
-				no_of_error++;
 			}
 			else if (ptr1->type==TYPE_VOID)
 			{
@@ -104,7 +99,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				{
 					yyerror("while loop requires boolean type condition.");
 				}
-				no_of_error++;
 			}
 			
 	}	
@@ -148,7 +142,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{	
 				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
-				no_of_error++;				
 			}
 	}
 	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
@@ -192,7 +185,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{	
 				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("compairing different types.");
-				no_of_error++;				
 			}
 	}
 	else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
@@ -237,7 +229,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{	
 				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				yyerror("Arithmetic Operations of  different types.");
-				no_of_error++;				
 			}
 	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
@@ -316,8 +307,7 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List)
 	{	
 			//If Array is 0 size
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’ can not be zero size.");
-			no_of_error++;
-	 }
+	}
 	if (Glookup(NAME)==NULL)
 	{
 		struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
@@ -577,7 +567,9 @@ int evaluate(struct tnode* expressionTree)
 				// cout<<"Binding="<<expressionTree->NAME<<" "<<Glookup(expressionTree->NAME)->Binding<<endl;
 				// Memory[Global_Bind_Count + Glookup(expressionTree->NAME)->Binding+evaluate(expressionTree->ptr1->ptr2)]=(evaluate(expressionTree->ptr2));
 				//cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
-				cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<expressionTree->NAME<<" was not declared in this scope"<<endl;
+
+				//cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<expressionTree->NAME<<" was not declared in this scope"<<endl;
+				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
 				exit(0);
 				return -1;
 			}
@@ -954,7 +946,8 @@ int type_check(struct tnode* expressionTree)
 			//Memory[Global_Bind_Count]=input;
 			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
 
-			cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+			//cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+			yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
 			return -1;
 		}
 		else

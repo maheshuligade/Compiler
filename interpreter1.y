@@ -135,14 +135,12 @@ L_ID:ID									{
 												if (Glookup($1->NAME)->size > 1)
 												{
 													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
-													no_of_error++;
 												}	
 											}
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
 										}
 	|ID'['expr']'						{
 											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");
-											no_of_error++;
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
 										}
 	;		
@@ -329,7 +327,6 @@ IDS:ID 					{
 								if (Glookup($1->NAME)->size > 1)
 								{
 									yyerror(string("‘") + $1->NAME + "’ was declared as array.");
-									no_of_error++;
 								}	
 							}
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
@@ -342,7 +339,6 @@ IDS:ID 					{
 								if (Glookup($1->NAME)->value=='a')
 								{
 									yyerror(string("‘") + $1->NAME + "’ is not a array.");
-									no_of_error++;
 								}	
 							}
 							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
@@ -359,6 +355,7 @@ TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 int yyerror(string s)
 {
 	cout<<input_file_name<<":"<<yylineno<<":"<<column_no<<":"<<"error:"<<s<<endl;
+	no_of_error++;
 	return 0;
 }
 
