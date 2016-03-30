@@ -121,8 +121,23 @@ L_ID_LIST : L_ID_LIST ',' L_ID 				{
 												
 											}
 			;
-L_ID:IDS									{$$=$1;}
-	;
+L_ID:ID									{
+											if (Glookup($1->NAME)!=NULL)
+											{	
+												if (Glookup($1->NAME)->size > 1)
+												{
+													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
+													no_of_error++;
+												}	
+											}
+											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+										}
+	|ID'['expr']'						{
+											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");
+											no_of_error++;
+											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+										}
+	;		
 // LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		
 
 // 													$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
