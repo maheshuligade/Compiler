@@ -59,22 +59,59 @@ MAIN_BLOCK:INTEGER MAIN '(' ')' '{' LOCAL_DEF_BLOCK BODY '}' {$$=$7;/*evaluate($
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL {$$=$2;}
 				|							{$$=NULL;}
 				;
-LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		
 
-													$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
-													$$->ptr1=$1;
-													$$->ptr2=$2;
+
+LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DECL 		{		
+													$$=NULL;
+												}
+				|								{$$=NULL;}
+				;
+
+LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{	
+												struct tnode *temp;
+												temp=$2;
+												while (temp!=NULL)
+												{
+													//cout<<"TYPE="<<temp->type<<" Node_Type="<<temp->Node_Type<<" Value"<<char(temp->value)<<" NAME="<<temp->NAME<<endl;
+													//cout<<"Value="<<temp->ptr1->Arg_List->NAME<<endl;
+													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													temp=temp->Arg_List;
+
 
 												}
-	|LOCAL_DEF_LIST								{$$=$1;}
-	
+												//$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+
+											}
+
+L_ID_LIST : L_ID_LIST ',' L_ID 				{	
+												$$=$3;
+												//$$->Arg_List=$3;
+												$$->Arg_List=$1;
+											}
+			|L_ID 							{	//$$->Arg_List=$1;
+												$$=$1;
+												$$->Arg_List=NULL;
+												
+											}
+			;
+L_ID:IDS									{$$=$1;}
 	;
-LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {	
-									  // $2->type=$1->type;	
-										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),$2->value,NULL);
+// LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		
+
+// 													$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+// 													$$->ptr1=$1;
+// 													$$->ptr2=$2;
+
+// 												}
+// 				|LOCAL_DEF_LIST					{$$=$1;}
+	
+				;
+// LOCAL_DEF_LIST:	TYPE IDS SEMICOLON {	
+// 									  // $2->type=$1->type;	
+// 										Ginstall($2->NAME,$1->type,evaluate($2->ptr2),$2->value,NULL);
 										
 										
-									}
+// 									}
 
 // LOCAL_DEF_LIST:LOCAL_DEF_LIST LOCAL_DECL {}
 			 	
