@@ -67,10 +67,13 @@ int codegen(struct tnode *expressionTree);
 int evaluate(struct tnode* expressionTree);
 /*This function gives the codegen for  the location,where location = base address + offset*/
 int get_location(struct tnode *expressionTree);
+/*This function return the type of the variables and the Arrays;*/
+int get_type(struct tnode *expressionTree);
 /*To check whether it returns boolean value for type_check in if and while for undefined variable in conditon*/
 int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
+
 
 extern 	int yyerror(std::string s);
 extern int column_no;
@@ -112,3 +115,5 @@ extern int Memory[1000000];
 #define Node_Type_OR						28
 #define Node_Type_AND						29
 #define Node_Type_BOOLEAN_CONSTANT			30
+#define Node_Type_FUNCTION					31
+#define Node_Type_RETURN					32
