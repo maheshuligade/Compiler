@@ -69,14 +69,15 @@
      MAIN = 285,
      INTEGER = 286,
      BOOLEAN = 287,
-     NOT = 288,
-     OR = 289,
-     AND = 290,
-     DECL = 291,
-     ENDDECL = 292,
-     TRUE = 293,
-     FALSE = 294,
-     ASSIGNMENT = 295
+     RETURN = 288,
+     NOT = 289,
+     OR = 290,
+     AND = 291,
+     DECL = 292,
+     ENDDECL = 293,
+     TRUE = 294,
+     FALSE = 295,
+     ASSIGNMENT = 296
    };
 #endif
 /* Tokens.  */
@@ -110,14 +111,15 @@
 #define MAIN 285
 #define INTEGER 286
 #define BOOLEAN 287
-#define NOT 288
-#define OR 289
-#define AND 290
-#define DECL 291
-#define ENDDECL 292
-#define TRUE 293
-#define FALSE 294
-#define ASSIGNMENT 295
+#define RETURN 288
+#define NOT 289
+#define OR 290
+#define AND 291
+#define DECL 292
+#define ENDDECL 293
+#define TRUE 294
+#define FALSE 295
+#define ASSIGNMENT 296
 
 
 

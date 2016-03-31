@@ -8,15 +8,18 @@ decl
 	integer g,h;
 enddecl
 
+integer hello()
+{
+	
+	begin
+	c=TRUE;
+	return c;
+	end
+}
 integer main()
 {
 	decl
-	integer a,j,k,l;
-	integer b;
-	boolean c;
-	integer e;
-	integer f;
-	integer g,h;
+	
 	enddecl
 	begin
 
@@ -45,8 +48,10 @@ integer main()
 			e=e+1;
 		endwhile;
 	
-
+		j=2;
+		return j;
 	end
+
 }
 
 

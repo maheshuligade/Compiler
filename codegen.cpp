@@ -396,9 +396,13 @@ int get_location(struct tnode *expressionTree)
 	/*This function gives the codegen for  the location,where location = base address + offset*/
 
 	int reg_1,reg_2;
-
+	int location;
 	if (expressionTree->value=='A')
-	{	
+	{		
+			if (Llookup(expressionTree->NAME)==NULL)
+			{
+				
+			}
 			reg_1=get_reg();
 			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,Glookup(expressionTree->NAME)->Binding);
 		

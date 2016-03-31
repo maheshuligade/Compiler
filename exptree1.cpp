@@ -17,6 +17,7 @@ int ptr1_type,ptr2_type;
 string types_array[5]={"void","boolean","integer"};
 extern FILE *sim_code_file;
 int k;
+int col,line;
 
 struct tnode* makeLeafNode(int n)
 {
@@ -231,6 +232,16 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				yyerror("Arithmetic Operations of  different types.");
 			}
 	}
+	else if (Node_Type==Node_Type_FUNCTION)
+	{
+		if (type!=ptr1->ptr2->type)
+		{	
+			col=ptr1->ptr2->col_no;
+			line=ptr1->ptr2->line_no;
+			cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
+			no_of_error++;
+		}
+	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
 
 	new_node->type=type;
@@ -249,7 +260,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	new_node->ptr1=ptr1;
 	new_node->ptr2=ptr2;
 	new_node->ptr3=ptr3;
-	
+	new_node->line_no=yylineno;
+	new_node->col_no=column_no;
 	return new_node;
 
 }
@@ -399,7 +411,7 @@ int evaluate(struct tnode* expressionTree)
 		// 	return Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)];
 		// }
 		// else
-		{
+		{	
 			return Memory[Glookup(expressionTree->NAME)->Binding];
 		}	
 	}
@@ -555,7 +567,7 @@ int evaluate(struct tnode* expressionTree)
 		//cout<<"value"<<((expressionTree->value))<<endl;
 
 		if (expressionTree->ptr1->Node_Type==Node_Type_ARRAY)
-		{
+		{	
 			//cout<<"value"<<(evaluate(expressionTree->ptr2))<<endl;
 
 			if (Glookup(expressionTree->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
@@ -600,11 +612,19 @@ int evaluate(struct tnode* expressionTree)
 		//return 0;
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
-	{
+	{	
 		if (expressionTree->value=='A'||expressionTree->value=='a')
-		{
+		{	
 			//return evaluate(expressionTree->ptr2);
-			return Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr2)];
+			if (Llookup(expressionTree->NAME)==NULL)
+			{
+				
+				return Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr2)];
+			}
+			else
+			{
+				return Memory[Llookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr2)];
+			}
 		}
 		else
 		{
@@ -703,6 +723,10 @@ int evaluate(struct tnode* expressionTree)
 
 		 	evaluate(expressionTree->ptr2);		
 		}
+	}
+	else if (expressionTree->Node_Type==Node_Type_RETURN)
+	{	
+		return evaluate(expressionTree->ptr1);
 	}
 	else if (expressionTree->Node_Type==Node_Type_DUMMY)
 	{
@@ -1013,6 +1037,10 @@ int type_check(struct tnode* expressionTree)
 		 	type_check(expressionTree->ptr2);	
 		}
 	}
+	else if (expressionTree->Node_Type==Node_Type_RETURN)
+	{	
+		return type_check(expressionTree->ptr1);
+	}
 	else if (expressionTree->Node_Type==Node_Type_DUMMY)
 	{
  
@@ -1034,4 +1062,17 @@ int is_boolean(struct tnode* expressionTree)
 		return 1;
 	}
 	return 0;
+}
+int get_type(struct tnode *expressionTree)
+{	
+	/*This function return the type of the variables and the Arrays;*/
+	if (Llookup(expressionTree->NAME)!=NULL)
+	{
+		return Llookup(expressionTree->NAME)->TYPE;
+	}
+	else if (Glookup(expressionTree->NAME)!=NULL)
+	{
+		return Glookup(expressionTree->NAME)->TYPE;		
+	}
+	return TYPE_VOID;
 }

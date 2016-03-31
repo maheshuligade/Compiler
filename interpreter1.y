@@ -22,7 +22,7 @@
 %token PLUS MINUS DIV MUL SEMICOLON READ WRITE EQUAL NUM ID MODULUS POWER
 %token IF THEN ELSE ENDIF WHILE DO ENDWHILE
 %token LESS LTEQUAL GREATER GTEQUAL ISEQUAL NOTEQUAL
-%token BEGIN1 END MAIN INTEGER BOOLEAN 
+%token BEGIN1 END MAIN INTEGER BOOLEAN RETURN
 %token NOT OR AND
 %token DECL ENDDECL
 %token TRUE FALSE
@@ -39,7 +39,7 @@
 %right NOT
 
 %%
-PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCK MAIN_BLOCK {	
+PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {	
 														if (no_of_error==0)
 														{
 															type_check($3);
@@ -53,10 +53,12 @@ GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL {$$=$2;}
 				;
 
 
-GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 		{		
+GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 	{		
 													$$=NULL;
 												}
-				|								{$$=NULL;}
+				|								{	
+													$$=NULL;
+												}
 				;
 
 GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{	
@@ -80,17 +82,50 @@ G_ID_LIST : G_ID_LIST ',' G_ID 				{
 												
 											}
 			;
-G_ID:IDS									{$$=$1;}
+G_ID:IDS									{
+												$$=$1;
+											}
+	// |ID'('PARAM')'							{
+							
+							
+	// 										}
 	;
 
+// PARAM:PARAM ',' ARG {
+// 						$$=$3;
+// 						$$->Arg_List=$1;
+// 					}
+// 	| ARG			{	
+// 						$$=$1;
+// 						$$->Arg_List=NULL;
+// 					}
+// 	;
 
-FUNC_DEF_BLOCK:			{$$=NULL;}
+					
+												
+// ARG:GLOBAL_DEF_LISTS	{$$=NULL;}
+
+FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{$$=NULL;}
+				|														{$$=NULL;}
+				;
+FUNC_DEF_BLOCK:	TYPE ID '(' ')' 
+				'{' LOCAL_DEF_BLOCK BODY'}' {
+												$$=Make_Node($1->type,Node_Type_FUNCTION,'f',$2->NAME,$7,NULL,NULL,NULL);
+											}
 				;
 
-MAIN_BLOCK:INTEGER MAIN '(' ')' '{' LOCAL_DEF_BLOCK BODY '}' {$$=$7;/*evaluate($$);*/}
+MAIN_BLOCK:INTEGER MAIN '(' ')' 
+			'{' LOCAL_DEF_BLOCK BODY '}' 
+												{
+													$$=$7;/*evaluate($$);*/
+													// $2->NAME="main";
+													//cout<<"NAME="<<$2->NAME<<endl;
+													//cout<<"RETURN_TYPE="<<($7->ptr2->type)<<endl;
+													//$$=Make_Node(TYPE_INT,Node_Type_FUNCTION,'f',$2->NAME,$7,NULL,NULL,NULL);
+												}
 			;
-LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL {$$=$2;}
-				|							{$$=NULL;}
+LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{$$=$2;}
+				|								{$$=NULL;}
 				;
 
 
@@ -101,7 +136,7 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DECL 		{
 				;
 
 LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{	
-												struct tnode *temp;
+												struct tnode *temp= new tnode;
 												temp=$2;
 												while (temp!=NULL)
 												{
@@ -116,6 +151,8 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 													
 													temp=temp->Arg_List;
 												}
+
+												delete temp;
 
 											}
 
@@ -168,16 +205,21 @@ L_ID:ID									{
 // 		|ID [expr] SEMICOLON					{}
 
 
-BODY: BEGIN1 Slist END 	{
-							$$=$2;
-							// evaluate($$);
-							// 	<<"Memory"<<endl;
-							// for (int i = 0; i < 20; i++)
-							// {
-							// 	cout<<i<<" "<<Memory[i]<<" "<<endl;
-							// }
-							// exit(0);
-						}
+BODY: BEGIN1 Slist RETURN_TYPE END 	{
+										//$$=$2;
+										$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+										$$->ptr1=$2;
+										$$->ptr2=$3;
+										// evaluate($$);
+										// 	<<"Memory"<<endl;
+										// for (int i = 0; i < 20; i++)
+										// {
+										// 	cout<<i<<" "<<Memory[i]<<" "<<endl;
+										// }
+										// exit(0);
+									}
+RETURN_TYPE:RETURN expr SEMICOLON	{$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);}
+
 Slist: Stmts	{$$=$1;}
 	 | 			{$$=NULL;}
 Stmts:Stmts Stmt 	{		
@@ -264,9 +306,9 @@ expr:expr PLUS expr		{
 							
 							$$=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
 						}
-	|'('expr')'			{$$=$2;}
-	|NUM				{$$=$1;}
-	|IDS				{$$=$1; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
+	|'('expr')'			{$$=$2;$$->type=$2->type;}
+	|NUM				{$$=$1;$$->type=$1->type;}
+	|IDS				{$$=$1; $$->type=$1->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
 	|MINUS expr 		{
 							
 							$$=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
@@ -329,7 +371,7 @@ IDS:ID 					{
 									yyerror(string("‘") + $1->NAME + "’ was declared as array.");
 								}	
 							}
-							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+							$$=Make_Node(get_type($1),Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
 							
 						}
 	|ID'['expr']'		{
@@ -341,13 +383,13 @@ IDS:ID 					{
 									yyerror(string("‘") + $1->NAME + "’ is not a array.");
 								}	
 							}
-							$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
 							
 						}
 	
 	;
-TYPE:INTEGER   {$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
-	|BOOLEAN   {$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
+TYPE:INTEGER	{$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
+	|BOOLEAN	{$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
 	;
 
 %%
