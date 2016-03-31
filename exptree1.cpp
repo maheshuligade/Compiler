@@ -241,6 +241,10 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
 			no_of_error++;
 		}
+		if (Glookup(NAME)==NULL)
+		{
+			yyerror(std::string ("Function named ‘") + NAME + "’ is not declared in this scope");
+		}
 	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
 

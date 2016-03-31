@@ -1646,7 +1646,7 @@ yyreduce:
 													// $2->NAME="main";
 													//cout<<"NAME="<<$2->NAME<<endl;
 													//cout<<"RETURN_TYPE="<<($7->ptr2->type)<<endl;
-													//$$=Make_Node(TYPE_INT,Node_Type_FUNCTION,'f',$2->NAME,$7,NULL,NULL,NULL);
+													(yyval)=Make_Node(TYPE_INT,Node_Type_FUNCTION,'f',(yyvsp[(2) - (8)])->NAME,(yyvsp[(7) - (8)]),NULL,NULL,NULL);
 												}
     break;
 
