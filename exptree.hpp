@@ -12,6 +12,7 @@ typedef struct tnode
 	char *NAME;							//For Identifiers Fuctions
 	struct tnode *ptr1,*ptr2,*ptr3; 	/*Maximum of three subtrees (3 Required for IF THEN ELSE)*/
 	struct tnode *Arg_List;				//List of arguments for functions
+	int line_no,col_no;
 	
 	struct Gsymbol *Gentry; 					//For global identifiers/Functions
 	struct Lsymbol *Lentry;						//For local variables;
