@@ -58,6 +58,7 @@
 "%"			{column_no+=yyleng; return MODULUS;}
 "^"			{column_no+=yyleng; return POWER;}
 " "			{column_no+=yyleng;}
+"return"	{column_no+=yyleng; return RETURN;}
 [a-zA-Z]+[a-zA-Z0-9]*	{a=Make_Node(ID,ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;return ID;}	
 .			{yyerror("Unknown Character\n");exit(1);}
 %%
