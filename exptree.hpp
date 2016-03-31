@@ -14,7 +14,7 @@ typedef struct tnode
 	struct tnode *Arg_List;				//List of arguments for functions
 	
 	struct Gsymbol *Gentry; 					//For global identifiers/Functions
-	struct Lsybol *Lentry;						//For local variables;
+	struct Lsymbol *Lentry;						//For local variables;
 } tnode;
 
 
