@@ -55,7 +55,7 @@ struct tnode* makeOperatorNode(char c,struct tnode* left,struct tnode* right);
 struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* ptr1,struct tnode* ptr2,struct tnode *ptr3);
 
 struct Gsymbol *Glookup(char *NAME);
-void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List);
+void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode *Arg_List);
 
 struct Lsymbol *Llookup(char *NAME);
 void Linstall(char * NAME,int TYPE);
