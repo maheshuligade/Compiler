@@ -27,7 +27,7 @@ struct Gsymbol
 	int size;		//Size field of arrays
 	int Binding;	//Address of the Identifier in the Memory
 	int value;		//For variables and array to detect
-	struct Arg_Struct *Arg_List;//Argument list of the functions
+	struct tnode *Arg_List;//Argument list of the functions
 	/*The Arg_Struct must  store the name and type of the each argument*/
 	struct Gsymbol *Next;	//Pointer to the next Symbol Table Entry
 };
