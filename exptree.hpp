@@ -117,4 +117,5 @@ extern int Memory[1000000];
 #define Node_Type_AND						29
 #define Node_Type_BOOLEAN_CONSTANT			30
 #define Node_Type_FUNCTION					31
-#define Node_Type_RETURN					32
+#define Node_Type_FUNCTION_DEF				32
+#define Node_Type_RETURN					33
