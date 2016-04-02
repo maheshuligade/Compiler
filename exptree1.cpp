@@ -232,18 +232,23 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				yyerror("Arithmetic Operations of  different types.");
 			}
 	}
-	else if (Node_Type==Node_Type_FUNCTION)
+	else if (Node_Type==Node_Type_FUNCTION_DEF)
 	{
-		if (type!=ptr1->ptr2->type)
+		if (ptr1->ptr2!=NULL)
 		{	
-			col=ptr1->ptr2->col_no;
-			line=ptr1->ptr2->line_no;
-			cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
-			no_of_error++;
+			if(type!=ptr1->ptr2->type)
+			{
+				col=ptr1->ptr2->col_no;
+				line=ptr1->ptr2->line_no;
+				cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
+				no_of_error++;
+			}
 		}
 		if (Glookup(NAME)==NULL)
-		{
-			yyerror(std::string ("Function named ‘") + NAME + "’ is not declared in this scope");
+		{	
+				// Ginstall(NAME,ptr1->type,1,'f',NULL);
+
+			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 		}
 	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
@@ -316,7 +321,7 @@ struct Gsymbol *Glookup(char *NAME)
 	return temp;
 }
 
-void Ginstall(char * NAME,int TYPE,int size,int value,struct Arg_List *Arg_List)
+void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 {	
 
 	if (size==0)

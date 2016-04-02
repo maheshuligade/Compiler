@@ -42,9 +42,9 @@
 PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {	
 														if (no_of_error==0)
 														{
-															type_check($3);
+															//type_check($3);
 															/*evaluate($3);*/
-															codegen($3);
+															//codegen($3);
 														}
 													}
 
@@ -65,7 +65,8 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 												struct tnode *temp;
 												temp=$2;
 												while (temp!=NULL)
-												{
+												{	
+													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
 													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
 													temp=temp->Arg_List;
 												}
@@ -78,6 +79,10 @@ G_ID_LIST : G_ID_LIST ',' G_ID 				{
 											}
 			|G_ID 							{	
 												$$=$1;
+												if ($$==NULL)
+												{
+													$$ = new tnode;
+												}
 												$$->Arg_List=NULL;
 												
 											}
@@ -85,53 +90,89 @@ G_ID_LIST : G_ID_LIST ',' G_ID 				{
 G_ID:IDS									{
 												$$=$1;
 											}
-	// |ID'('PARAM')'							{
-							
-							
-	// 										}
+	 |ID'('ARGS')'							{
+	 											// $$=$1;
+												$$=Make_Node(get_type($1),Node_Type_ARRAY,'f',$1->NAME,$1,makeLeafNode(1),NULL,$3);
+												// $$->Lentry = new Lsymbol;	
+											}
 	;
 
-// PARAM:PARAM ',' ARG {
-// 						$$=$3;
-// 						$$->Arg_List=$1;
-// 					}
-// 	| ARG			{	
-// 						$$=$1;
-// 						$$->Arg_List=NULL;
-// 					}
-// 	;
+// PARAM:	PARAM ',' ARGS	{}
+// 		|PARAM				{}
+// 		|					{}
+// 		;
+ARGS:ARGS ',' ARG 	{
+						$$=$3;
+						$$->Arg_List=$1;
+					}
+	| ARG			{	
+						$$=$1;
+						if ($$==NULL)
+						{
+							$$ = new tnode;
+						}
+						$$->Arg_List=NULL;
+					}
+	;
 
 					
 												
-// ARG:GLOBAL_DEF_LISTS	{$$=NULL;}
+ARG:LOCAL_DECL	{$$=$1;	}
+	|			{$$=NULL;}
 
-FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{$$=NULL;}
+FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{$$=$1;}
 				|														{$$=NULL;}
 				;
-FUNC_DEF_BLOCK:	TYPE ID '(' ')' 
-				'{' LOCAL_DEF_BLOCK BODY'}' {
-												$$=Make_Node($1->type,Node_Type_FUNCTION,'f',$2->NAME,$7,NULL,NULL,NULL);
+FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')' 
+				'{' LOCAL_DEF_BLOCK BODY'}' {	
+												/**
+													This makes the funtion node $$->Lentry points to the local symbol table 
+													of the respective function.
+												**/
+												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
+												$$->Lentry = $4->Lentry;
+
 											}
 				;
 
-MAIN_BLOCK:INTEGER MAIN '(' ')' 
+MAIN_BLOCK:INTEGER MAIN '(' ARGS')' 
 			'{' LOCAL_DEF_BLOCK BODY '}' 
+											{	
+												/**
+													This makes the funtion node $$->Lentry points to the local symbol table 
+													of the respective function.
+													for main funtion there is no need to have the definiations in the global
+													declaration.for that we need to install main function in the global symbol 
+													table.
+												**/
+												if ($4->Arg_List!=NULL)
 												{
-													$$=$7;/*evaluate($$);*/
-													// $2->NAME="main";
-													//cout<<"NAME="<<$2->NAME<<endl;
-													//cout<<"RETURN_TYPE="<<($7->ptr2->type)<<endl;
-													$$=Make_Node(TYPE_INT,Node_Type_FUNCTION,'f',$2->NAME,$7,NULL,NULL,NULL);
+													yyerror("main funtion can not have any arguments");
 												}
+												$$=$7;/*evaluate($$);*/
+												// $2->NAME="main";
+												strcpy($2->NAME,"main");
+												Ginstall($2->NAME,$1->type,1,'f',NULL);
+												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
+												$$->Lentry = $4->Lentry; 
+
+											}
 			;
-LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{$$=$2;}
-				|								{$$=NULL;}
+LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
+													$$ = $2;
+
+												}
+				|								{	
+													$$ = NULL;
+												}
 				;
 
 
-LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DECL 		{		
-													$$=NULL;
+LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 		{	
+													$1->Lentry->Next = $2->Lentry;
+													$$ = $1;
 												}
+
 				|								{$$=NULL;}
 				;
 
@@ -140,20 +181,21 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 												temp=$2;
 												while (temp!=NULL)
 												{
+													temp->type=$1->type;
 													// cout<<"evaluate="<<evaluate(temp->ptr2)<<endl;
 													//cout<<"Value="<<char(temp->value)<<endl;
 													//cout<<"NAME="<<temp->NAME<<endl;
 													//Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
 													//if (temp->value!='A')
 													{
-														Linstall(temp->NAME,$1->type);
+														// /Linstall(temp->NAME,$1->type);
 													}
 													
 													temp=temp->Arg_List;
 												}
-
 												delete temp;
 
+												$$=$2;
 											}
 
 L_ID_LIST : L_ID_LIST ',' L_ID 				{	

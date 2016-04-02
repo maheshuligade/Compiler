@@ -5,10 +5,11 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
+	integer hello(integer a;,integer b;);
 	integer g,h;
 enddecl
 
-integer hello()
+integer hello(integer a;,integer b;)
 {
 	
 	begin
@@ -16,7 +17,7 @@ integer hello()
 	return c;
 	end
 }
-integer main()
+integer main(integer a;,integer b;)
 {
 	decl
 	

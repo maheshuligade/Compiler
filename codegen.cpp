@@ -380,6 +380,14 @@ int codegen(struct tnode *expressionTree)
 		return label_1;
 
 	}
+	else if (expressionTree->Node_Type==Node_Type_FUNCTION)
+	{
+
+	}
+	else if (expressionTree->Node_Type==Node_Type_RETURN)
+	{
+
+	}
 	else if(expressionTree->Node_Type==Node_Type_DUMMY)
 	{
 		codegen(expressionTree->ptr1);
