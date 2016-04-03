@@ -151,10 +151,11 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
-												if ($4->Arg_List!=NULL)
+												if ($4->Lentry!=NULL)
 												{
-													yyerror("main funtion can not have any arguments");
+													cout<<input_file_name<<":"<<$4->Lentry->line_no<<":"<<$4->Lentry->col_no<<":"<<"error:"<<"main funtion can not have any arguments"<<endl;
 												}
+
 												$$=$7;/*evaluate($$);*/
 												// $2->NAME="main";
 												strcpy($2->NAME,"main");
