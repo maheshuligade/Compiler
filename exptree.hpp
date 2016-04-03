@@ -27,6 +27,8 @@ struct Gsymbol
 	int size;		//Size field of arrays
 	int Binding;	//Address of the Identifier in the Memory
 	int value;		//For variables and array to detect
+	int line_no,col_no; //For typecheck of redeclaration of the variables
+
 	struct tnode *Arg_List;//Argument list of the functions
 	/*The Arg_Struct must  store the name and type of the each argument*/
 	struct Gsymbol *Next;	//Pointer to the next Symbol Table Entry
@@ -41,6 +43,7 @@ struct Lsymbol
 	int value;		//For variables and array to detect typecheck
 	int size;		//Size field of arrays typecheck
 	int Binding;	//Address of the Identifier in the Memory
+	int line_no,col_no; //For typecheck of redeclaration of the variables
 	struct Lsymbol *Next;	//Pointer to the next Symbol Table Entry
 };
 
@@ -53,6 +56,17 @@ struct tnode* makeLeafNode(int n);
 // Make tnode with operator,Left and Right branches set
 struct tnode* makeOperatorNode(char c,struct tnode* left,struct tnode* right);
 struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* ptr1,struct tnode* ptr2,struct tnode *ptr3);
+
+/**
+	Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
+	which is linked to the Lentry of the Function node later.
+**/
+struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE);
+/**
+	Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
+	contains the local variable and which is linked to the Lentry of the Function node later.
+**/
+struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2);
 
 struct Gsymbol *Glookup(char *NAME);
 void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode *Arg_List);
