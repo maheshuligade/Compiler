@@ -9,9 +9,12 @@ decl
 	integer g,h;
 enddecl
 
-integer hello(integer a;,integer b;)
+integer hello(integer a,b,r,t;,integer r;,integer b;)
 {
-	
+	decl
+		integer b;
+		boolean c;
+	enddecl
 	begin
 	c=TRUE;
 	return c;

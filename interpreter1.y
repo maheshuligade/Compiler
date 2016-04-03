@@ -102,8 +102,9 @@ G_ID:IDS									{
 // 		|					{}
 // 		;
 ARGS:ARGS ',' ARG 	{
-						$$=$3;
-						$$->Arg_List=$1;
+						//$$=$3;
+						//$$->Arg_List=$1;
+						$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
 					}
 	| ARG			{	
 						//$$=$1;
@@ -111,14 +112,15 @@ ARGS:ARGS ',' ARG 	{
 						{
 							$$ = new tnode;
 						}
-						$$->Arg_List=$1;
+						//$$->Arg_List=$1;
+						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
 					}
 	;
 
 					
 												
-ARG:LOCAL_DECL	{$$=$1;	}
-	|			{$$=NULL;}
+ARG:LOCAL_DECL	{$$->Lentry = $1->Lentry;}
+	|			{$$->Lentry = NULL;}
 
 FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{$$=$1;}
 				|														{$$=NULL;}
@@ -129,8 +131,12 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 													This makes the funtion node $$->Lentry points to the local symbol table 
 													of the respective function.
 												**/
-												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
-												$$->Lentry = $4->Lentry;
+												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
+												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
+												// if ($7!=NULL)
+												// {
+												// 	$$->Lentry = $7->Lentry; 
+												// }
 
 											}
 				;
@@ -153,13 +159,19 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												// $2->NAME="main";
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,$1->type,1,'f',NULL);
-												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
-												$$->Lentry = $4->Lentry; 
+												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
+												
+												// if ($7!=NULL)
+												// {
+												// 	$$->Lentry = $7->Lentry; 
+												// }
 
 											}
 			;
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
-													$$ = $2;
+													//$$ = $2;
+													$$->Lentry = $2->Lentry;
+
 
 												}
 				|								{	
@@ -168,20 +180,22 @@ LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{
 				;
 
 
-LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 		{	
-													$1->Lentry->Next = $2->Lentry;
-													$$ = $1;
+LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{	
+													//$1->Lentry->Next = $2->Lentry;
+													//$$ = $1;
+													$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
+
 												}
 
-				|								{$$=NULL;}
+				|								{$$->Lentry = NULL;}
 				;
 
 LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{	
-												struct tnode *temp= new tnode;
-												temp=$2;
+												struct Lsymbol *temp= new Lsymbol;
+												temp = $2->Lentry;
 												while (temp!=NULL)
 												{
-													temp->type=$1->type;
+													temp->TYPE=$1->type;
 													// cout<<"evaluate="<<evaluate(temp->ptr2)<<endl;
 													//cout<<"Value="<<char(temp->value)<<endl;
 													//cout<<"NAME="<<temp->NAME<<endl;
@@ -191,7 +205,7 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 														// /Linstall(temp->NAME,$1->type);
 													}
 													
-													temp=temp->Arg_List;
+													temp=temp->Next;
 												}
 												delete temp;
 
@@ -199,12 +213,15 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 											}
 
 L_ID_LIST : L_ID_LIST ',' L_ID 				{	
-												$$=$3;
-												$$->Arg_List=$1;
+												// $$->Lentry=$3->Lentry;
+												// $$->Lentry->Next=$1->Lentry;
+												$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+
 											}
 			|L_ID 							{	
-												$$=$1;
-												$$->Arg_List=NULL;
+												// $$->Lentry = $1->Lentry;
+												// $$->Lentry->Next = NULL;
+												$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
 												
 											}
 			;
@@ -217,6 +234,8 @@ L_ID:ID									{
 												}	
 											}
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID);
+											$$->Lentry->Next = NULL;
 										}
 	|ID'['expr']'						{
 											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");

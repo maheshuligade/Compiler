@@ -338,6 +338,8 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 		new_node->size=size;
 		new_node->value=value;
 		new_node->Binding=Global_Bind_Count;
+		new_node->line_no=yylineno;
+		new_node->col_no=column_no;
 		new_node->Next=Gsymbol_table;
 		Gsymbol_table=new_node;
 		Global_Bind_Count+=size;
@@ -380,6 +382,8 @@ void Linstall(char * NAME,int TYPE)
 		new_node->size=1;
 		new_node->value='a';
 		new_node->Binding=Global_Bind_Count;
+		new_node->line_no=yylineno;
+		new_node->col_no=column_no;
 		new_node->Next=Lsymbol_table;
 		Lsymbol_table=new_node;
 		Global_Bind_Count+=1;
@@ -1084,4 +1088,72 @@ int get_type(struct tnode *expressionTree)
 		return Glookup(expressionTree->NAME)->TYPE;		
 	}
 	return TYPE_VOID;
+}
+struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE)
+{
+	/**
+		Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
+		which is linked to the Lentry of the Function node later.
+	**/
+
+	struct Lsymbol *new_node=(struct Lsymbol *)malloc(sizeof(struct Lsymbol));
+	new_node->NAME=(char *)malloc(20*sizeof(char));
+	
+	strcpy(new_node->NAME,NAME);
+	new_node->TYPE=TYPE;
+	new_node->size=1;
+	new_node->value='a';
+	new_node->Binding=Global_Bind_Count;
+	new_node->line_no=yylineno;
+	new_node->col_no=column_no;
+	new_node->Next=NULL;
+	Global_Bind_Count+=1;
+
+	return new_node;
+}
+
+struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2)
+{
+	/**
+		Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
+		contains the local variable and which is linked to the Lentry of the Function node later.
+	**/
+	struct Lsymbol *temp = new Lsymbol;
+	struct Lsymbol *temp_2 = new Lsymbol;
+	temp = Node_1;
+
+
+	while (temp!=NULL)
+	{
+		temp_2 = Node_2;
+		while (temp_2!=NULL)
+		{
+		
+			//cout<<"NAME="<<temp->NAME<<" ";
+			if (Node_2!=NULL)
+			{
+				if (strcmp(temp->NAME,temp_2->NAME)==0)
+				{
+					cout<<input_file_name<<":"<<temp->line_no<<":"<<temp->col_no<<":"<<"error:"<<"redeclaration of ‘"<<temp->NAME<<"’"<<endl;
+				}
+			}
+			temp_2 = temp_2->Next;
+		}
+		temp = temp->Next;
+	}
+	temp = Node_1;
+
+	while (temp->Next!=NULL)
+	{
+		temp = temp->Next;
+	}
+	temp->Next = Node_2;
+		if(Node_2!=NULL)
+		{
+			//cout<<"NAME="<<Node_2->NAME<<" ";
+		}
+	//	cout<<"END"<<endl;
+	//Node_1->Next = Node_2;
+
+	return Node_1;
 }
