@@ -1129,7 +1129,6 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 		while (temp_2!=NULL)
 		{
 		
-			//cout<<"NAME="<<temp->NAME<<" ";
 			if (Node_2!=NULL)
 			{
 				if (strcmp(temp->NAME,temp_2->NAME)==0)
@@ -1144,26 +1143,20 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 	}
 	temp = Node_1;
 
+	/**Checks the Local varoables are array or not.**/
 	while (temp->Next!=NULL)
 	{
 		if (temp->size > 1)
 		{
-				yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+			yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
 		}
 		temp = temp->Next;
 	}
 	temp->Next = Node_2;
 	if (temp->size > 1)
 	{
-				yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+		yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
 	}
-
-		if(Node_2!=NULL)
-		{
-			//cout<<"NAME="<<Node_2->NAME<<" ";
-		}
-	//	cout<<"END"<<endl;
-	//Node_1->Next = Node_2;
 
 	return Node_1;
 }
