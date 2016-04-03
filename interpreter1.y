@@ -160,7 +160,8 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												// $2->NAME="main";
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,$1->type,1,'f',NULL);
-												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
+												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
+												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
 												
 												// if ($7!=NULL)
 												// {

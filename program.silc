@@ -23,6 +23,8 @@ integer hello(integer a,b,r,t;,integer r;,integer b;)
 integer main(integer a;,integer b;)
 {
 	decl
+	integer a;
+	integer b;
 	
 	enddecl
 	begin
