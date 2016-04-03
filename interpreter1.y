@@ -106,12 +106,12 @@ ARGS:ARGS ',' ARG 	{
 						$$->Arg_List=$1;
 					}
 	| ARG			{	
-						$$=$1;
+						//$$=$1;
 						if ($$==NULL)
 						{
 							$$ = new tnode;
 						}
-						$$->Arg_List=NULL;
+						$$->Arg_List=$1;
 					}
 	;
 

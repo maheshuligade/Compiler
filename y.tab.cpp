@@ -1658,12 +1658,12 @@ yyreduce:
   case 13:
 #line 108 "interpreter1.y"
     {	
-						(yyval)=(yyvsp[(1) - (1)]);
+						//$$=$1;
 						if ((yyval)==NULL)
 						{
 							(yyval) = new tnode;
 						}
-						(yyval)->Arg_List=NULL;
+						(yyval)->Arg_List=(yyvsp[(1) - (1)]);
 					}
     break;
 
