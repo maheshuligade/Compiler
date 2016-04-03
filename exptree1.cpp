@@ -1134,7 +1134,7 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 			{
 				if (strcmp(temp->NAME,temp_2->NAME)==0)
 				{
-					cout<<input_file_name<<":"<<temp->line_no<<":"<<temp->col_no<<":"<<"error:"<<"redeclaration of ‘"<<temp->NAME<<"’"<<endl;
+					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of ‘"<<temp->NAME<<"’"<<endl;
 				}
 			}
 			temp_2 = temp_2->Next;
