@@ -523,10 +523,10 @@ static const yytype_uint16 yyrline[] =
        0,    42,    42,    51,    52,    56,    59,    64,    76,    80,
       90,    93,   104,   109,   122,   123,   125,   126,   128,   144,
      172,   176,   182,   188,   195,   198,   220,   226,   233,   245,
-     274,   287,   289,   290,   291,   299,   302,   322,   326,   330,
-     334,   338,   345,   354,   359,   363,   367,   371,   375,   376,
-     377,   378,   382,   386,   390,   394,   398,   402,   406,   410,
-     414,   418,   422,   426,   432,   443,   457,   458
+     276,   289,   291,   292,   293,   301,   304,   324,   328,   332,
+     336,   340,   347,   356,   361,   365,   369,   373,   377,   378,
+     379,   380,   384,   388,   392,   396,   400,   404,   408,   412,
+     416,   420,   424,   428,   434,   445,   459,   460
 };
 #endif
 
@@ -1831,7 +1831,7 @@ yyreduce:
 												}	
 											}
 											(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',(yyvsp[(1) - (1)])->NAME,(yyvsp[(1) - (1)]),makeLeafNode(1),NULL,NULL);
-											(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (1)])->NAME,TYPE_VOID);
+											(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (1)])->NAME,TYPE_VOID,1);
 											(yyval)->Lentry->Next = NULL;
 										}
     break;
@@ -1841,11 +1841,13 @@ yyreduce:
     {
 											yyerror("Array" + string(" ‘") + (yyvsp[(1) - (4)])->NAME + "’ should be declared as global.");
 											(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[(1) - (4)])->NAME,(yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),NULL,NULL);
+											(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (4)])->NAME,TYPE_VOID,2);
+											(yyval)->Lentry->Next = NULL;
 										}
     break;
 
   case 30:
-#line 274 "interpreter1.y"
+#line 276 "interpreter1.y"
     {
 										//$$=$2;
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1862,22 +1864,22 @@ yyreduce:
     break;
 
   case 31:
-#line 287 "interpreter1.y"
+#line 289 "interpreter1.y"
     {(yyval)=Make_Node((yyvsp[(2) - (3)])->type,Node_Type_RETURN,'R',NULL,(yyvsp[(2) - (3)]),NULL,NULL,NULL);}
     break;
 
   case 32:
-#line 289 "interpreter1.y"
+#line 291 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
   case 33:
-#line 290 "interpreter1.y"
+#line 292 "interpreter1.y"
     {(yyval)=NULL;}
     break;
 
   case 34:
-#line 291 "interpreter1.y"
+#line 293 "interpreter1.y"
     {		
 
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1889,12 +1891,12 @@ yyreduce:
     break;
 
   case 35:
-#line 299 "interpreter1.y"
+#line 301 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
   case 36:
-#line 302 "interpreter1.y"
+#line 304 "interpreter1.y"
     { 
 										//$1->type=$3->type;
 										// if ($1->type==TYPE_VOID)
@@ -1912,7 +1914,7 @@ yyreduce:
     break;
 
   case 37:
-#line 322 "interpreter1.y"
+#line 324 "interpreter1.y"
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
@@ -1920,7 +1922,7 @@ yyreduce:
     break;
 
   case 38:
-#line 326 "interpreter1.y"
+#line 328 "interpreter1.y"
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
@@ -1928,7 +1930,7 @@ yyreduce:
     break;
 
   case 39:
-#line 330 "interpreter1.y"
+#line 332 "interpreter1.y"
     {
 												
 												(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'i',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
@@ -1936,7 +1938,7 @@ yyreduce:
     break;
 
   case 40:
-#line 334 "interpreter1.y"
+#line 336 "interpreter1.y"
     {	
 														
 														(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'I',NULL,(yyvsp[(3) - (10)]),(yyvsp[(6) - (10)]),(yyvsp[(8) - (10)]),NULL);
@@ -1944,7 +1946,7 @@ yyreduce:
     break;
 
   case 41:
-#line 338 "interpreter1.y"
+#line 340 "interpreter1.y"
     {
 													
 													(yyval)=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
@@ -1952,7 +1954,7 @@ yyreduce:
     break;
 
   case 42:
-#line 345 "interpreter1.y"
+#line 347 "interpreter1.y"
     {	
 							// //if ($1->type==TYPE_VOID)
 							// {
@@ -1965,7 +1967,7 @@ yyreduce:
     break;
 
   case 43:
-#line 354 "interpreter1.y"
+#line 356 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -1973,7 +1975,7 @@ yyreduce:
     break;
 
   case 44:
-#line 359 "interpreter1.y"
+#line 361 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_DIV,'/',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -1981,7 +1983,7 @@ yyreduce:
     break;
 
   case 45:
-#line 363 "interpreter1.y"
+#line 365 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MUL,'*',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -1989,7 +1991,7 @@ yyreduce:
     break;
 
   case 46:
-#line 367 "interpreter1.y"
+#line 369 "interpreter1.y"
     {	
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_POWER,'^',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -1997,7 +1999,7 @@ yyreduce:
     break;
 
   case 47:
-#line 371 "interpreter1.y"
+#line 373 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2005,22 +2007,22 @@ yyreduce:
     break;
 
   case 48:
-#line 375 "interpreter1.y"
+#line 377 "interpreter1.y"
     {(yyval)=(yyvsp[(2) - (3)]);(yyval)->type=(yyvsp[(2) - (3)])->type;}
     break;
 
   case 49:
-#line 376 "interpreter1.y"
+#line 378 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);(yyval)->type=(yyvsp[(1) - (1)])->type;}
     break;
 
   case 50:
-#line 377 "interpreter1.y"
+#line 379 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]); (yyval)->type=(yyvsp[(1) - (1)])->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
     break;
 
   case 51:
-#line 378 "interpreter1.y"
+#line 380 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
@@ -2028,7 +2030,7 @@ yyreduce:
     break;
 
   case 52:
-#line 382 "interpreter1.y"
+#line 384 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
@@ -2036,7 +2038,7 @@ yyreduce:
     break;
 
   case 53:
-#line 386 "interpreter1.y"
+#line 388 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LT,'<',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2044,7 +2046,7 @@ yyreduce:
     break;
 
   case 54:
-#line 390 "interpreter1.y"
+#line 392 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LE,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2052,7 +2054,7 @@ yyreduce:
     break;
 
   case 55:
-#line 394 "interpreter1.y"
+#line 396 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GT,'>',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2060,7 +2062,7 @@ yyreduce:
     break;
 
   case 56:
-#line 398 "interpreter1.y"
+#line 400 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GE,'G',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2068,7 +2070,7 @@ yyreduce:
     break;
 
   case 57:
-#line 402 "interpreter1.y"
+#line 404 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2076,7 +2078,7 @@ yyreduce:
     break;
 
   case 58:
-#line 406 "interpreter1.y"
+#line 408 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_EQ,'E',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2084,7 +2086,7 @@ yyreduce:
     break;
 
   case 59:
-#line 410 "interpreter1.y"
+#line 412 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NOT,'L',NULL,(yyvsp[(2) - (2)]),NULL,NULL,NULL);
@@ -2092,7 +2094,7 @@ yyreduce:
     break;
 
   case 60:
-#line 414 "interpreter1.y"
+#line 416 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_OR,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2100,7 +2102,7 @@ yyreduce:
     break;
 
   case 61:
-#line 418 "interpreter1.y"
+#line 420 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_AND,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2108,7 +2110,7 @@ yyreduce:
     break;
 
   case 62:
-#line 422 "interpreter1.y"
+#line 424 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
@@ -2116,7 +2118,7 @@ yyreduce:
     break;
 
   case 63:
-#line 426 "interpreter1.y"
+#line 428 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
@@ -2124,7 +2126,7 @@ yyreduce:
     break;
 
   case 64:
-#line 432 "interpreter1.y"
+#line 434 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 							{	
@@ -2139,7 +2141,7 @@ yyreduce:
     break;
 
   case 65:
-#line 443 "interpreter1.y"
+#line 445 "interpreter1.y"
     {
 							//$$=$1;
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
@@ -2155,18 +2157,18 @@ yyreduce:
     break;
 
   case 66:
-#line 457 "interpreter1.y"
+#line 459 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 67:
-#line 458 "interpreter1.y"
+#line 460 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2170 "y.tab.cpp"
+#line 2172 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2380,7 +2382,7 @@ yyreturn:
 }
 
 
-#line 461 "interpreter1.y"
+#line 463 "interpreter1.y"
 
 
 int yyerror(string s)

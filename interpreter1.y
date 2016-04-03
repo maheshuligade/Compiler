@@ -239,12 +239,14 @@ L_ID:ID									{
 												}	
 											}
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1);
 											$$->Lentry->Next = NULL;
 										}
 	|ID'['expr']'						{
 											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,2);
+											$$->Lentry->Next = NULL;
 										}
 	;		
 // LOCAL_DEF_LISTS:LOCAL_DEF_LISTS LOCAL_DEF_LIST 	{		

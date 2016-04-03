@@ -5,7 +5,7 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer b;,integer a;);
+	integer hello(integer a;,integer b;,integer a[20];);
 	integer g,h;
 enddecl
 
@@ -20,7 +20,45 @@ integer hello(integer a,b,r,t;,integer r;,integer b;)
 	return c;
 	end
 }
+integer main(integer a;,integer b;)
+{
+	decl
+	integer a;
+	integer b;
+	
+	enddecl
+	begin
 
+	
+
+		d[0]=1;
+		d[1]=5;
+		d[2]=7;
+		d[3]=8;
+		d[4]=9;
+		d[5]=-1;
+		d[6]=0;
+		d[7]=10;
+		d[8]=2;
+		d[9]=2;
+		d[10]=3;
+
+		b=0;
+		e=0;
+		while(e<=10)do
+			b=0;
+			while(b<10)do
+				write(b);
+				b=b+1;
+			endwhile;
+			e=e+1;
+		endwhile;
+	
+		j=2;
+		return j;
+	end
+
+}
 
 
 		

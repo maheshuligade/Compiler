@@ -1089,7 +1089,7 @@ int get_type(struct tnode *expressionTree)
 	}
 	return TYPE_VOID;
 }
-struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE)
+struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size)
 {
 	/**
 		Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
@@ -1101,7 +1101,7 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE)
 	
 	strcpy(new_node->NAME,NAME);
 	new_node->TYPE=TYPE;
-	new_node->size=1;
+	new_node->size=size;
 	new_node->value='a';
 	new_node->Binding=Global_Bind_Count;
 	new_node->line_no=yylineno;
@@ -1134,9 +1134,10 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 			{
 				if (strcmp(temp->NAME,temp_2->NAME)==0)
 				{
-					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of ‘"<<temp->NAME<<"’"<<endl;
+					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of variable‘"<<temp->NAME<<"’"<<endl;
 				}
 			}
+			
 			temp_2 = temp_2->Next;
 		}
 		temp = temp->Next;
@@ -1145,9 +1146,18 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 
 	while (temp->Next!=NULL)
 	{
+		if (temp->size > 1)
+		{
+				yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+		}
 		temp = temp->Next;
 	}
 	temp->Next = Node_2;
+	if (temp->size > 1)
+	{
+				yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+	}
+
 		if(Node_2!=NULL)
 		{
 			//cout<<"NAME="<<Node_2->NAME<<" ";

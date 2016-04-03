@@ -61,7 +61,7 @@ struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* pt
 	Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
 	which is linked to the Lentry of the Function node later.
 **/
-struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE);
+struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size);
 /**
 	Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
 	contains the local variable and which is linked to the Lentry of the Function node later.
