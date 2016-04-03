@@ -169,6 +169,9 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												// }
 
 											}
+			|								{
+												yyerror("‘main’ funtion is not defined in this scope.");
+											}
 			;
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													//$$ = $2;

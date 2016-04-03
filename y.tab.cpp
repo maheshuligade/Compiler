@@ -427,7 +427,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  25
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  66
+#define YYNRULES  67
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  149
 
@@ -480,11 +480,11 @@ static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     7,    11,    12,    15,    16,    20,    24,
       26,    28,    33,    37,    39,    41,    42,    45,    46,    56,
-      66,    70,    71,    74,    75,    79,    83,    85,    87,    92,
-      97,   101,   103,   104,   107,   109,   114,   120,   126,   135,
-     146,   155,   159,   163,   167,   171,   175,   179,   183,   185,
-     187,   190,   193,   197,   201,   205,   209,   213,   217,   220,
-     224,   228,   230,   232,   234,   239,   241
+      66,    67,    71,    72,    75,    76,    80,    84,    86,    88,
+      93,    98,   102,   104,   105,   108,   110,   115,   121,   127,
+     136,   147,   156,   160,   164,   168,   172,   176,   180,   184,
+     186,   188,   191,   194,   198,   202,   206,   210,   214,   218,
+     221,   225,   229,   231,   233,   235,   240,   242
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -496,25 +496,25 @@ static const yytype_int8 yyrhs[] =
       56,    44,    -1,    56,    42,    57,    -1,    57,    -1,    63,
       -1,    -1,    58,    59,    -1,    -1,    73,    12,    43,    56,
       44,    45,    61,    66,    46,    -1,    31,    30,    43,    56,
-      44,    45,    61,    66,    46,    -1,    37,    62,    38,    -1,
-      -1,    62,    63,    -1,    -1,    73,    64,     7,    -1,    64,
-      42,    65,    -1,    65,    -1,    12,    -1,    12,    47,    71,
-      48,    -1,    28,    68,    67,    29,    -1,    33,    71,     7,
-      -1,    69,    -1,    -1,    69,    70,    -1,    70,    -1,    72,
-      10,    71,     7,    -1,     8,    43,    72,    44,     7,    -1,
-       9,    43,    71,    44,     7,    -1,    15,    43,    71,    44,
-      16,    68,    18,     7,    -1,    15,    43,    71,    44,    16,
-      68,    17,    68,    18,     7,    -1,    19,    43,    71,    44,
-      20,    68,    21,     7,    -1,    71,     3,    71,    -1,    71,
-       4,    71,    -1,    71,     5,    71,    -1,    71,     6,    71,
-      -1,    71,    14,    71,    -1,    71,    13,    71,    -1,    43,
-      71,    44,    -1,    11,    -1,    72,    -1,     4,    71,    -1,
-       3,    71,    -1,    71,    22,    71,    -1,    71,    23,    71,
-      -1,    71,    24,    71,    -1,    71,    25,    71,    -1,    71,
-      27,    71,    -1,    71,    26,    71,    -1,    34,    71,    -1,
-      71,    35,    71,    -1,    71,    36,    71,    -1,    39,    -1,
-      40,    -1,    12,    -1,    12,    47,    71,    48,    -1,    31,
-      -1,    32,    -1
+      44,    45,    61,    66,    46,    -1,    -1,    37,    62,    38,
+      -1,    -1,    62,    63,    -1,    -1,    73,    64,     7,    -1,
+      64,    42,    65,    -1,    65,    -1,    12,    -1,    12,    47,
+      71,    48,    -1,    28,    68,    67,    29,    -1,    33,    71,
+       7,    -1,    69,    -1,    -1,    69,    70,    -1,    70,    -1,
+      72,    10,    71,     7,    -1,     8,    43,    72,    44,     7,
+      -1,     9,    43,    71,    44,     7,    -1,    15,    43,    71,
+      44,    16,    68,    18,     7,    -1,    15,    43,    71,    44,
+      16,    68,    17,    68,    18,     7,    -1,    19,    43,    71,
+      44,    20,    68,    21,     7,    -1,    71,     3,    71,    -1,
+      71,     4,    71,    -1,    71,     5,    71,    -1,    71,     6,
+      71,    -1,    71,    14,    71,    -1,    71,    13,    71,    -1,
+      43,    71,    44,    -1,    11,    -1,    72,    -1,     4,    71,
+      -1,     3,    71,    -1,    71,    22,    71,    -1,    71,    23,
+      71,    -1,    71,    24,    71,    -1,    71,    25,    71,    -1,
+      71,    27,    71,    -1,    71,    26,    71,    -1,    34,    71,
+      -1,    71,    35,    71,    -1,    71,    36,    71,    -1,    39,
+      -1,    40,    -1,    12,    -1,    12,    47,    71,    48,    -1,
+      31,    -1,    32,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
@@ -522,11 +522,11 @@ static const yytype_uint16 yyrline[] =
 {
        0,    42,    42,    51,    52,    56,    59,    64,    76,    80,
       90,    93,   104,   109,   122,   123,   125,   126,   128,   144,
-     173,   179,   185,   192,   195,   217,   223,   230,   242,   271,
-     284,   286,   287,   288,   296,   299,   319,   323,   327,   331,
-     335,   342,   351,   356,   360,   364,   368,   372,   373,   374,
-     375,   379,   383,   387,   391,   395,   399,   403,   407,   411,
-     415,   419,   423,   429,   440,   454,   455
+     172,   176,   182,   188,   195,   198,   220,   226,   233,   245,
+     274,   287,   289,   290,   291,   299,   302,   322,   326,   330,
+     334,   338,   345,   354,   359,   363,   367,   371,   375,   376,
+     377,   378,   382,   386,   390,   394,   398,   402,   406,   410,
+     414,   418,   422,   426,   432,   443,   457,   458
 };
 #endif
 
@@ -567,11 +567,11 @@ static const yytype_uint8 yyr1[] =
 {
        0,    49,    50,    51,    51,    52,    52,    53,    54,    54,
       55,    55,    56,    56,    57,    57,    58,    58,    59,    60,
-      61,    61,    62,    62,    63,    64,    64,    65,    65,    66,
-      67,    68,    68,    69,    69,    70,    70,    70,    70,    70,
-      70,    71,    71,    71,    71,    71,    71,    71,    71,    71,
+      60,    61,    61,    62,    62,    63,    64,    64,    65,    65,
+      66,    67,    68,    68,    69,    69,    70,    70,    70,    70,
+      70,    70,    71,    71,    71,    71,    71,    71,    71,    71,
       71,    71,    71,    71,    71,    71,    71,    71,    71,    71,
-      71,    71,    71,    72,    72,    73,    73
+      71,    71,    71,    71,    72,    72,    73,    73
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -579,11 +579,11 @@ static const yytype_uint8 yyr2[] =
 {
        0,     2,     3,     3,     0,     2,     0,     3,     3,     1,
        1,     4,     3,     1,     1,     0,     2,     0,     9,     9,
-       3,     0,     2,     0,     3,     3,     1,     1,     4,     4,
-       3,     1,     0,     2,     1,     4,     5,     5,     8,    10,
-       8,     3,     3,     3,     3,     3,     3,     3,     1,     1,
-       2,     2,     3,     3,     3,     3,     3,     3,     2,     3,
-       3,     1,     1,     1,     4,     1,     1
+       0,     3,     0,     2,     0,     3,     3,     1,     1,     4,
+       4,     3,     1,     0,     2,     1,     4,     5,     5,     8,
+      10,     8,     3,     3,     3,     3,     3,     3,     3,     1,
+       1,     2,     2,     3,     3,     3,     3,     3,     3,     2,
+       3,     3,     1,     1,     1,     4,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -591,21 +591,21 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       4,     6,     0,    17,     0,     1,     0,    65,    66,     3,
-       5,     0,    65,    16,     2,     0,    63,     0,     9,    10,
+       4,     6,     0,    17,     0,     1,    20,    66,    67,     3,
+       5,     0,    66,    16,     2,     0,    64,     0,     9,    10,
        0,     0,    15,     0,     7,     0,    15,    15,     0,    13,
-      14,     0,     0,     0,    48,    63,     0,    61,    62,     0,
-       0,    49,     8,     0,     0,    15,    11,    27,     0,    26,
-      51,    50,    58,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    64,     0,
-       0,    12,     0,    24,     0,    47,    41,    42,    43,    44,
-      46,    45,    52,    53,    54,    55,    57,    56,    59,    60,
-      21,    21,     0,    25,    23,     0,     0,    28,     0,    32,
-       0,     0,    20,    22,     0,     0,     0,     0,     0,    31,
-      34,     0,    19,    18,     0,     0,     0,     0,     0,     0,
-      33,     0,     0,     0,     0,     0,     0,    29,     0,     0,
-       0,     0,     0,    30,    35,    36,    37,    32,    32,     0,
-       0,    32,     0,     0,     0,    38,    40,     0,    39
+      14,     0,     0,     0,    49,    64,     0,    62,    63,     0,
+       0,    50,     8,     0,     0,    15,    11,    28,     0,    27,
+      52,    51,    59,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    65,     0,
+       0,    12,     0,    25,     0,    48,    42,    43,    44,    45,
+      47,    46,    53,    54,    55,    56,    58,    57,    60,    61,
+      22,    22,     0,    26,    24,     0,     0,    29,     0,    33,
+       0,     0,    21,    23,     0,     0,     0,     0,     0,    32,
+      35,     0,    19,    18,     0,     0,     0,     0,     0,     0,
+      34,     0,     0,     0,     0,     0,     0,    30,     0,     0,
+       0,     0,     0,    31,    36,    37,    38,    33,    33,     0,
+       0,    33,     0,     0,     0,    39,    41,     0,    40
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -1737,7 +1737,14 @@ yyreduce:
     break;
 
   case 20:
-#line 173 "interpreter1.y"
+#line 172 "interpreter1.y"
+    {
+												yyerror("‘main’ funtion is not defined in this scope.");
+											}
+    break;
+
+  case 21:
+#line 176 "interpreter1.y"
     {	
 													//$$ = $2;
 													(yyval)->Lentry = (yyvsp[(2) - (3)])->Lentry;
@@ -1746,15 +1753,15 @@ yyreduce:
 												}
     break;
 
-  case 21:
-#line 179 "interpreter1.y"
+  case 22:
+#line 182 "interpreter1.y"
     {	
 													(yyval) = NULL;
 												}
     break;
 
-  case 22:
-#line 185 "interpreter1.y"
+  case 23:
+#line 188 "interpreter1.y"
     {	
 													//$1->Lentry->Next = $2->Lentry;
 													//$$ = $1;
@@ -1763,13 +1770,13 @@ yyreduce:
 												}
     break;
 
-  case 23:
-#line 192 "interpreter1.y"
+  case 24:
+#line 195 "interpreter1.y"
     {(yyval)->Lentry = NULL;}
     break;
 
-  case 24:
-#line 195 "interpreter1.y"
+  case 25:
+#line 198 "interpreter1.y"
     {	
 												struct Lsymbol *temp= new Lsymbol;
 												temp = (yyvsp[(2) - (3)])->Lentry;
@@ -1793,8 +1800,8 @@ yyreduce:
 											}
     break;
 
-  case 25:
-#line 217 "interpreter1.y"
+  case 26:
+#line 220 "interpreter1.y"
     {	
 												// $$->Lentry=$3->Lentry;
 												// $$->Lentry->Next=$1->Lentry;
@@ -1803,8 +1810,8 @@ yyreduce:
 											}
     break;
 
-  case 26:
-#line 223 "interpreter1.y"
+  case 27:
+#line 226 "interpreter1.y"
     {	
 												// $$->Lentry = $1->Lentry;
 												// $$->Lentry->Next = NULL;
@@ -1813,8 +1820,8 @@ yyreduce:
 											}
     break;
 
-  case 27:
-#line 230 "interpreter1.y"
+  case 28:
+#line 233 "interpreter1.y"
     {
 											if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 											{	
@@ -1829,16 +1836,16 @@ yyreduce:
 										}
     break;
 
-  case 28:
-#line 242 "interpreter1.y"
+  case 29:
+#line 245 "interpreter1.y"
     {
 											yyerror("Array" + string(" ‘") + (yyvsp[(1) - (4)])->NAME + "’ should be declared as global.");
 											(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',(yyvsp[(1) - (4)])->NAME,(yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),NULL,NULL);
 										}
     break;
 
-  case 29:
-#line 271 "interpreter1.y"
+  case 30:
+#line 274 "interpreter1.y"
     {
 										//$$=$2;
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1854,23 +1861,23 @@ yyreduce:
 									}
     break;
 
-  case 30:
-#line 284 "interpreter1.y"
+  case 31:
+#line 287 "interpreter1.y"
     {(yyval)=Make_Node((yyvsp[(2) - (3)])->type,Node_Type_RETURN,'R',NULL,(yyvsp[(2) - (3)]),NULL,NULL,NULL);}
     break;
 
-  case 31:
-#line 286 "interpreter1.y"
+  case 32:
+#line 289 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
-  case 32:
-#line 287 "interpreter1.y"
+  case 33:
+#line 290 "interpreter1.y"
     {(yyval)=NULL;}
     break;
 
-  case 33:
-#line 288 "interpreter1.y"
+  case 34:
+#line 291 "interpreter1.y"
     {		
 
 							(yyval)=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1881,13 +1888,13 @@ yyreduce:
 					}
     break;
 
-  case 34:
-#line 296 "interpreter1.y"
+  case 35:
+#line 299 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
-  case 35:
-#line 299 "interpreter1.y"
+  case 36:
+#line 302 "interpreter1.y"
     { 
 										//$1->type=$3->type;
 										// if ($1->type==TYPE_VOID)
@@ -1904,48 +1911,48 @@ yyreduce:
 									}
     break;
 
-  case 36:
-#line 319 "interpreter1.y"
+  case 37:
+#line 322 "interpreter1.y"
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
 									}
     break;
 
-  case 37:
-#line 323 "interpreter1.y"
+  case 38:
+#line 326 "interpreter1.y"
     {
 										
 										(yyval)=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
 									}
     break;
 
-  case 38:
-#line 327 "interpreter1.y"
+  case 39:
+#line 330 "interpreter1.y"
     {
 												
 												(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'i',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
 											}
     break;
 
-  case 39:
-#line 331 "interpreter1.y"
+  case 40:
+#line 334 "interpreter1.y"
     {	
 														
 														(yyval)=Make_Node(TYPE_VOID,Node_Type_IF,'I',NULL,(yyvsp[(3) - (10)]),(yyvsp[(6) - (10)]),(yyvsp[(8) - (10)]),NULL);
 													}
     break;
 
-  case 40:
-#line 335 "interpreter1.y"
+  case 41:
+#line 338 "interpreter1.y"
     {
 													
 													(yyval)=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
 												}
     break;
 
-  case 41:
-#line 342 "interpreter1.y"
+  case 42:
+#line 345 "interpreter1.y"
     {	
 							// //if ($1->type==TYPE_VOID)
 							// {
@@ -1957,167 +1964,167 @@ yyreduce:
 						}
     break;
 
-  case 42:
-#line 351 "interpreter1.y"
+  case 43:
+#line 354 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 43:
-#line 356 "interpreter1.y"
+  case 44:
+#line 359 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_DIV,'/',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 44:
-#line 360 "interpreter1.y"
+  case 45:
+#line 363 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MUL,'*',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 45:
-#line 364 "interpreter1.y"
+  case 46:
+#line 367 "interpreter1.y"
     {	
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_POWER,'^',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 46:
-#line 368 "interpreter1.y"
+  case 47:
+#line 371 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 47:
-#line 372 "interpreter1.y"
+  case 48:
+#line 375 "interpreter1.y"
     {(yyval)=(yyvsp[(2) - (3)]);(yyval)->type=(yyvsp[(2) - (3)])->type;}
     break;
 
-  case 48:
-#line 373 "interpreter1.y"
+  case 49:
+#line 376 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);(yyval)->type=(yyvsp[(1) - (1)])->type;}
     break;
 
-  case 49:
-#line 374 "interpreter1.y"
+  case 50:
+#line 377 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]); (yyval)->type=(yyvsp[(1) - (1)])->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
     break;
 
-  case 50:
-#line 375 "interpreter1.y"
+  case 51:
+#line 378 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
 						}
     break;
 
-  case 51:
-#line 379 "interpreter1.y"
+  case 52:
+#line 382 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
 						}
     break;
 
-  case 52:
-#line 383 "interpreter1.y"
+  case 53:
+#line 386 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LT,'<',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 53:
-#line 387 "interpreter1.y"
+  case 54:
+#line 390 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_LE,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 54:
-#line 391 "interpreter1.y"
+  case 55:
+#line 394 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GT,'>',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 55:
-#line 395 "interpreter1.y"
+  case 56:
+#line 398 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_GE,'G',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 56:
-#line 399 "interpreter1.y"
+  case 57:
+#line 402 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 57:
-#line 403 "interpreter1.y"
+  case 58:
+#line 406 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_EQ,'E',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 58:
-#line 407 "interpreter1.y"
+  case 59:
+#line 410 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_NOT,'L',NULL,(yyvsp[(2) - (2)]),NULL,NULL,NULL);
 						}
     break;
 
-  case 59:
-#line 411 "interpreter1.y"
+  case 60:
+#line 414 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_OR,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 60:
-#line 415 "interpreter1.y"
+  case 61:
+#line 418 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_AND,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 						}
     break;
 
-  case 61:
-#line 419 "interpreter1.y"
+  case 62:
+#line 422 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
 						}
     break;
 
-  case 62:
-#line 423 "interpreter1.y"
+  case 63:
+#line 426 "interpreter1.y"
     {
 							(yyval)=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
 						}
     break;
 
-  case 63:
-#line 429 "interpreter1.y"
+  case 64:
+#line 432 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 							{	
@@ -2131,8 +2138,8 @@ yyreduce:
 						}
     break;
 
-  case 64:
-#line 440 "interpreter1.y"
+  case 65:
+#line 443 "interpreter1.y"
     {
 							//$$=$1;
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
@@ -2147,19 +2154,19 @@ yyreduce:
 						}
     break;
 
-  case 65:
-#line 454 "interpreter1.y"
+  case 66:
+#line 457 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
-  case 66:
-#line 455 "interpreter1.y"
+  case 67:
+#line 458 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2163 "y.tab.cpp"
+#line 2170 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2373,7 +2380,7 @@ yyreturn:
 }
 
 
-#line 458 "interpreter1.y"
+#line 461 "interpreter1.y"
 
 
 int yyerror(string s)
