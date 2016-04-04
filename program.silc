@@ -12,7 +12,6 @@ enddecl
 boolean hello(integer a;,integer b;)
 {
 	decl
-		integer b;
 		boolean c;
 	enddecl
 	begin
@@ -55,7 +54,7 @@ integer main()
 		endwhile;
 	
 		j=2;
-		h=hello(c,b);
+		h=hello(a,j);
 		return j;
 	end
 

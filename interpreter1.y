@@ -40,11 +40,15 @@
 
 %%
 PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {	
+														$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+														$$->ptr1=$3;
+														$$->ptr2=$2;
+
 														if (no_of_error==0)
 														{
-															//type_check($3);
+															type_check($$);
 															/*evaluate($3);*/
-															//codegen($3);
+															codegen($$);
 														}
 													}
 
@@ -135,7 +139,10 @@ ARG:LOCAL_DECL	{$$->Lentry = $1->Lentry;}
 	// |			{$$->Lentry = NULL;}
 
 FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{
-																			$$=$1;
+																			//$$=$1;
+																			$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+																			$$->ptr1=$1;
+																			$$->ptr2=$2;
 																		}
 				|														{$$=NULL;}
 				;
@@ -468,7 +475,7 @@ expr:expr PLUS expr		{
 
 						}
 	|ID '('ID_LIST')'	{
-							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,NULL,NULL,NULL,$3);
+							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 						}
 	;
 
@@ -550,12 +557,13 @@ int main(int argc,char const *argv[])
 		sim_code_file=fopen(sim_code_filename,"w");
 		fprintf(sim_code_file, "START\n");
 		//fprintf(sim_code_file, "MOV BP,1535\n");
+		//fprintf(sim_code_file, "MOV BP,1535\n");
 		//fprintf(sim_code_file, "MOV SP,1535\n");
 		yyin=fp;
 	}
-	
-	yyparse();
+	fprintf(sim_code_file, "call main\n");	
 	fprintf(sim_code_file, "HALT\n");
+	yyparse();
 	fclose(sim_code_file);
 	
 	if (no_of_error!=0)

@@ -9,6 +9,7 @@ int left_value,right_value;
 int reg_no=0;
 int label_no=0;
 
+
 int MEMORY_LOC;
 void change_extension(char *filename)
 {	
@@ -52,7 +53,13 @@ int codegen(struct tnode *expressionTree)
 
 	int reg_1,reg_2;
 	int label_1,label_2,label_3;
-
+	char last_function_used[50] = {'0'};
+	int used_register_no =0;
+	
+	if (expressionTree != NULL)
+	{
+		cout<<"Node_Type = "<<expressionTree->Node_Type<<endl;
+	}
 	if (expressionTree==NULL)
 	{
 		return 0;
@@ -382,10 +389,23 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_DEF)
 	{
-
+		cout<<"NAME = "<<expressionTree->NAME<<endl;
+		strcpy(last_function_used , expressionTree->NAME);
+		fprintf(sim_code_file, "\n%s:\n",expressionTree->NAME);
+		codegen(expressionTree->ptr1);
+		//Glookup(expressionTree->NAME);
+	}
+	else if (expressionTree->Node_Type == Node_Type_FUNCTION_CALL)
+	{
+		cout<<"NAME = "<<expressionTree->NAME<<endl;
+		fprintf(sim_code_file, "call %s\n",expressionTree->NAME);
+		codegen(expressionTree->ptr1);
 	}
 	else if (expressionTree->Node_Type==Node_Type_RETURN)
 	{
+		codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "RET\n");
+		return 0;
 
 	}
 	else if(expressionTree->Node_Type==Node_Type_DUMMY)
