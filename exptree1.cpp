@@ -264,7 +264,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 					//cout<<"NAME="<<temp_2->NAME<<endl;
 					//cout<<"NAME="<<temp->NAME<<endl;
-					cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
+					//cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
 					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
 					{
 						col=temp_2->col_no;

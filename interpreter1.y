@@ -371,7 +371,11 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	|WHILE '('expr')'DO Slist ENDWHILE SEMICOLON{
 													
 													$$=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,$3,$6,NULL,NULL);
+	
 												}
+	|ID '('ID_LIST')' SEMICOLON		{
+										$$=NULL;
+									}
 	;
 	
 
@@ -460,8 +464,26 @@ expr:expr PLUS expr		{
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
 
 						}
-	
+	|ID '('ID_LIST')'	{
+							$$=NULL;
+						}
 	;
+
+ID_LIST: ID_LIST FUNC_ARG	{
+								$$=NULL;
+							}
+		|					{
+								$$=NULL;
+							}
+		;
+FUNC_ARG: ID 				{
+								$$=NULL;
+							}
+
+		| FUNC_ARG ',' ID	{
+								$$=NULL;
+							}
+
 IDS:ID 					{	
 							if (Glookup($1->NAME)!=NULL)
 							{	

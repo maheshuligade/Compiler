@@ -9,7 +9,7 @@ decl
 	integer g,h;
 enddecl
 
-boolean hello(integer a;,integer &b;)
+boolean hello(integer a;,integer b;)
 {
 	decl
 		integer b;
@@ -55,6 +55,7 @@ integer main()
 		endwhile;
 	
 		j=2;
+		h=hello(a,b);
 		return j;
 	end
 
