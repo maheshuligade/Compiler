@@ -264,19 +264,19 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 					//cout<<"NAME="<<temp_2->NAME<<endl;
 					//cout<<"NAME="<<temp->NAME<<endl;
-					//cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
+					cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
 					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
 						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
 					}
-					// if (temp->pass_by_type != temp_2->pass_by_type)
-					// {
-					// 	col=temp_2->col_no;
-					// 	line=temp_2->line_no;
-					// 	cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
-					// }
+					if (temp->pass_by_type != temp_2->pass_by_type)
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+					}
 					temp = temp->Next;
 					temp_2 = temp_2->Next;
 				}

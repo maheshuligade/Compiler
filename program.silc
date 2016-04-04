@@ -9,7 +9,7 @@ decl
 	integer g,h;
 enddecl
 
-boolean hello(integer a;,integer b;,integer d;)
+boolean hello(integer a;,integer &b;)
 {
 	decl
 		integer b;

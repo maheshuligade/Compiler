@@ -258,7 +258,7 @@ L_ID:ID									{
 											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1,PASS_BY_VALUE);
 											$$->Lentry->Next = NULL;
 										}
-	| '&'ID								{
+	| '&' ID							{
 											if (Glookup($1->NAME)!=NULL)
 											{	
 												if (Glookup($1->NAME)->size > 1)
@@ -266,8 +266,8 @@ L_ID:ID									{
 													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
 												}	
 											}
-											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
+											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$2->NAME,$2,makeLeafNode(1),NULL,NULL);
+											$$->Lentry = Make_Arg_Node($2->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
 											$$->Lentry->Next = NULL;
 										}
 	|ID'['expr']'						{

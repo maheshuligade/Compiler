@@ -1862,8 +1862,8 @@ yyreduce:
 													yyerror(string("‘") + (yyvsp[(1) - (2)])->NAME + "’ was declared as array.");
 												}	
 											}
-											(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',(yyvsp[(1) - (2)])->NAME,(yyvsp[(1) - (2)]),makeLeafNode(1),NULL,NULL);
-											(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (2)])->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
+											(yyval)=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',(yyvsp[(2) - (2)])->NAME,(yyvsp[(2) - (2)]),makeLeafNode(1),NULL,NULL);
+											(yyval)->Lentry = Make_Arg_Node((yyvsp[(2) - (2)])->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
 											(yyval)->Lentry->Next = NULL;
 										}
     break;
