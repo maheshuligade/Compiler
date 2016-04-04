@@ -250,6 +250,32 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 		}
+		else
+		{
+			struct Lsymbol *temp = new Lsymbol;
+			struct Lsymbol *temp_2 = new Lsymbol;
+			if (Glookup(NAME)!=NULL && Arg_List!=NULL)
+			{
+				temp_2 = Arg_List->Lentry;
+				temp = Glookup(NAME)->Arg_List->Lentry;
+				//cout<<"NAME="<<Glookup(NAME)->NAME<<endl;
+				while (temp != NULL && temp_2!=NULL)
+				{
+
+					//cout<<"NAME="<<temp_2->NAME<<endl;
+					//cout<<"NAME="<<temp->NAME<<endl;
+					if (temp->NAME != temp_2->NAME)
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+					}
+					temp = temp->Next;
+					temp_2 = temp_2->Next;
+				}
+			}
+			delete temp;
+		}
 	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
 
@@ -343,6 +369,7 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 		new_node->Next=Gsymbol_table;
 		Gsymbol_table=new_node;
 		Global_Bind_Count+=size;
+		new_node->Arg_List = Arg_List;
 	}
 	else
 	{

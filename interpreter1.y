@@ -67,7 +67,16 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 												while (temp!=NULL)
 												{	
 													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
-													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp->Arg_List);
+													if (temp->value == 'f')
+													{
+														//cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
+														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
+
+													}
+													else
+													{
+														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													}
 													temp=temp->Arg_List;
 												}
 
@@ -94,6 +103,8 @@ G_ID:IDS									{
 	 											// $$=$1;
 												$$=Make_Node(get_type($1),Node_Type_ARRAY,'f',$1->NAME,$1,makeLeafNode(1),NULL,$3);
 												// $$->Lentry = new Lsymbol;	
+												$$->Lentry = $3->Lentry;
+												//cout<<"NAME="<<$3->Lentry->NAME<<endl;
 											}
 	;
 
@@ -131,7 +142,7 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 													This makes the funtion node $$->Lentry points to the local symbol table 
 													of the respective function.
 												**/
-												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
+												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
 												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
 												// if ($7!=NULL)
 												// {
@@ -159,7 +170,7 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												$$=$7;/*evaluate($$);*/
 												// $2->NAME="main";
 												strcpy($2->NAME,"main");
-												Ginstall($2->NAME,$1->type,1,'f',NULL);
+												Ginstall($2->NAME,$1->type,1,'f',$4);
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
 												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
 												
