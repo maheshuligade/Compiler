@@ -67,7 +67,7 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 												while (temp!=NULL)
 												{	
 													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
-													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp->Arg_List);
 													temp=temp->Arg_List;
 												}
 

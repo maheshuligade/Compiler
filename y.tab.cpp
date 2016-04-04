@@ -1603,7 +1603,7 @@ yyreduce:
 												while (temp!=NULL)
 												{	
 													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
-													Ginstall(temp->NAME,(yyvsp[(1) - (3)])->type,evaluate(temp->ptr2),temp->value,NULL);
+													Ginstall(temp->NAME,(yyvsp[(1) - (3)])->type,evaluate(temp->ptr2),temp->value,temp->Arg_List);
 													temp=temp->Arg_List;
 												}
 
