@@ -321,13 +321,16 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
-						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<
-						"function call argument type of varible named ‘"<<temp->NAME<<"’ does not match with declaration."<<endl;
-						no_of_error++;
+						yyerror(string("function call argument type of varible named ‘") + temp->NAME + "’ does not match with declaration.");						no_of_error++;
 					}
 
 					temp = temp->Next;
 					temp_2 = temp_2->Next;
+				}
+
+				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
+				{
+					yyerror("function call number of arguments does not match declaration.");
 				}
 
 				delete temp;

@@ -55,7 +55,7 @@ integer main()
 		endwhile;
 	
 		j=2;
-		h=hello(c,b);
+		h=hello();
 		return j;
 	end
 
