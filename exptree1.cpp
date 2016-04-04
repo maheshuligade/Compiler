@@ -270,12 +270,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 						col=temp_2->col_no;
 						line=temp_2->line_no;
 						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+						no_of_error++;
 					}
 					if (temp->pass_by_type != temp_2->pass_by_type)
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
 						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+						no_of_error++;
 					}
 					temp = temp->Next;
 					temp_2 = temp_2->Next;
@@ -285,9 +287,52 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					col=temp_2->col_no;
 					line=temp_2->line_no;
 					cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+					no_of_error++;
+
 				}
 			}
 			delete temp;
+		}
+	}
+	else if (Node_Type == Node_Type_FUNCTION_CALL)
+	{
+		if (Glookup(NAME)==NULL)
+		{	
+			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
+		}
+		else
+		{
+			if (Glookup(NAME)->Arg_List != NULL)
+			{
+				struct Lsymbol *temp = new Lsymbol;
+				struct Lsymbol *temp_2 = new Lsymbol;
+				temp = Glookup(NAME)->Arg_List->Lentry;
+				temp_2 = Arg_List->Lentry;
+
+				// if (temp!= NULL)
+				// {
+				// 	cout<<"NAME = "<<temp->NAME<<endl;
+				// }
+				while (temp != NULL && temp_2!=NULL)
+				{
+
+					//cout<<"temp = "<<temp->pass_by_type<<" temp_2 = "<<temp_2->pass_by_type<<endl;
+					if (temp->TYPE != temp_2->TYPE)
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<
+						"function call argument type of varible named ‘"<<temp->NAME<<"’ does not match with declaration."<<endl;
+						no_of_error++;
+					}
+
+					temp = temp->Next;
+					temp_2 = temp_2->Next;
+				}
+
+				delete temp;
+				delete temp_2;
+			}
 		}
 	}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
@@ -694,6 +739,7 @@ int evaluate(struct tnode* expressionTree)
 			//Memory[Global_Bind_Count]=input;
 			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
 			cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+			no_of_error++;
 			return -1;
 		}
 		else
@@ -1175,6 +1221,7 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 				if (strcmp(temp->NAME,temp_2->NAME)==0)
 				{
 					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of variable‘"<<temp->NAME<<"’"<<endl;
+					no_of_error++;
 				}
 			}
 			

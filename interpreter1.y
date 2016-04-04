@@ -166,6 +166,7 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												if ($4->Lentry!=NULL)
 												{
 													cout<<input_file_name<<":"<<$4->Lentry->line_no<<":"<<$4->Lentry->col_no<<":"<<"error:"<<"main funtion can not have any arguments"<<endl;
+													no_of_error++;
 												}
 
 												$$=$7;/*evaluate($$);*/
@@ -465,23 +466,30 @@ expr:expr PLUS expr		{
 
 						}
 	|ID '('ID_LIST')'	{
-							$$=NULL;
+							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,NULL,NULL,NULL,$3);
 						}
 	;
 
 ID_LIST: ID_LIST FUNC_ARG	{
-								$$=NULL;
+								//$$=NULL;
+								$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
+
 							}
 		|					{
-								$$=NULL;
+								//$$=NULL;
+								$$->Lentry = NULL;
 							}
 		;
 FUNC_ARG: IDS 				{
-								$$=NULL;
+								//$$=NULL;												
+								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+
 							}
 
 		| FUNC_ARG ',' IDS	{
-								$$=NULL;
+								//$$=NULL;
+								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+
 							}
 
 IDS:ID 					{	
@@ -493,7 +501,8 @@ IDS:ID 					{
 								}	
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
-							
+							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
+							$$->Lentry->Next = NULL;
 						}
 	|ID'['expr']'		{
 							//$$=$1;
@@ -505,7 +514,8 @@ IDS:ID 					{
 								}	
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
-							
+							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
+							$$->Lentry->Next = NULL;
 						}
 	
 	;
