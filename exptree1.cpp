@@ -10,7 +10,7 @@ int alphabet[200]={0};
 struct Gsymbol *Gsymbol_table=NULL;
 struct Lsymbol *Lsymbol_table=NULL;
 int Memory[1000000];
-int Global_Bind_Count=0;
+int Global_Bind_Count = 257;
 char error_output[200];
 int no_of_error=0;
 int ptr1_type,ptr2_type;
