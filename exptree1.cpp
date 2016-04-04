@@ -292,6 +292,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				}
 			}
 			delete temp;
+			delete temp_2;
 		}
 	}
 	else if (Node_Type == Node_Type_FUNCTION_CALL)
@@ -309,14 +310,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				temp = Glookup(NAME)->Arg_List->Lentry;
 				temp_2 = Arg_List->Lentry;
 
-				// if (temp!= NULL)
-				// {
-				// 	cout<<"NAME = "<<temp->NAME<<endl;
-				// }
 				while (temp != NULL && temp_2!=NULL)
 				{
 
-					//cout<<"temp = "<<temp->pass_by_type<<" temp_2 = "<<temp_2->pass_by_type<<endl;
 					if (temp->TYPE != temp_2->TYPE)
 					{
 						col=temp_2->col_no;
