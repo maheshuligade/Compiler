@@ -30,6 +30,7 @@
 "["			{column_no+=yyleng; return *yytext;}
 "]"			{column_no+=yyleng; return *yytext;}
 ","			{column_no+=yyleng; return *yytext;}
+"&"			{column_no+=yyleng; return *yytext;}
 "if"		{column_no+=yyleng; return IF;}
 "then"		{column_no+=yyleng; return THEN;}
 "else"		{column_no+=yyleng; return ELSE;}
