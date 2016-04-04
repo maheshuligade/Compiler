@@ -5,11 +5,11 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer b;,integer a[20];);
+	integer hello(integer a;,integer b;);
 	integer g,h;
 enddecl
 
-boolean hello(integer a,b,r,t;,integer r;,integer b;)
+boolean hello(integer a;,integer b;,integer d;)
 {
 	decl
 		integer b;

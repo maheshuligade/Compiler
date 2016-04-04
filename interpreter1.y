@@ -255,13 +255,25 @@ L_ID:ID									{
 												}	
 											}
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1,PASS_BY_VALUE);
+											$$->Lentry->Next = NULL;
+										}
+	| '&'ID								{
+											if (Glookup($1->NAME)!=NULL)
+											{	
+												if (Glookup($1->NAME)->size > 1)
+												{
+													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
+												}	
+											}
+											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
 											$$->Lentry->Next = NULL;
 										}
 	|ID'['expr']'						{
 											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");
 											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,2);
+											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,2,PASS_BY_VALUE);
 											$$->Lentry->Next = NULL;
 										}
 	;		
@@ -303,7 +315,7 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										// exit(0);
 									}
 RETURN_TYPE:RETURN expr SEMICOLON	{	
-										cout<<"Node_Type="<<$2->Node_Type<<endl;
+										//cout<<"Node_Type="<<$2->Node_Type<<endl;
 										$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);
 									}
 
