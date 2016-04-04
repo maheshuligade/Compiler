@@ -1116,7 +1116,7 @@ int get_type(struct tnode *expressionTree)
 	}
 	return TYPE_VOID;
 }
-struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size)
+struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type)
 {
 	/**
 		Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
@@ -1135,6 +1135,7 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size)
 	new_node->col_no=column_no;
 	new_node->Next=NULL;
 	Global_Bind_Count+=1;
+	new_node->pass_by_type = pass_by_type;
 
 	return new_node;
 }
