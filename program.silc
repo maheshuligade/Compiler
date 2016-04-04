@@ -20,7 +20,7 @@ integer hello(integer a,b,r,t;,integer r;,integer b;)
 	return c;
 	end
 }
-integer main(integer a;,integer b;)
+integer main()
 {
 	decl
 	integer a;

@@ -126,12 +126,13 @@ ARGS:ARGS ',' ARG 	{
 						//$$->Arg_List=$1;
 						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
 					}
+	|				{$$->Lentry = NULL;}
 	;
 
 					
 												
 ARG:LOCAL_DECL	{$$->Lentry = $1->Lentry;}
-	|			{$$->Lentry = NULL;}
+	// |			{$$->Lentry = NULL;}
 
 FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{$$=$1;}
 				|														{$$=NULL;}
@@ -172,7 +173,7 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,$1->type,1,'f',$4);
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
-												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
+												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												
 												// if ($7!=NULL)
 												// {
