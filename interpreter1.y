@@ -170,6 +170,10 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 
 												$$=$7;/*evaluate($$);*/
 												// $2->NAME="main";
+												if ($2->NAME ==  NULL)
+												{
+													$2->NAME = (char *)malloc(20*sizeof(char));
+												}
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,$1->type,1,'f',$4);
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
@@ -298,7 +302,10 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										// }
 										// exit(0);
 									}
-RETURN_TYPE:RETURN expr SEMICOLON	{$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);}
+RETURN_TYPE:RETURN expr SEMICOLON	{	
+										cout<<"Node_Type="<<$2->Node_Type<<endl;
+										$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);
+									}
 
 Slist: Stmts	{$$=$1;}
 	 | 			{$$=NULL;}
