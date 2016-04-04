@@ -5,15 +5,14 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer b;);
+	integer hello();
 	integer g,h;
 enddecl
 
-boolean hello(integer a;,integer b;)
+boolean hello()
 {
 	decl
-		integer b;
-		boolean c;
+		
 	enddecl
 	begin
 	c=TRUE;

@@ -144,7 +144,7 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 													of the respective function.
 												**/
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
-												$$->Lentry = Make_Arg_Node_List($4->Lentry,$7->Lentry);
+												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
@@ -476,11 +476,11 @@ ID_LIST: ID_LIST FUNC_ARG	{
 								$$=NULL;
 							}
 		;
-FUNC_ARG: ID 				{
+FUNC_ARG: IDS 				{
 								$$=NULL;
 							}
 
-		| FUNC_ARG ',' ID	{
+		| FUNC_ARG ',' IDS	{
 								$$=NULL;
 							}
 

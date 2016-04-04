@@ -1185,18 +1185,21 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 	temp = Node_1;
 
 	/**Checks the Local varoables are array or not.**/
-	while (temp->Next!=NULL)
+	if (temp != NULL)
 	{
+		while (temp->Next!=NULL)
+		{
+			if (temp->size > 1)
+			{
+				yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+			}
+			temp = temp->Next;
+		}
+		temp->Next = Node_2;
 		if (temp->size > 1)
 		{
 			yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
-		}
-		temp = temp->Next;
-	}
-	temp->Next = Node_2;
-	if (temp->size > 1)
-	{
-		yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+		}		
 	}
 
 	return Node_1;
