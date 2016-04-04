@@ -45,6 +45,7 @@ struct Lsymbol
 	int Binding;	//Address of the Identifier in the Memory
 	int line_no,col_no; //For typecheck of redeclaration of the variables
 	struct Lsymbol *Next;	//Pointer to the next Symbol Table Entry
+	int pass_by_type; //wheter the argument is PASS_BY_VALUE or PASS_BY_REFERENCE or Local variable
 };
 
 
@@ -135,3 +136,4 @@ extern int Memory[1000000];
 #define Node_Type_RETURN					33
 #define PASS_BY_VALUE						34
 #define PASS_BY_REFERENCE					35
+#define LOCAL_VARIABLE						36
