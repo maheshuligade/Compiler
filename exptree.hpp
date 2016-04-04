@@ -133,7 +133,8 @@ extern int Memory[1000000];
 #define Node_Type_BOOLEAN_CONSTANT			30
 #define Node_Type_FUNCTION					31
 #define Node_Type_FUNCTION_DEF				32
-#define Node_Type_RETURN					33
-#define PASS_BY_VALUE						34
-#define PASS_BY_REFERENCE					35
-#define LOCAL_VARIABLE						36
+#define Node_Type_FUNCTION_CALL				33
+#define Node_Type_RETURN					34
+#define PASS_BY_VALUE						35
+#define PASS_BY_REFERENCE					36
+#define LOCAL_VARIABLE						37
