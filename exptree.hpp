@@ -105,6 +105,8 @@ extern int BP;
 extern int SP;
 extern 	FILE *fp,*sim_code_file;
 extern int Memory[1000000];
+extern struct Gsymbol *Gsymbol_table;
+extern struct Lsymbol *Lsymbol_table;
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2
