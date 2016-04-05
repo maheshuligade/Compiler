@@ -44,9 +44,9 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														$$->ptr1=$3;
 														$$->ptr2=$2;
 
-														if (no_of_error==0)
+														//if (no_of_error==0)
 														{
-															//type_check($$);
+															type_check($$);
 															/*evaluate($3);*/
 															//codegen($$);
 														}
@@ -75,15 +75,15 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													{
 														//cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
 														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
-														struct Lsymbol *temp_2 = new Lsymbol;
+														// struct Lsymbol *temp_2 = new Lsymbol;
 
-														temp_2 = temp->Lentry;
+														// temp_2 = temp->Lentry;
 
-														while(temp_2!=NULL)
-														{
-															cout<<"temp f = "<<temp_2->NAME<<" type = "<<$1->type<<endl;
-															temp_2 = temp_2->Next;
-														}
+														// while(temp_2!=NULL)
+														// {
+														// 	cout<<"temp f = "<<temp_2->NAME<<" type = "<<temp_2->TYPE<<endl;
+														// 	temp_2 = temp_2->Next;
+														// }
 
 													}
 													else
@@ -98,6 +98,7 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 G_ID_LIST : G_ID_LIST ',' G_ID 				{	
 												$$=$3;
 												$$->Arg_List=$1;
+
 											}
 			|G_ID 							{	
 												$$=$1;
@@ -164,12 +165,21 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 												**/
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
-												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+											//	Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
 												// }
 
+												// struct Lsymbol *temp= new Lsymbol;
+												// temp = $7->Lentry;
+												// while (temp!=NULL)
+												// {
+												// 	cout<<"type=" <<temp->TYPE<<" NAME = "<<temp->NAME<<endl;
+											
+												// 	temp=temp->Next;
+												// }
+												// delete temp;
 
 											}
 				;
@@ -200,12 +210,13 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												Ginstall($2->NAME,TYPE_INT,1,'f',$4);
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
-												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												//Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
 												// }
+
 
 											}
 			|								{
@@ -242,7 +253,8 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 													temp->TYPE=$1->type;
 													// cout<<"evaluate="<<evaluate(temp->ptr2)<<endl;
 													//cout<<"Value="<<char(temp->value)<<endl;
-													//cout<<"NAME="<<temp->NAME<<endl;
+													// cout<<"NAME="<<temp->NAME<<endl;
+													//cout<<"type=" <<temp->TYPE<<" NAME = "<<temp->NAME<<endl;
 													//Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
 													//if (temp->value!='A')
 													{
@@ -489,6 +501,7 @@ expr:expr PLUS expr		{
 						}
 	|ID '('ID_LIST')'	{
 							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
+
 						}
 	;
 

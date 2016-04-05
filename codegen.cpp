@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "exptree.hpp"
 #include "y.tab.hpp"
-#include <stack>
 #include <string>
 // 
 int reg=0;

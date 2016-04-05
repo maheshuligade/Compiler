@@ -1,4 +1,6 @@
 #include <string>
+#include <stack>
+
 using namespace std;
 typedef struct tnode
 {

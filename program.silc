@@ -9,14 +9,14 @@ decl
 	integer g,h;
 enddecl
 
-boolean hello(integer a;,integer b;)
+integer hello(integer a;,integer b;)
 {
 	decl
 		boolean c;
 	enddecl
 	begin
 	c=TRUE;
-	return TRUE;
+	return 0;
 	end
 }
 integer main()
@@ -25,6 +25,7 @@ integer main()
 	integer a;
 	integer b;
 	integer z;
+	boolean w;
 	enddecl
 	begin
 
