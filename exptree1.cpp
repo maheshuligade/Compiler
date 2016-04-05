@@ -293,6 +293,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			}
 			delete temp;
 			delete temp_2;
+
+			if (Glookup(NAME)->TYPE != type)
+			{
+					cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
+					yyerror("function definition does not match declaration.");
+					no_of_error++;
+				
+			}
 		}
 	}
 	else if (Node_Type == Node_Type_FUNCTION_CALL)
@@ -313,11 +321,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				while (temp != NULL && temp_2!=NULL)
 				{
 
+						cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 					if (temp->TYPE != temp_2->TYPE)
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
-						yyerror(string("function call argument type of varible named ‘") + temp->NAME + "’ does not match with declaration.");						no_of_error++;
+					//	cout<<"type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+					//	cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+					//	yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
 					}
 
 					temp = temp->Next;
@@ -326,7 +337,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
-					yyerror("function call number of arguments does not match declaration.");
+					//yyerror("function call number of arguments does not match declaration.");
 				}
 
 				delete temp;
@@ -354,6 +365,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	new_node->ptr3=ptr3;
 	new_node->line_no=yylineno;
 	new_node->col_no=column_no;
+	new_node->Arg_List = Arg_List;
 	return new_node;
 
 }
@@ -411,6 +423,20 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 	{	
 			//If Array is 0 size
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’ can not be zero size.");
+	}
+	if (value == 'f')
+	{
+		//cout<<"F"<<endl;
+		//cout<<"NAME = "<<Arg_List<<endl;
+		// struct Lsymbol *temp_2 = new Lsymbol;
+
+		// temp_2 = Arg_List->Lentry;
+
+		// while(temp_2!=NULL)
+		// {
+		// 	cout<<"temp ="<<temp_2->NAME<<endl;
+		// 	temp_2 = temp_2->Next;
+		// }
 	}
 	if (Glookup(NAME)==NULL)
 	{
@@ -1188,11 +1214,11 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type)
 	new_node->TYPE=TYPE;
 	new_node->size=size;
 	new_node->value='a';
-	new_node->Binding=Global_Bind_Count;
+	//new_node->Binding=Global_Bind_Count;
 	new_node->line_no=yylineno;
 	new_node->col_no=column_no;
 	new_node->Next=NULL;
-	Global_Bind_Count+=1;
+	//Global_Bind_Count+=1;
 	new_node->pass_by_type = pass_by_type;
 
 	return new_node;

@@ -46,9 +46,9 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 
 														if (no_of_error==0)
 														{
-															type_check($$);
+															//type_check($$);
 															/*evaluate($3);*/
-															codegen($$);
+															//codegen($$);
 														}
 													}
 
@@ -75,6 +75,15 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													{
 														//cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
 														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
+														struct Lsymbol *temp_2 = new Lsymbol;
+
+														temp_2 = temp->Lentry;
+
+														while(temp_2!=NULL)
+														{
+															cout<<"temp f = "<<temp_2->NAME<<" type = "<<$1->type<<endl;
+															temp_2 = temp_2->Next;
+														}
 
 													}
 													else
@@ -129,6 +138,7 @@ ARGS:ARGS ',' ARG 	{
 						}
 						//$$->Arg_List=$1;
 						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+
 					}
 	|				{$$->Lentry = NULL;}
 	;
@@ -154,10 +164,12 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 												**/
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
+												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
 												// }
+
 
 											}
 				;
@@ -185,9 +197,10 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 													$2->NAME = (char *)malloc(20*sizeof(char));
 												}
 												strcpy($2->NAME,"main");
-												Ginstall($2->NAME,$1->type,1,'f',$4);
+												Ginstall($2->NAME,TYPE_INT,1,'f',$4);
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
+												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												
 												// if ($7!=NULL)
 												// {

@@ -24,7 +24,7 @@ integer main()
 	decl
 	integer a;
 	integer b;
-	
+	integer z;
 	enddecl
 	begin
 
@@ -54,7 +54,7 @@ integer main()
 		endwhile;
 	
 		j=2;
-		h=hello(a,j);
+		h=hello(a,z);
 		return j;
 	end
 
