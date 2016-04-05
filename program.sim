@@ -1,4 +1,6 @@
 START
+MOV BP,257
+MOV SP,257
 call main
 HALT
 
