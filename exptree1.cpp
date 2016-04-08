@@ -17,7 +17,7 @@ int ptr1_type,ptr2_type;
 string types_array[5]={"void","boolean","integer"};
 extern FILE *sim_code_file;
 
-stack <string> last_function_used_type_check;
+stack <char *> last_function_used_type_check;
 
 int k;
 int col,line;
@@ -304,7 +304,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				}
 			}
 			delete temp;
-			delete temp_2;
+			//delete temp_2;
 
 			if (Glookup(NAME)->TYPE != type)
 			{
@@ -340,7 +340,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 						line=temp_2->line_no;
 						// cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
 						// cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-						yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+						//yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
 					}
 
 					temp = temp->Next;
@@ -349,11 +349,11 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
-					yyerror("function call number of arguments does not match declaration.");
+				//	yyerror("function call number of arguments does not match declaration.");
 				}
 
-				delete temp;
-				delete temp_2;
+				// delete temp;
+				//delete temp_2; //why need not to free?
 			}
 		}
 	}
@@ -436,20 +436,20 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 			//If Array is 0 size
 			yyerror(std::string ("Array ") + ("‘") + NAME + "’ can not be zero size.");
 	}
-	if (value == 'f')
-	{
-		//cout<<"F"<<endl;
-		//cout<<"NAME = "<<Arg_List<<endl;
-		// struct Lsymbol *temp_2 = new Lsymbol;
+	// if (value == 'f')
+	// {
+	// 	cout<<"F"<<endl;
+	// 	cout<<"NAME = "<<Arg_List<<endl;
+	// 	struct Lsymbol *temp_2 = new Lsymbol;
 
-		// temp_2 = Arg_List->Lentry;
+	// 	temp_2 = Arg_List->Lentry;
 
-		// while(temp_2!=NULL)
-		// {
-		// 	cout<<"temp ="<<temp_2->NAME<<endl;
-		// 	temp_2 = temp_2->Next;
-		// }
-	}
+	// 	while(temp_2!=NULL)
+	// 	{
+	// 		cout<<"temp ="<<temp_2->NAME<<endl;
+	// 		temp_2 = temp_2->Next;
+	// 	}
+	// }
 	if (Glookup(NAME)==NULL)
 	{
 		struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
@@ -885,7 +885,7 @@ int type_check(struct tnode* expressionTree)
 	
 	if (expressionTree!=NULL)
 	{
-		cout<<"Node_Type="<<expressionTree->Node_Type<<endl;
+		// cout<<"Node_Type="<<expressionTree->Node_Type<<endl;
 	}
 	if (expressionTree==NULL)
 	{
@@ -1073,6 +1073,13 @@ int type_check(struct tnode* expressionTree)
 			//cout<<"Array= "<<expressionTree->NAME<<" = "<< evaluate(expressionTree->ptr1->ptr2)<<endl;
 		}
 		
+		if (expressionTree->ptr2->Node_Type == Node_Type_FUNCTION_CALL)
+		{
+			cout<<"Node_Type =    "<<expressionTree->ptr2->Node_Type<<endl;
+			type_check(expressionTree->ptr2); 
+		}
+		
+
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
 	{	
@@ -1180,45 +1187,72 @@ int type_check(struct tnode* expressionTree)
 			cout<<"NAME="<<last_function_used_type_check.top()<<endl;
 		}
 
-		// if (Glookup(expressionTree->NAME)->Arg_List != NULL)
-		// 	{
-		// 		struct Lsymbol *temp = new Lsymbol;
-		// 		struct Lsymbol *temp_2 = new Lsymbol;
-		// 		temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
-		// 		temp_2 = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
+		if (Glookup(expressionTree->NAME)->Arg_List != NULL)
+		{
+				struct Lsymbol *temp = new Lsymbol;
+				struct Lsymbol *temp_2 = new Lsymbol;
+				temp = expressionTree->Arg_List->Lentry;
+				// temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+				temp = expressionTree->Arg_List->Lentry;
+				temp_2 = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
+				// cout<<"ptr1 = "<<expressionTree->Arg_List<<endl;
+				// if (temp_2 == NULL)
+				// {
+				// 	cout<<"NULL"<<endl;
+				// }
+				// if (temp->Next == NULL)
+				// {
+				// 	cout<<"NULL"<<endl;
+				// }
+				while ( temp != NULL)
+				{
 
-		// 		while (temp != NULL && temp_2!=NULL)
-		// 		{
+						// cout<<"type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+					// if (temp->type != temp_2->TYPE)
+					// {
+					// // 	col=temp_2->col_no;
+					// // 	line=temp_2->line_no;
+						cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+						// cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+					// 	yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");					
+					//	no_of_error++;
+					// }
+					cout<<"type = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+					cout<<"NAME = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->NAME<<endl;
 
-		// 				//cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp->NAME<<endl;
-		// 			if (temp->TYPE != temp_2->TYPE)
-		// 			{
-		// 				col=temp_2->col_no;
-		// 				line=temp_2->line_no;
-		// 				cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-		// 				cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-		// 				yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
-		// 			}
+					temp = temp->Next;
+					// temp_2 = temp_2->Next;
+				}
+				// cout<<" "<<endl;
+				// }
+				// while (temp != NULL)
+				// {
 
-		// 			temp = temp->Next;
-		// 			temp_2 = temp_2->Next;
-		// 		}
+				// 	cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+				// 	temp = temp->Next;
+				// }
+				// while (temp_2 != NULL)
+				// {
 
-		// 		if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
-		// 		{
-		// 			yyerror("function call number of arguments does not match declaration.");
-		// 		}
+				// 	cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+				// 	temp_2 = temp_2->Next;
+				// }
 
-		// 		delete temp;
-		// 		delete temp_2;
-		// 	}
+				// if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
+				// {
+				// 	yyerror("function call number of arguments does not match declaration.");
+				// }
+
+				//delete temp;
+				//delete temp_2;
+			}
 
 		return type_check(expressionTree->ptr1);
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_DEF)
 	{	
 		// cout<<"Node_Type = "<<expressionTree->ptr1->ptr1->Node_Type<<endl;
-		last_function_used_type_check.push(string(expressionTree->NAME) );
+		last_function_used_type_check.push((expressionTree->NAME));
 		type_check(expressionTree->ptr1);
 		last_function_used_type_check.pop();
 		return 0;
@@ -1338,3 +1372,38 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 
 	return Node_1;
 }
+
+
+
+struct Lsymbol *lookup_variable(char  *function_name,char *variable_name)
+{
+	/**
+		Lookup variable in the local and gloabal symbol table ,If the variable is not there in the local
+		symbol table then look into the global symbol table ,if it is not there return NULL
+	**/
+	struct Lsymbol *function_variables;
+	function_variables = Glookup(function_name)->Arg_List->Lentry;
+
+	// cout<<"variable name = "<<variable_name<<endl;
+	// cout<<"function_name = "<<function_name<<endl;
+	if (function_variables != NULL)
+	{
+		// cout<<"Variable = "<<function_variables->Next->NAME<<endl;
+
+		struct Lsymbol *temp = new Lsymbol;
+
+		temp = function_variables;
+		while (temp != NULL)
+		{
+			 cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+			if (strcmp(temp->NAME , variable_name) == 0 )
+			{
+			 	cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+			 	return temp;
+			}
+			temp = temp->Next;
+		}
+	}
+	return NULL;
+}
+

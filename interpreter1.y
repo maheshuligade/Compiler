@@ -46,7 +46,6 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 
 														//if (no_of_error==0)
 														{
-															cout<<"IN typecheck"<<endl;
 															type_check($$);
 															/*evaluate($3);*/
 															//codegen($$);
@@ -74,7 +73,8 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
 													if (temp->value == 'f')
 													{
-														//cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
+														//cout<<"NAME = "<<temp->NAME<<endl;
+														// cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
 														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
 														// struct Lsymbol *temp_2 = new Lsymbol;
 
@@ -166,14 +166,16 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 												**/
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
-											//	Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												last_function_used_type_check.push(($2->NAME));
+
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
 												// }
 
 												// struct Lsymbol *temp= new Lsymbol;
-												// temp = $7->Lentry;
+												// temp = $4->Lentry;
 												// while (temp!=NULL)
 												// {
 												// 	cout<<"type=" <<temp->TYPE<<" NAME = "<<temp->NAME<<endl;
@@ -201,7 +203,7 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 													no_of_error++;
 												}
 
-												$$=$7;/*evaluate($$);*/
+												//$$=$7;/*evaluate($$);*/
 												// $2->NAME="main";
 												if ($2->NAME ==  NULL)
 												{
@@ -209,10 +211,11 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												}
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,TYPE_INT,1,'f',$4);
-												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,NULL);
+												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
-												//Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
-												
+												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												last_function_used_type_check.push(($2->NAME));
+
 												// if ($7!=NULL)
 												// {
 												// 	$$->Lentry = $7->Lentry; 
@@ -227,6 +230,7 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													//$$ = $2;
 													$$->Lentry = $2->Lentry;
+													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 
 
 												}
@@ -240,7 +244,7 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{
 													//$1->Lentry->Next = $2->Lentry;
 													//$$ = $1;
 													$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
-
+													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 												}
 
 				|								{$$->Lentry = NULL;}
@@ -377,8 +381,7 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										// }
 										// else
 										// {
-											type_check($3);
-											cout<<"expr Node_Type="<<$3->Node_Type<<endl;
+											//cout<<"expr Node_Type="<<$3->Node_Type<<endl;
 											$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 											// cout<<"ptr1="<<endl;
 										//}
@@ -502,30 +505,58 @@ expr:expr PLUS expr		{
 
 						}
 	|ID '('ID_LIST')'	{
-							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
+							//$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
+							// cout<<"Arg_List = "<<$3->Lentry->TYPE<<endl;
+							// cout<<"ptr1 = "<<$$->Arg_List<<endl;
+							lookup_variable("hello","w");
+							// cout<<"$1->NAME = "<<$1->NAME<<endl;
+							// struct Lsymbol *temp = new Lsymbol;
+							// temp = $3->Lentry;
+							// while (temp != NULL)
+							// {
+
+							// 	if (lookup_variable($1->NAME,temp->NAME)!=NULL)
+							// 	{
+							// 		cout<<"change"<<endl;
+							// 		temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
+							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	}
+							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	temp = temp->Next;
+							// }
+
 
 						}
 	;
 
 ID_LIST: ID_LIST FUNC_ARG	{
-								//$$=NULL;
+								$$=new tnode;
 								$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
 
 							}
 		|					{
+								$$=new tnode;
 								//$$=NULL;
 								$$->Lentry = NULL;
 							}
 		;
 FUNC_ARG: IDS 				{
+								$$=new tnode;
 								//$$=NULL;												
 								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+								// cout<<"NAME = "<< $1->Lentry<<endl;
 
 							}
 
 		| FUNC_ARG ',' IDS	{
+								$$=new tnode;
 								//$$=NULL;
 								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+								// cout<<"NAME = "<< $1->Lentry<<endl;
+								// if ($1 == NULL)
+								// {
+								// 	cout<<"NULL"<<endl;
+								// }
 
 							}
 
@@ -594,7 +625,11 @@ int main(int argc,char const *argv[])
 	fprintf(sim_code_file, "HALT\n");
 
 	/**Main function name is pushed into the last_function_used_type_check stack for type_check**/
-	// last_function_used_type_check.push(char("main") );
+
+	char *main = (char *)malloc(20*sizeof(char));
+	strcpy(main,"main");
+	last_function_used_type_check.push(main);
+	
 	yyparse();
 	fclose(sim_code_file);
 	

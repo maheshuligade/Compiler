@@ -77,6 +77,13 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode *Arg_List);
 struct Lsymbol *Llookup(char *NAME);
 void Linstall(char * NAME,int TYPE);
 
+/**
+	Lookup variable in the local and gloabal symbol table ,If the variable is not there in the local
+	symbol table then look into the global symbol table ,if it is not there return NULL
+**/
+struct Lsymbol *lookup_variable(char *function_name,char *variable_name);
+
+
 void change_extension(char *filename);
 int codegen(struct tnode *expressionTree);
 
@@ -97,10 +104,12 @@ int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
 
-/**Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
+
+
+/**	Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
 	type_check
 **/
-extern stack <string > last_function_used_type_check;
+extern stack <char * > last_function_used_type_check;
 
 extern 	int yyerror(std::string s);
 extern int column_no;
