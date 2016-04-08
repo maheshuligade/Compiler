@@ -53,7 +53,8 @@ integer main()
 			endwhile;
 			e=e+1;
 		endwhile;
-	
+		
+		a=0;
 		j=2;
 		h=hello(a,z);
 		return j;

@@ -17,7 +17,7 @@ int ptr1_type,ptr2_type;
 string types_array[5]={"void","boolean","integer"};
 extern FILE *sim_code_file;
 
-stack <char *> last_function_used_type_check;
+stack <string> last_function_used_type_check;
 
 int k;
 int col,line;
@@ -885,7 +885,7 @@ int type_check(struct tnode* expressionTree)
 	
 	if (expressionTree!=NULL)
 	{
-		// cout<<"Node_Type="<<expressionTree->Node_Type<<endl;
+		cout<<"Node_Type="<<expressionTree->Node_Type<<endl;
 	}
 	if (expressionTree==NULL)
 	{
@@ -1175,48 +1175,50 @@ int type_check(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_CALL)
 	{	
-		cout<<"NAME="<<last_function_used_type_check.top()<<endl;
+		if (!last_function_used_type_check.empty())
+		{
+			cout<<"NAME="<<last_function_used_type_check.top()<<endl;
+		}
 
+		// if (Glookup(expressionTree->NAME)->Arg_List != NULL)
+		// 	{
+		// 		struct Lsymbol *temp = new Lsymbol;
+		// 		struct Lsymbol *temp_2 = new Lsymbol;
+		// 		temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		// 		temp_2 = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
 
-		if (Glookup(expressionTree->NAME)->Arg_List != NULL)
-			{
-				struct Lsymbol *temp = new Lsymbol;
-				struct Lsymbol *temp_2 = new Lsymbol;
-				temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
-				temp_2 = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
+		// 		while (temp != NULL && temp_2!=NULL)
+		// 		{
 
-				while (temp != NULL && temp_2!=NULL)
-				{
+		// 				//cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp->NAME<<endl;
+		// 			if (temp->TYPE != temp_2->TYPE)
+		// 			{
+		// 				col=temp_2->col_no;
+		// 				line=temp_2->line_no;
+		// 				cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+		// 				cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+		// 				yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+		// 			}
 
-						//cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp->NAME<<endl;
-					if (temp->TYPE != temp_2->TYPE)
-					{
-						col=temp_2->col_no;
-						line=temp_2->line_no;
-						cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-						cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-						yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
-					}
+		// 			temp = temp->Next;
+		// 			temp_2 = temp_2->Next;
+		// 		}
 
-					temp = temp->Next;
-					temp_2 = temp_2->Next;
-				}
+		// 		if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
+		// 		{
+		// 			yyerror("function call number of arguments does not match declaration.");
+		// 		}
 
-				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
-				{
-					yyerror("function call number of arguments does not match declaration.");
-				}
-
-				delete temp;
-				delete temp_2;
-			}
+		// 		delete temp;
+		// 		delete temp_2;
+		// 	}
 
 		return type_check(expressionTree->ptr1);
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_DEF)
 	{	
 		// cout<<"Node_Type = "<<expressionTree->ptr1->ptr1->Node_Type<<endl;
-		last_function_used_type_check.push(expressionTree->NAME);
+		last_function_used_type_check.push(string(expressionTree->NAME) );
 		type_check(expressionTree->ptr1);
 		last_function_used_type_check.pop();
 		return 0;

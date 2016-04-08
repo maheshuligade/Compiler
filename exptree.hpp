@@ -97,6 +97,10 @@ int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
 
+/**Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
+	type_check
+**/
+extern stack <string > last_function_used_type_check;
 
 extern 	int yyerror(std::string s);
 extern int column_no;

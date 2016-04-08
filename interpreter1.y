@@ -46,6 +46,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 
 														//if (no_of_error==0)
 														{
+															cout<<"IN typecheck"<<endl;
 															type_check($$);
 															/*evaluate($3);*/
 															//codegen($$);
@@ -376,7 +377,8 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										// }
 										// else
 										// {
-											//cout<<"expr Node_Type="<<$3->Node_Type<<endl;
+											type_check($3);
+											cout<<"expr Node_Type="<<$3->Node_Type<<endl;
 											$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 											// cout<<"ptr1="<<endl;
 										//}
@@ -590,6 +592,9 @@ int main(int argc,char const *argv[])
 	}
 	fprintf(sim_code_file, "call main\n");	
 	fprintf(sim_code_file, "HALT\n");
+
+	/**Main function name is pushed into the last_function_used_type_check stack for type_check**/
+	// last_function_used_type_check.push(char("main") );
 	yyparse();
 	fclose(sim_code_file);
 	
