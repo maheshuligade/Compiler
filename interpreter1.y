@@ -163,6 +163,7 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 													This makes the funtion node $$->Lentry points to the local symbol table 
 													of the respective function.
 												**/
+												// $$->Arg_List->Arg_List->Lentry = $1->Arg_List->Lentry;
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
@@ -174,7 +175,7 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 												// }
 
 												// struct Lsymbol *temp= new Lsymbol;
-												// temp = $4->Lentry;
+												// temp = $1->Arg_List->Lentry;
 												// while (temp!=NULL)
 												// {
 												// 	cout<<"type=" <<temp->TYPE<<" NAME = "<<temp->NAME<<endl;

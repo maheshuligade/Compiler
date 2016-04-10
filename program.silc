@@ -19,7 +19,7 @@ integer hello(integer a;,integer b;)
 	begin
 	c=TRUE;
 	
-	h=hello(f,w);
+	h=hello(f,f);
 
 	return 0;
 	end
