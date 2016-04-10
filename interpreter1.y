@@ -46,7 +46,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 
 														//if (no_of_error==0)
 														{
-															type_check($$);
+															//type_check($$);
 															/*evaluate($3);*/
 															//codegen($$);
 														}
@@ -78,13 +78,14 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
 														// struct Lsymbol *temp_2 = new Lsymbol;
 
-														// temp_2 = temp->Lentry;
+														// temp_2 =Glookup(temp->NAME)->Lentry;
 
 														// while(temp_2!=NULL)
 														// {
 														// 	cout<<"temp f = "<<temp_2->NAME<<" type = "<<temp_2->TYPE<<endl;
 														// 	temp_2 = temp_2->Next;
 														// }
+														// cout<<"size = "<<sizeof(struct Gsymbol)<<endl;
 
 													}
 													else
@@ -203,7 +204,8 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 				;
 
 FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK 	
-											{
+											{	
+
 	
 												if ($$ == NULL)
 												{
@@ -213,9 +215,10 @@ FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
-												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
-												Glookup($2->NAME)->Arg_List->Arg_List = $4;									
+												Glookup($2->NAME)->Local = $$->Lentry;
+												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;									
 												last_function_used_type_check.push(($2->NAME));
+												
 											}
 
 MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}' 
@@ -248,7 +251,8 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 
 MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')' 
 					'{' LOCAL_DEF_BLOCK 	
-											{
+											{	
+
 												if ($4->Lentry!=NULL)
 												{
 													cout<<input_file_name<<":"<<$4->Lentry->line_no<<":"<<$4->Lentry->col_no<<":"<<"error:"<<"main funtion can not have any arguments"<<endl;
@@ -271,9 +275,12 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
-												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												Glookup($2->NAME)->Local = $$->Lentry;
+												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+											//	Glookup($2->NAME)->Arg_List->Arg_List = new tnode;
+												// Glookup($2->NAME)->Arg_List->Arg_List = $4;									
 												last_function_used_type_check.push(($2->NAME));
-
+												
 											}
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													//$$ = $2;
@@ -576,20 +583,28 @@ expr:expr PLUS expr		{
 							// cout<<"ptr1 = "<<$$->Arg_List<<endl;
 							// lookup_variable("hello","w");
 							// cout<<"$1->NAME = "<<$1->NAME<<endl;
-							// struct Lsymbol *temp = new Lsymbol;
-							// temp = $$->Arg_List->Lentry;
-							// while (temp != NULL)
-							// {
+							// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+							struct Lsymbol *temp = new Lsymbol;
+							temp = $$->Arg_List->Lentry;
+							// temp = Glookup(last_function_used_type_check.top())->Local;
+							while (temp != NULL)
+							{
 
-							// 	// if (lookup_variable($1->NAME,temp->NAME)!=NULL)
-							// 	// {
-							// 	// 	cout<<"change"<<endl;
-							// 	// 	temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
-							// 	// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-							// 	// }
-							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-							// 	temp = temp->Next;
-							// }
+								if (lookup_variable(last_function_used_type_check.top(),temp->NAME)!=NULL)
+								{
+									// cout<<"change"<<endl;
+									temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+									// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+								}
+								else
+								{
+									// cout<<"change2"<<endl;
+									temp->TYPE = Glookup(temp->NAME)->TYPE;
+									// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+								}
+								//cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+								temp = temp->Next;
+							}
 
 
 						}
@@ -614,7 +629,7 @@ FUNC_ARG: IDS 				{
 								{
 									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 								}
-								// cout<<"NAME_Arg = "<<get_type($1)<<endl;
+								// cout<<"NAME_Arg = "<<$1->Lentry->TYPE<<endl;
 								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
 								// cout<<"NAME = "<< $1->Lentry<<endl;
 

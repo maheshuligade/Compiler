@@ -259,33 +259,33 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			struct Lsymbol *temp_2 = new Lsymbol;
 			if (Glookup(NAME)!=NULL && Arg_List!=NULL)
 			{
-				temp_2 = Arg_List->Lentry;
-				// temp_2 = Glookup(NAME)->Arg_List->Lentry;
-				//cout<<"NAME="<<Glookup(NAME)->NAME<<endl;
-				while (temp_2 != NULL && temp_2 != NULL)
+				temp = Arg_List->Lentry;
+				temp_2 = Glookup(NAME)->Arg_List->Lentry;
+				// cout<<"NAME="<<Glookup(NAME)->NAME<<endl;
+				while (temp != NULL && temp_2 != NULL)
 				{
 
-					cout<<"NAME="<<temp_2->NAME<<endl;
+					// cout<<"NAME="<<temp_2->NAME<<endl;
 					// cout<<"NAME="<<temp->NAME<<endl;
 					// cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
-					// if (strcmp(temp->NAME , temp_2->NAME) != 0 )
-					// {
-					// 	col=temp_2->col_no;
-					// 	line=temp_2->line_no;
-					// 	cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
-					// 	no_of_error++;
-					// }
-					// if (temp->pass_by_type != temp_2->pass_by_type)
-					// {
-					// 	col=temp_2->col_no;
-					// 	line=temp_2->line_no;
-					// 	cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
-					// 	no_of_error++;
-					// }
-					// temp = temp->Next;
+					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+						no_of_error++;
+					}
+					if (temp->pass_by_type != temp_2->pass_by_type)
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+						no_of_error++;
+					}
+					temp = temp->Next;
 					temp_2 = temp_2->Next;
 				}
-				cout<<"end"<<endl;
+				// cout<<"end"<<endl;
 				if (temp !=NULL && temp_2 ==NULL)
 				{
 					col=temp->col_no;
@@ -304,12 +304,12 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				}
 			}
 			delete temp;
-			//delete temp_2;
+			delete temp_2;
 
 			if (Glookup(NAME)->TYPE != type)
 			{
 					//cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
-					yyerror("function definition does not match declaration.");
+					yyerror("function definition type does not match declaration.");
 					no_of_error++;
 				
 			}
@@ -327,14 +327,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{
 				struct Lsymbol *temp = new Lsymbol;
 				struct Lsymbol *temp_2 = new Lsymbol;
-				temp = Glookup(NAME)->Arg_List->Arg_List->Lentry;
+				temp = Glookup(NAME)->Arg_List->Lentry;
 				temp_2 = Arg_List->Lentry;
 
-				while (temp != NULL && temp != NULL)
+				while (temp != NULL && temp_2 != NULL)
 				{
 
-						// cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-						// cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
+					// cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
 					if (temp->TYPE != temp_2->TYPE)
 					{
 						col=temp_2->col_no;
@@ -348,13 +348,14 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					temp_2 = temp_2->Next;
 				}
 
+				// cout<<"end"<<endl;
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
 					yyerror("function call number of arguments does not match declaration.");
 				}
 
-				// delete temp;
-				//delete temp_2; //why need not to free?
+				delete temp;
+				delete temp_2; //why need not to free?
 			}
 		}
 	}
@@ -1385,7 +1386,7 @@ struct Lsymbol *lookup_variable(char  *function_name,char *variable_name)
 		symbol table then look into the global symbol table ,if it is not there return NULL
 	**/
 	struct Lsymbol *function_variables;
-	function_variables = Glookup(function_name)->Arg_List->Lentry;
+	function_variables = Glookup(function_name)->Local;
 
 	// cout<<"variable name = "<<variable_name<<endl;
 	// cout<<"function_name = "<<function_name<<endl;
@@ -1401,7 +1402,7 @@ struct Lsymbol *lookup_variable(char  *function_name,char *variable_name)
 			// cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 			if (strcmp(temp->NAME , variable_name) == 0 )
 			{
-			 //	cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+			 	// cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 			 	return temp;
 			}
 			temp = temp->Next;
