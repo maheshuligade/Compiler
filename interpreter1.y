@@ -130,7 +130,7 @@ G_ID:IDS									{
 ARGS:ARGS ',' ARG 	{
 						//$$=$3;
 						//$$->Arg_List=$1;
-						$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+						$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'A');
 					}
 	| ARG			{	
 						//$$=$1;
@@ -139,7 +139,7 @@ ARGS:ARGS ',' ARG 	{
 							$$ = new tnode;
 						}
 						//$$->Arg_List=$1;
-						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'A');
 
 					}
 	|				{$$->Lentry = NULL;}
@@ -158,16 +158,15 @@ FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{
 																		}
 				|														{$$=NULL;}
 				;
-FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')' 
-				'{' LOCAL_DEF_BLOCK BODY'}' {	
+FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {	
 												/**
 													This makes the funtion node $$->Lentry points to the local symbol table 
 													of the respective function.
 												**/
-												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
-												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
-												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
-												last_function_used_type_check.push(($2->NAME));
+												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
+												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
+												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												// last_function_used_type_check.push(($2->NAME));
 
 												// if ($7!=NULL)
 												// {
@@ -183,12 +182,42 @@ FUNC_DEF_BLOCK:	TYPE ID '('ARGS ')'
 												// 	temp=temp->Next;
 												// }
 												// delete temp;
+												// struct Lsymbol *temp = new Lsymbol;
+												// temp = $1->Arg_List->Lentry;
+												// while (temp != NULL)
+												// {
+
+												// 	// if (lookup_variable($1->NAME,temp->NAME)!=NULL)
+												// 	// {
+												// 	// 	cout<<"change"<<endl;
+												// 	// 	temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
+												// 	// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+												// 	// }
+												// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+												// 	temp = temp->Next;
+												// }
+												// last_function_used_type_check.pop();
 
 											}
 				;
 
-MAIN_BLOCK:INTEGER MAIN '(' ARGS')' 
-			'{' LOCAL_DEF_BLOCK BODY '}' 
+FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK 	
+											{
+	
+												if ($$ == NULL)
+												{
+													$$ = new tnode;
+												}
+												$$->type = $1->type;
+												$$->NAME = $2->NAME;
+												$$->Arg_List = $4;
+												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
+												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												Glookup($2->NAME)->Arg_List->Arg_List = $4;									
+												last_function_used_type_check.push(($2->NAME));
+											}
+
+MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}' 
 											{	
 												/**
 													This makes the funtion node $$->Lentry points to the local symbol table 
@@ -197,6 +226,28 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
+												
+												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
+												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
+												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
+												// last_function_used_type_check.push(($2->NAME));
+
+												// if ($7!=NULL)
+												// {
+												// 	$$->Lentry = $7->Lentry; 
+												// }
+												// last_function_used_type_check.pop();
+
+
+											}
+			|								{
+												yyerror("‘main’ funtion is not defined in this scope.");
+											}
+			;
+
+MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')' 
+					'{' LOCAL_DEF_BLOCK 	
+											{
 												if ($4->Lentry!=NULL)
 												{
 													cout<<input_file_name<<":"<<$4->Lentry->line_no<<":"<<$4->Lentry->col_no<<":"<<"error:"<<"main funtion can not have any arguments"<<endl;
@@ -211,22 +262,18 @@ MAIN_BLOCK:INTEGER MAIN '(' ARGS')'
 												}
 												strcpy($2->NAME,"main");
 												Ginstall($2->NAME,TYPE_INT,1,'f',$4);
-												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$2->NAME,$8,NULL,NULL,$4);
-												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
+												if ($$ == NULL)
+												{
+													$$ = new tnode;
+												}
+												$$->type = $1->type;
+												$$->NAME = $2->NAME;
+												$$->Arg_List = $4;
+												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
 												Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												last_function_used_type_check.push(($2->NAME));
 
-												// if ($7!=NULL)
-												// {
-												// 	$$->Lentry = $7->Lentry; 
-												// }
-
-
 											}
-			|								{
-												yyerror("‘main’ funtion is not defined in this scope.");
-											}
-			;
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													//$$ = $2;
 													$$->Lentry = $2->Lentry;
@@ -243,7 +290,7 @@ LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{
 LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{	
 													//$1->Lentry->Next = $2->Lentry;
 													//$$ = $1;
-													$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
+													$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry,'V');
 													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 												}
 
@@ -276,13 +323,13 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{
 L_ID_LIST : L_ID_LIST ',' L_ID 				{	
 												// $$->Lentry=$3->Lentry;
 												// $$->Lentry->Next=$1->Lentry;
-												$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+												$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'V');
 
 											}
 			|L_ID 							{	
 												// $$->Lentry = $1->Lentry;
 												// $$->Lentry->Next = NULL;
-												$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+												$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'V');
 												
 											}
 			;
@@ -385,6 +432,24 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 											$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 											// cout<<"ptr1="<<endl;
 										//}
+
+										// if ($3->value == 'c')
+										// {
+										// 	struct Lsymbol *temp = new Lsymbol;
+										// 	temp = $3->Arg_List->Lentry;
+										// 	while (temp != NULL)
+										// 	{
+
+										// 		// if (lookup_variable($1->NAME,temp->NAME)!=NULL)
+										// 		// {
+										// 		// 	cout<<"change"<<endl;
+										// 		// 	temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
+										// 		// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+										// 		// }
+										// 		cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+										// 		temp = temp->Next;
+										// 	}
+										// }
 									}
 	// |TYPE IDS SEMICOLON {
 
@@ -505,22 +570,22 @@ expr:expr PLUS expr		{
 
 						}
 	|ID '('ID_LIST')'	{
-							//$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
+							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 							// cout<<"Arg_List = "<<$3->Lentry->TYPE<<endl;
 							// cout<<"ptr1 = "<<$$->Arg_List<<endl;
-							lookup_variable("hello","w");
+							// lookup_variable("hello","w");
 							// cout<<"$1->NAME = "<<$1->NAME<<endl;
 							// struct Lsymbol *temp = new Lsymbol;
-							// temp = $3->Lentry;
+							// temp = $$->Arg_List->Lentry;
 							// while (temp != NULL)
 							// {
 
-							// 	if (lookup_variable($1->NAME,temp->NAME)!=NULL)
-							// 	{
-							// 		cout<<"change"<<endl;
-							// 		temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
-							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-							// 	}
+							// 	// if (lookup_variable($1->NAME,temp->NAME)!=NULL)
+							// 	// {
+							// 	// 	cout<<"change"<<endl;
+							// 	// 	temp->TYPE = lookup_variable($1->NAME,temp->NAME)->TYPE;
+							// 	// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	// }
 							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 							// 	temp = temp->Next;
 							// }
@@ -531,7 +596,7 @@ expr:expr PLUS expr		{
 
 ID_LIST: ID_LIST FUNC_ARG	{
 								$$=new tnode;
-								$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry);
+								$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry,'c');
 
 							}
 		|					{
@@ -542,8 +607,14 @@ ID_LIST: ID_LIST FUNC_ARG	{
 		;
 FUNC_ARG: IDS 				{
 								$$=new tnode;
-								//$$=NULL;												
-								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL);
+								//$$=NULL;										
+								// $1->type =get_type($1);		
+								if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+								{
+									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+								}
+								// cout<<"NAME_Arg = "<<get_type($1)<<endl;
+								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
 								// cout<<"NAME = "<< $1->Lentry<<endl;
 
 							}
@@ -551,7 +622,14 @@ FUNC_ARG: IDS 				{
 		| FUNC_ARG ',' IDS	{
 								$$=new tnode;
 								//$$=NULL;
-								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry);
+								// $3->type =get_type($3);	
+								// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+								if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+								{
+									$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+								}
+								// cout<<"NAME_Arg = "<<$3->Lentry->TYPE<<endl;
+								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'c');
 								// cout<<"NAME = "<< $1->Lentry<<endl;
 								// if ($1 == NULL)
 								// {

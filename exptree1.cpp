@@ -308,7 +308,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			if (Glookup(NAME)->TYPE != type)
 			{
-					cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
+					//cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
 					yyerror("function definition does not match declaration.");
 					no_of_error++;
 				
@@ -327,20 +327,21 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{
 				struct Lsymbol *temp = new Lsymbol;
 				struct Lsymbol *temp_2 = new Lsymbol;
-				temp = Glookup(NAME)->Arg_List->Lentry;
+				temp = Glookup(NAME)->Arg_List->Arg_List->Lentry;
 				temp_2 = Arg_List->Lentry;
 
-				while (temp != NULL && temp_2!=NULL)
+				while (temp != NULL && temp != NULL)
 				{
 
-						//cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp->NAME<<endl;
+						// cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+						// cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
 					if (temp->TYPE != temp_2->TYPE)
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
-						// cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-						// cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-						//yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+						//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+						//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+						yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
 					}
 
 					temp = temp->Next;
@@ -349,7 +350,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
-				//	yyerror("function call number of arguments does not match declaration.");
+					yyerror("function call number of arguments does not match declaration.");
 				}
 
 				// delete temp;
@@ -1075,7 +1076,7 @@ int type_check(struct tnode* expressionTree)
 		
 		if (expressionTree->ptr2->Node_Type == Node_Type_FUNCTION_CALL)
 		{
-			cout<<"Node_Type =    "<<expressionTree->ptr2->Node_Type<<endl;
+			//cout<<"Node_Type =    "<<expressionTree->ptr2->Node_Type<<endl;
 			type_check(expressionTree->ptr2); 
 		}
 		
@@ -1182,47 +1183,49 @@ int type_check(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_CALL)
 	{	
-		if (!last_function_used_type_check.empty())
-		{
-			cout<<"NAME="<<last_function_used_type_check.top()<<endl;
-		}
+		// if (!last_function_used_type_check.empty())
+		// {
+		// 	cout<<"NAME="<<last_function_used_type_check.top()<<endl;
+		// }
 
-		if (Glookup(expressionTree->NAME)->Arg_List != NULL)
-		{
-				struct Lsymbol *temp = new Lsymbol;
-				struct Lsymbol *temp_2 = new Lsymbol;
-				temp = expressionTree->Arg_List->Lentry;
-				// temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
-				temp = expressionTree->Arg_List->Lentry;
-				temp_2 = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
-				// cout<<"ptr1 = "<<expressionTree->Arg_List<<endl;
-				// if (temp_2 == NULL)
-				// {
-				// 	cout<<"NULL"<<endl;
-				// }
-				// if (temp->Next == NULL)
-				// {
-				// 	cout<<"NULL"<<endl;
-				// }
-				while ( temp != NULL)
-				{
+		// if (Glookup(expressionTree->NAME)->Arg_List != NULL)
+		// {
+		// 		struct Lsymbol *temp = new Lsymbol;
+		// 		struct Lsymbol *temp_2 = new Lsymbol;
+		// 		temp = expressionTree->Arg_List->Lentry;
+		// 		cout<<"value = "<<char(expressionTree->value)<<endl;
+		// 		// temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		// 		// temp = expressionTree->Arg_List->Lentry;
+		// 		// temp = Glookup(last_function_used_type_check.top())->Arg_List->Lentry;
+		// 		// cout<<"ptr1 = "<<expressionTree->Arg_List<<endl;
+		// 		// if (temp_2 == NULL)
+		// 		// {
+		// 		// 	cout<<"NULL"<<endl;
+		// 		// }
+		// 		// if (temp->Next == NULL)
+		// 		// {
+		// 		// 	cout<<"NULL"<<endl;
+		// 		// }
+		// 		while ( temp != NULL)
+		// 		{
 
-						// cout<<"type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-					// if (temp->type != temp_2->TYPE)
-					// {
-					// // 	col=temp_2->col_no;
-					// // 	line=temp_2->line_no;
-						cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-						// cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-					// 	yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");					
-					//	no_of_error++;
-					// }
-					cout<<"type = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
-					cout<<"NAME = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->NAME<<endl;
+		// 				cout<<"type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+		// 				// cout<<"type="<<temp_2->TYPE<<" NAME="<<temp_2->NAME<<endl;
+		// 			// if (temp->type != temp_2->TYPE)
+		// 			// {
+		// 			// // 	col=temp_2->col_no;
+		// 			// // 	line=temp_2->line_no;
+		// 				//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+		// 				// cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+		// 			// 	yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");					
+		// 			//	no_of_error++;
+		// 			// }
+		// 			// cout<<"type = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+		// 			// cout<<"NAME = "<<lookup_variable(last_function_used_type_check.top(),temp->NAME)->NAME<<endl;
 
-					temp = temp->Next;
-					// temp_2 = temp_2->Next;
-				}
+		// 			temp = temp->Next;
+		// 			// temp_2 = temp_2->Next;
+				//}
 				// cout<<" "<<endl;
 				// }
 				// while (temp != NULL)
@@ -1245,8 +1248,8 @@ int type_check(struct tnode* expressionTree)
 
 				//delete temp;
 				//delete temp_2;
-			}
-
+			// }
+		// last_function_used_type_check.pop();
 		return type_check(expressionTree->ptr1);
 	}
 	else if (expressionTree->Node_Type==Node_Type_FUNCTION_DEF)
@@ -1320,7 +1323,7 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type)
 	return new_node;
 }
 
-struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2)
+struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2,int value)
 {
 	/**
 		Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
@@ -1339,7 +1342,7 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 		
 			if (Node_2!=NULL)
 			{
-				if (strcmp(temp->NAME,temp_2->NAME)==0)
+				if (strcmp(temp->NAME,temp_2->NAME)==0 && value!='c')
 				{
 					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of variable‘"<<temp->NAME<<"’"<<endl;
 					no_of_error++;
@@ -1395,10 +1398,10 @@ struct Lsymbol *lookup_variable(char  *function_name,char *variable_name)
 		temp = function_variables;
 		while (temp != NULL)
 		{
-			 cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+			// cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 			if (strcmp(temp->NAME , variable_name) == 0 )
 			{
-			 	cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+			 //	cout<<"type2="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 			 	return temp;
 			}
 			temp = temp->Next;

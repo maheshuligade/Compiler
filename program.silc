@@ -19,7 +19,7 @@ integer hello(integer a;,integer b;)
 	begin
 	c=TRUE;
 	
-	h=hello(b,w);
+	h=hello(f,w);
 
 	return 0;
 	end
@@ -27,9 +27,13 @@ integer hello(integer a;,integer b;)
 integer main()
 {
 	decl
+		boolean b;
 		boolean c;
+		boolean e;
 	enddecl
 	begin
+		j=hello(f,f);
+
 		return j;
 	end
 

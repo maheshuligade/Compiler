@@ -69,7 +69,7 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type);
 	Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
 	contains the local variable and which is linked to the Lentry of the Function node later.
 **/
-struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2);
+struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2,int value);
 
 struct Gsymbol *Glookup(char *NAME);
 void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode *Arg_List);
