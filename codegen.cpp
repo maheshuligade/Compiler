@@ -8,7 +8,7 @@ int reg=0;
 int left_value,right_value;
 int reg_no=0;
 int label_no=0;
-stack <string> last_function_used;
+stack <char *> last_function_used;
 
 
 int MEMORY_LOC;
@@ -58,7 +58,7 @@ int codegen(struct tnode *expressionTree)
 	
 	if (expressionTree != NULL)
 	{
-		cout<<"Node_Type = "<<expressionTree->Node_Type<<endl;
+		// cout<<"Node_Type = "<<expressionTree->Node_Type<<endl;
 	}
 	if (expressionTree==NULL)
 	{
@@ -404,10 +404,14 @@ int codegen(struct tnode *expressionTree)
 	else if (expressionTree->Node_Type == Node_Type_FUNCTION_CALL)
 	{
 		//cout<<"NAME = "<<expressionTree->NAME<<endl;
-		cout<<"R = "<<reg_1<<" R = "<<reg_2<<endl;
-		while (reg_1 >= 0)
+		// cout<<"R = "<<reg_1<<" R = "<<reg_2<<endl;
+		int r,bind;
+		// r = reg_1;
+		// reg_1 = 3;
+		r = 0;
+		while (r <= reg_1)
 		{
-			fprintf(sim_code_file, "PUSH R%d\n",reg_1--);
+			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
 		
 		struct Lsymbol *temp = new Lsymbol;
@@ -415,7 +419,19 @@ int codegen(struct tnode *expressionTree)
 		while (temp != NULL)
 		{
 			cout<<"NAME = "<<temp->NAME<<endl;
-			cout<<"Value = "<<get_variable_binding(std::string("hello"),temp->NAME)<<endl;
+			// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
+			if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
+			{
+				bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
+
+				cout<<"Binding = "<<bind<<endl;
+				fprintf(sim_code_file, "PUSH %d\n",bind);
+			}
+			else
+			{
+				bind = Memory[Glookup((temp->NAME))->Binding];
+				cout<<"Binding = "<<bind<<endl;
+			}	
 			temp = temp->Next;
 		}
 		delete temp;
@@ -423,7 +439,10 @@ int codegen(struct tnode *expressionTree)
 		// {
 		// 	cout<<"NAME = "<<expressionTree->Arg_List->Lentry->NAME<<endl;
 		// }
-		reg_1 = codegen(expressionTree->ptr1);
+		// reg_1 = r;
+		// reg_1 = codegen(expressionTree->ptr1);
+		// cout<<"Node_Type = "<<expressionTree->ptr1->Node_Type<<endl;
+		// cout<<"reg_1 = "<<reg_1<<endl;
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 		return reg_1;
 	}
@@ -509,10 +528,14 @@ int get_variable_binding(string last_function_used,char *NAME)
 			{	
 				struct Lsymbol *temp_2 = new Lsymbol;
 
-				temp_2 = temp->Arg_List->Lentry;
+				temp_2 = temp->Local;//->Lentry;
 
 				while(temp_2!=NULL)
-				{
+				{	
+					if (temp_2->NAME == NAME)
+					{
+						return temp->Binding;
+					}
 					cout<<"temp ="<<temp_2->NAME<<endl;
 					temp_2 = temp_2->Next;
 				}

@@ -5,7 +5,7 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer l;);
+	integer hello(integer a;,integer b;);
 	integer g,h;
 enddecl
 
@@ -19,7 +19,6 @@ integer hello(integer a;,integer b;)
 	begin
 	c=TRUE;
 	
-	h=hello(f,f);
 
 	return 0;
 	end
@@ -34,7 +33,9 @@ integer main()
 		integer z;
 	enddecl
 	begin
-		j=hello(f,f);
+
+		a = 2;
+		j=hello(z,a);
 
 		return j;
 	end

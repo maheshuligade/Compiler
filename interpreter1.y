@@ -44,7 +44,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														$$->ptr1=$3;
 														$$->ptr2=$2;
 
-														//if (no_of_error==0)
+														if (no_of_error==0)
 														{
 															//type_check($$);
 															/*evaluate($3);*/
@@ -620,6 +620,7 @@ ID_LIST: ID_LIST FUNC_ARG	{
 								//$$=NULL;
 								$$->Lentry = NULL;
 							}
+
 		;
 FUNC_ARG: IDS 				{
 								$$=new tnode;
@@ -653,6 +654,31 @@ FUNC_ARG: IDS 				{
 								// }
 
 							}
+		// |FUNC_ARG ',' NUM	{
+		// 						// cout<<"IN NUM"<<endl;
+		// 						$$=new tnode;
+		// 						$$=$1;$$->type=$1->type;
+		// 						//$$=NULL;
+		// 						// $3->type =get_type($3);	
+		// 						// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+		// 						// if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+		// 						// {
+		// 						// 	$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+		// 						// }
+		// 						// cout<<"NAME_Arg = "<<$3->Lentry->TYPE<<endl;
+		// 						$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'c');
+		// 					}
+		// |NUM				{
+		// 						$$=new tnode;
+		// 						//$$=NULL;										
+		// 						// $1->type =get_type($1);		
+		// 						// if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+		// 						// {
+		// 						// 	$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+		// 						// }
+		// 						// cout<<"NAME_Arg = "<<$1->Lentry->TYPE<<endl;
+		// 						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
+		// 					}
 
 IDS:ID 					{	
 							if (Glookup($1->NAME)!=NULL)

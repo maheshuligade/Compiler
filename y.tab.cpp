@@ -531,7 +531,7 @@ static const yytype_uint16 yyrline[] =
      468,   472,   476,   480,   484,   489,   495,   504,   509,   513,
      517,   521,   525,   526,   527,   528,   532,   536,   540,   544,
      548,   552,   556,   560,   564,   568,   572,   576,   580,   613,
-     618,   624,   638,   657,   669,   683,   684
+     618,   625,   639,   683,   695,   709,   710
 };
 #endif
 
@@ -1578,7 +1578,7 @@ yyreduce:
 														(yyval)->ptr1=(yyvsp[(3) - (3)]);
 														(yyval)->ptr2=(yyvsp[(2) - (3)]);
 
-														//if (no_of_error==0)
+														if (no_of_error==0)
 														{
 															//type_check($$);
 															/*evaluate($3);*/
@@ -2351,7 +2351,7 @@ yyreduce:
     break;
 
   case 71:
-#line 624 "interpreter1.y"
+#line 625 "interpreter1.y"
     {
 								(yyval)=new tnode;
 								//$$=NULL;										
@@ -2368,7 +2368,7 @@ yyreduce:
     break;
 
   case 72:
-#line 638 "interpreter1.y"
+#line 639 "interpreter1.y"
     {
 								(yyval)=new tnode;
 								//$$=NULL;
@@ -2390,7 +2390,7 @@ yyreduce:
     break;
 
   case 73:
-#line 657 "interpreter1.y"
+#line 683 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 							{	
@@ -2406,7 +2406,7 @@ yyreduce:
     break;
 
   case 74:
-#line 669 "interpreter1.y"
+#line 695 "interpreter1.y"
     {
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
 							{	
@@ -2422,12 +2422,12 @@ yyreduce:
     break;
 
   case 75:
-#line 683 "interpreter1.y"
+#line 709 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 76:
-#line 684 "interpreter1.y"
+#line 710 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
@@ -2647,7 +2647,7 @@ yyreturn:
 }
 
 
-#line 687 "interpreter1.y"
+#line 713 "interpreter1.y"
 
 
 int yyerror(string s)
