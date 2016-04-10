@@ -33,6 +33,7 @@ struct Gsymbol
 
 	struct tnode *Arg_List;//Argument list of the functions
 	/*The Arg_Struct must  store the name and type of the each argument*/
+	struct Lsymbol *Local; //To store the local variables;
 	struct Gsymbol *Next;	//Pointer to the next Symbol Table Entry
 };
 
