@@ -1096,11 +1096,14 @@ int type_check(struct tnode* expressionTree)
 	{
 		if (expressionTree->ptr1->Node_Type==Node_Type_ARRAY)
 		{
-			if (Glookup(expressionTree->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
+			if (lookup_variable(last_function_used_type_check.top(),expressionTree->NAME) == NULL)
 			{
+				if (Glookup(expressionTree->NAME)==NULL)
+				{
 
-				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
-				return -1;
+					yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+					return -1;
+				}
 			}
 			Memory[Glookup(expressionTree->NAME)->Binding + evaluate(expressionTree->ptr1->ptr2)]=evaluate(expressionTree->ptr2);
 			//cout<<"Array= "<<expressionTree->NAME<<" = "<< evaluate(expressionTree->ptr1->ptr2)<<endl;
@@ -1116,20 +1119,34 @@ int type_check(struct tnode* expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_ARRAY)
 	{	
-		if (expressionTree->value=='A'||expressionTree->value=='a')
+		if (expressionTree->value=='A')
 		{	
 
 			if (Glookup(expressionTree->NAME)==NULL)
 			{
-				if (Llookup(expressionTree->NAME)==NULL)
-				{
+				// if (Llookup(expressionTree->NAME)==NULL)
+				// {
 					yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
 					
-				}
+				// }
 				
 				return -1;
 			}
 			return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
+		}
+		else if (expressionTree->value=='a')
+		{
+			if (lookup_variable(last_function_used_type_check.top(),expressionTree->NAME) == NULL)
+			{
+				if (Glookup(expressionTree->NAME)==NULL)
+				{
+					yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");			
+					return -1;
+				}
+				return Memory[Glookup(expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
+				
+			}
+			return Memory[lookup_variable(last_function_used_type_check.top(),expressionTree->NAME)->Binding + type_check(expressionTree->ptr2)];
 		}
 		else
 		{
@@ -1141,18 +1158,21 @@ int type_check(struct tnode* expressionTree)
 		int input=0;
 		//cin>>input;
 		//cout<<"IN read"<<endl;
-		if (Glookup(expressionTree->ptr1->NAME)==NULL && Llookup(expressionTree->NAME)==NULL)
+		if (lookup_variable(last_function_used_type_check.top(),expressionTree->NAME) == NULL)
 		{
-			//Memory[Global_Bind_Count]=input;
-			//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
+			if (Glookup(expressionTree->ptr1->NAME)==NULL)
+			{
+				//Memory[Global_Bind_Count]=input;
+				//Ginstall(expressionTree->ptr1->NAME,expressionTree->ptr1->type,1,NULL);
 
-			//cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
-			yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
-			return -1;
+				//cout<<"error: ‘"<<expressionTree->NAME<<"’ "<<"was not declared in this scope"<<endl;
+				yyerror(std::string ("‘") + expressionTree->NAME + "’ was not declared in this scope");
+				return -1;
+			}
 		}
 		else
 		{
-
+			//Memory[lookup_variable(last_function_used_type_check.top(),expressionTree->ptr1->NAME)->Binding + type_check(expressionTree->ptr2) +1]=input;		
 			Memory[Glookup(expressionTree->ptr1->NAME)->Binding + type_check(expressionTree->ptr2) +1]=input;
 		}
 		//cout<<"READ="<<Memory[Glookup(expressionTree->ptr1->NAME)->Binding + type_check(expressionTree->ptr2)+1]<<endl;

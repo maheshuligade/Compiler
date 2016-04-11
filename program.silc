@@ -36,11 +36,11 @@ integer main()
 	enddecl
 	begin
 
-		y = 2;
-		t = 2;
-		o = 2;
 		j=hello(z,a);
-		
+		o = TRUE;
+		if (o) then
+
+		endif;
 
 		return j;
 	end
