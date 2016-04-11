@@ -41,6 +41,11 @@ void free_reg()
 {	
 	/*This Function deallocates the max unused register and returns its value*/
 	reg_no--;
+	if (reg_no < 0)
+	{	
+		/**Exception if the reg value less than 0.**/
+		cout<<"exception:free_reg."<<endl;
+	}
 }
 int get_label()
 {
@@ -174,9 +179,9 @@ int codegen(struct tnode *expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
 	{
 
-			reg_1=get_location(expressionTree->ptr1);
-			reg_2=codegen(expressionTree->ptr2);
-			
+			reg_1 = get_location(expressionTree->ptr1);
+			reg_2 = codegen(expressionTree->ptr2);
+			// cout<<"Node_Type in ASSIGNMENT = "<<expressionTree->ptr2->Node_Type<<endl;
 			fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
 			free_reg();
 			free_reg();
@@ -391,7 +396,9 @@ int codegen(struct tnode *expressionTree)
 	{
 		//cout<<"NAME = "<<expressionTree->NAME<<endl;
 		//strcpy(last_function_used , expressionTree->NAME);
-		
+		// int r;
+		// r = reg_1;
+		// reg_1 = 0;
 		last_function_used.push(expressionTree->NAME);
 
 		fprintf(sim_code_file, "\n%s:\n",expressionTree->NAME);
@@ -399,6 +406,7 @@ int codegen(struct tnode *expressionTree)
 		
 		last_function_used.pop();
 		//Glookup(expressionTree->NAME);
+		// reg_1 = r;
 		return reg_1;
 	}
 	else if (expressionTree->Node_Type == Node_Type_FUNCTION_CALL)
@@ -470,6 +478,7 @@ int get_location(struct tnode *expressionTree)
 
 	int reg_1,reg_2;
 	int location;
+	// cout<<"Node_Type = "<<expressionTree->ptr2->Node_Type<<endl;
 	if (expressionTree->value=='A')
 	{		
 			// if (Llookup(expressionTree->NAME)==NULL)
@@ -492,18 +501,24 @@ int get_location(struct tnode *expressionTree)
 			reg_1=get_reg();
 			reg_2=codegen(expressionTree->ptr2);
 			
-			if (lookup_variable(last_function_used_type_check.top(),expressionTree->NAME) == NULL)
+			if (lookup_variable(last_function_used.top(),expressionTree->NAME) == NULL)
 			{
 				location = Glookup(expressionTree->NAME)->Binding;
 			}
 			else
 			{				
-				location = lookup_variable(last_function_used_type_check.top(),expressionTree->NAME)->Binding;
+				location = lookup_variable(last_function_used.top(),expressionTree->NAME)->Binding;
 			}
 			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
 			fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 			free_reg();
 			return reg_1;
+	}
+	else 
+	{
+		/**Exception if the variable does not exist.**/
+		cout<<"exception:get_location."<<endl;
+		return -1;
 	}
 		return -1;
 }
