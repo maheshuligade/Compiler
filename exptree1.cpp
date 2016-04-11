@@ -92,7 +92,6 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		// 	}
 			
 		// }
-
 		
 	 }
 	else if (Node_Type==Node_Type_IF)
@@ -130,10 +129,24 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			}
 			else if (ptr1->type==TYPE_VOID)
 			{
-				if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
 				{
-					yyerror("while loop requires boolean type condition.");
+					if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					{
+						yyerror("while loop requires boolean type condition.");
+					}
 				}
+				else 
+				{
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					{
+						yyerror("while loop requires boolean type condition.");
+					}					
+				}
+				// if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+				// {
+				// 	yyerror("while loop requires boolean type condition.");
+				// }
 			}
 			
 	}	

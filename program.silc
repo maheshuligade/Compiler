@@ -37,10 +37,10 @@ integer main()
 	begin
 
 		j=hello(z,a);
-		o = TRUE;
-		if (o) then
+		o = 2;
+		while (o) do
 
-		endif;
+		endwhile;
 
 		return j;
 	end
