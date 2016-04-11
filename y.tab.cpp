@@ -1582,7 +1582,7 @@ yyreduce:
 														{
 															//type_check($$);
 															/*evaluate($3);*/
-															//codegen($$);
+															codegen((yyval));
 														}
 													}
     break;

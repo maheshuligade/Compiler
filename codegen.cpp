@@ -472,10 +472,10 @@ int get_location(struct tnode *expressionTree)
 	int location;
 	if (expressionTree->value=='A')
 	{		
-			if (Llookup(expressionTree->NAME)==NULL)
-			{
+			// if (Llookup(expressionTree->NAME)==NULL)
+			// {
 				
-			}
+			// }
 			reg_1=get_reg();
 			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,Glookup(expressionTree->NAME)->Binding);
 		
@@ -489,13 +489,19 @@ int get_location(struct tnode *expressionTree)
 	{	
 			expressionTree->ptr2->value-=1;
 			
-			
 			reg_1=get_reg();
 			reg_2=codegen(expressionTree->ptr2);
 			
-			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,Glookup(expressionTree->NAME)->Binding);
+			if (lookup_variable(last_function_used_type_check.top(),expressionTree->NAME) == NULL)
+			{
+				location = Glookup(expressionTree->NAME)->Binding;
+			}
+			else
+			{				
+				location = lookup_variable(last_function_used_type_check.top(),expressionTree->NAME)->Binding;
+			}
+			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
 			fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-
 			free_reg();
 			return reg_1;
 	}
