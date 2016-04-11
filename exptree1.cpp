@@ -51,27 +51,48 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		// 	cout<<"Array     "<<endl;
 		// }
 		//cout<<"NAME="<<NAME<<" size="<<Glookup(NAME)->size<<" Index="<<evaluate(ptr1->ptr2)<<endl;
-		if (Glookup(NAME)==NULL)
-		{	
-			//If the varible is not decraired
-			if(Llookup(NAME)==NULL)
-			{
-				yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
-				//new_node=NULL;
-			}
-			
-		}
-		else if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
-		{	
-			//If Array is outof bound
-			
-			yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
-		}
-		else if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
+		if (lookup_variable(last_function_used_type_check.top(),NAME) == NULL)
 		{
-				yyerror("boolean Type can be TRUE or FALSE");
+			if (Glookup(NAME)==NULL)
+			{	
+				//If the varible is not decraired
+				// if(Llookup(NAME)==NULL)
+				// {
+					yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
+					//new_node=NULL;
+				// }
+				
+			}
+			else 
+			{	if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
+				{
+					yyerror("boolean Type can be TRUE or FALSE");
+				}
+				
+				if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
+				{	
+					//If Array is outof bound
+				
+					yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
+				}
+			}
 		}
-	
+		else if (lookup_variable(last_function_used_type_check.top(),NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
+		{
+					yyerror("boolean Type can be TRUE or FALSE");
+		}
+		// if (Glookup(NAME) != NULL)
+		// {
+		// 	//else
+		// 	if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
+		// 	{	
+		// 		//If Array is outof bound
+				
+		// 		yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
+		// 	}
+			
+		// }
+
 		
 	 }
 	else if (Node_Type==Node_Type_IF)
@@ -82,10 +103,20 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				yyerror("if statement requires boolean type condition.");
 			}
 			else if (ptr1->type==TYPE_VOID)
-			{
-				if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+			{	
+				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
 				{
-					yyerror("if statement requires boolean type condition.");
+					if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					{
+						yyerror("if statement requires boolean type condition.");
+					}
+				}
+				else 
+				{
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					{
+						yyerror("if statement requires boolean type condition.");
+					}					
 				}
 			}
 			
