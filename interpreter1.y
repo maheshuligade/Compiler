@@ -610,50 +610,71 @@ expr:expr PLUS expr		{
 						}
 	;
 
-ID_LIST: ID_LIST FUNC_ARG	{
+ID_LIST: ID_LIST ',' expr		{
 								$$=new tnode;
-								$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry,'c');
+								if ($3->Node_Type == Node_Type_ARRAY && lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+								{
+									$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+									// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
+
+								}
+								$$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
+								// cout<<"Node_Type2 = "<<$3->type<<endl;
 
 							}
-		|					{
+		| expr				{
 								$$=new tnode;
+								if ($1->Node_Type == Node_Type_ARRAY && lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+								{
+									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
+								}
 								//$$=NULL;
+								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
+								// $$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
+								// cout<<"Node_Type = "<<$1->type<<endl;
+
+
+							}
+		|					{	
 								$$->Lentry = NULL;
 							}
 
 		;
-FUNC_ARG: IDS 				{
-								$$=new tnode;
-								//$$=NULL;										
-								// $1->type =get_type($1);		
-								if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
-								{
-									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
-								}
-								// cout<<"NAME_Arg = "<<$1->Lentry->TYPE<<endl;
-								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
-								// cout<<"NAME = "<< $1->Lentry<<endl;
+// FUNC_ARG: IDS 				{
+// 								$$=new tnode;
+// 								//$$=NULL;										
+// 								// $1->type =get_type($1);		
+// 								if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+// 								{
+// 									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+// 								}
+// 								// cout<<"NAME_Arg = "<<$1->Lentry->TYPE<<endl;
+// 								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
+// 								// cout<<"NAME = "<< $1->Lentry<<endl;
 
-							}
+// 							}
 
-		| FUNC_ARG ',' IDS	{
-								$$=new tnode;
-								//$$=NULL;
-								// $3->type =get_type($3);	
-								// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
-								if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
-								{
-									$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
-								}
-								// cout<<"NAME_Arg = "<<$3->Lentry->TYPE<<endl;
-								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'c');
-								// cout<<"NAME = "<< $1->Lentry<<endl;
-								// if ($1 == NULL)
-								// {
-								// 	cout<<"NULL"<<endl;
-								// }
+// 		| FUNC_ARG ',' IDS	{
+// 								$$=new tnode;
+// 								//$$=NULL;
+// 								// $3->type =get_type($3);	
+// 								// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+// 								if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+// 								{
+// 									$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+// 								}
+// 								// cout<<"NAME_Arg = "<<$3->Lentry->TYPE<<endl;
+// 								$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'c');
+// 								// cout<<"NAME = "<< $1->Lentry<<endl;
+// 								// if ($1 == NULL)
+// 								// {
+// 								// 	cout<<"NULL"<<endl;
+// 								// }
 
-							}
+// 							}
 		// |FUNC_ARG ',' NUM	{
 		// 						// cout<<"IN NUM"<<endl;
 		// 						$$=new tnode;
