@@ -412,7 +412,7 @@ int codegen(struct tnode *expressionTree)
 		//Glookup(expressionTree->NAME);
 		// reg_1 = r;
 		// free_reg(__LINE__);
-		cout<<"					reg = "<<reg_no<<endl;
+		// cout<<"					reg = "<<reg_no<<endl;
 		return reg_1;
 	}
 	else if (expressionTree->Node_Type == Node_Type_FUNCTION_CALL)
@@ -428,27 +428,53 @@ int codegen(struct tnode *expressionTree)
 			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
 		
-		struct Lsymbol *temp = new Lsymbol;
-		temp = expressionTree->Arg_List->Lentry;
-		while (temp != NULL)
-		{
-			//cout<<"NAME = "<<temp->NAME<<endl;
-			// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
-			if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
-			{
-				bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
 
-				//cout<<"Binding = "<<bind<<endl;
-				fprintf(sim_code_file, "PUSH %d\n",bind);
-			}
-			else
-			{
-				bind = Memory[Glookup((temp->NAME))->Binding];
-				//cout<<"Binding = "<<bind<<endl;
-			}	
-			temp = temp->Next;
+
+		struct tnode *temp = new tnode;
+		struct Lsymbol *temp_2 = new Lsymbol;
+
+		temp = expressionTree->Arg_List;
+		temp_2 = Glookup(expressionTree->NAME)->Local;
+
+		while (temp_2 != NULL && temp_2 != NULL)
+		{
+			cout<<"NAME = "<<temp_2->pass_by_type<<endl;
+			// cout<<"NAME2 = "<<temp_2->pass_by_type<<endl;
+			// if (temp_2->pass_by_type == PASS_BY_REFERENCE)
+			// {
+
+			// }
+			// else if (temp_2->pass_by_type == PASS_BY_VALUE)
+			// {
+			// 	// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
+			// 	if (temp->Node_Type == Node_Type_ARRAY)
+			// 	{
+			// 		if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
+			// 		{
+			// 			bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
+
+			// 			//cout<<"Binding = "<<bind<<endl;
+			// 			fprintf(sim_code_file, "PUSH %d\n",bind);
+			// 		}
+			// 		else
+			// 		{
+			// 			bind = Memory[Glookup((temp->NAME))->Binding];
+			// 			fprintf(sim_code_file, "PUSH %d\n",bind);
+			// 			//cout<<"Binding = "<<bind<<endl;
+			// 		}	
+			// 	}
+			// 	else
+			// 	{
+			// 		fprintf(sim_code_file, "\n\n");
+			// 		reg_1 = codegen(expressionTree->ptr1);
+			// 		cout<<"reg_1 = "<<reg_1<<endl;
+			// 	}
+			// }
+			// temp = temp->Arg_List;
+			temp_2 = temp_2->Next;
 		}
 		delete temp;
+		delete temp_2;
 		// if (expressionTree->Arg_List != NULL)
 		// {
 		// 	cout<<"NAME = "<<expressionTree->Arg_List->Lentry->NAME<<endl;
@@ -547,7 +573,7 @@ int get_variable_binding(string last_function_used,char *NAME)
 	temp = Gsymbol_table;
 
 
-	cout<<"last_function_used ="<<last_function_used <<endl;
+	// cout<<"last_function_used ="<<last_function_used <<endl;
 	
 	while(temp!=NULL)
 	{
@@ -566,7 +592,7 @@ int get_variable_binding(string last_function_used,char *NAME)
 					{
 						return temp->Binding;
 					}
-					cout<<"temp ="<<temp_2->NAME<<endl;
+					// cout<<"temp ="<<temp_2->NAME<<endl;
 					temp_2 = temp_2->Next;
 				}
 			}

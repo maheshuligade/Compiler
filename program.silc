@@ -37,7 +37,7 @@ integer main()
 	begin
 
 		o = TRUE;
-		j=hello(1,a);
+		j=hello(z,-1);
 
 		return j;
 	end

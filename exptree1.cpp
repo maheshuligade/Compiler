@@ -1497,3 +1497,21 @@ struct Lsymbol *lookup_variable(char  *function_name,char *variable_name)
 	return NULL;
 }
 
+struct Lsymbol *Mark_Variables_local(struct Lsymbol *function_local_variable)
+{
+	/**
+		This function marks the local variable as LOCAL_VARIABLE need 
+		for pushing in the Function call  of the codegen.
+	**/
+	struct Lsymbol *temp = new Lsymbol;
+	temp = function_local_variable;
+	
+	while (temp !=NULL )
+	{
+		temp->pass_by_type = LOCAL_VARIABLE;
+		temp = temp->Next;
+	}
+	delete temp;
+	return function_local_variable;												
+}
+

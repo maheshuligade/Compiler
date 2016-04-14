@@ -48,7 +48,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														{
 															//type_check($$);
 															/*evaluate($3);*/
-															// codegen($$);
+															codegen($$);
 														}
 													}
 
@@ -214,6 +214,9 @@ FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK
 												$$->type = $1->type;
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
+
+												$7->Lentry = Mark_Variables_local($7->Lentry);
+
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
 												Glookup($2->NAME)->Local = $$->Lentry;
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;									
@@ -274,6 +277,9 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 												$$->type = $1->type;
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
+
+												$7->Lentry = Mark_Variables_local($7->Lentry);
+
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
 												Glookup($2->NAME)->Local = $$->Lentry;
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;

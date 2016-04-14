@@ -84,6 +84,11 @@ void Linstall(char * NAME,int TYPE);
 **/
 struct Lsymbol *lookup_variable(char *function_name,char *variable_name);
 
+/**
+	This marks the local variable as LOCAL_VARIABLE need	for pushing in the Function call  of the codegen.
+**/
+struct Lsymbol *Mark_Variables_local(struct Lsymbol *function_local_variable);
+
 
 void change_extension(char *filename);
 int codegen(struct tnode *expressionTree);
