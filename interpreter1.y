@@ -615,19 +615,20 @@ expr:expr PLUS expr		{
 
 ID_LIST: ID_LIST ',' expr		{
 								$$=new tnode;
-								if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+									
+								if ($3->Node_Type == Node_Type_ARRAY)
 								{	
-									if ($3->Node_Type == Node_Type_ARRAY)
+									if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
 									{
 										// $3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
 										$3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+										// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+										// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
 									}
-									// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
-									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
-								}
-								else if ($3->Node_Type == Node_Type_ARRAY && Glookup($3->NAME)->size > 1)
-								{
-									yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
+									else if (Glookup($3->NAME)->size > 1)
+									{
+										yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
+									}
 								}
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
 								// cout<<"Node_Type2 = "<<$3->type<<endl;
@@ -650,21 +651,21 @@ ID_LIST: ID_LIST ',' expr		{
 							}
 		| expr				{
 								$$=new tnode;
-								if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+								if ($1->Node_Type == Node_Type_ARRAY)
 								{
+									if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+									{
 									// cout<<"In FUNC_ARG"<<endl;
 									// cout<<"Node_Type = "<<char($1->value)<<endl;
-									if ($1->Node_Type == Node_Type_ARRAY)
-									{
 										// $1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 										$1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
-									}
 									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
-								}
-								else if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
-								{
-									yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+									}
+									else if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
+									{
+										yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+									}
 								}
 								//$$=NULL;
 								// $$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');

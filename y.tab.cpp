@@ -530,7 +530,7 @@ static const yytype_uint16 yyrline[] =
      468,   472,   476,   480,   484,   489,   495,   504,   509,   513,
      517,   521,   525,   526,   527,   528,   532,   536,   540,   544,
      548,   552,   556,   560,   564,   568,   572,   576,   580,   616,
-     651,   679,   743,   755,   769,   770
+     652,   680,   744,   756,   770,   771
 };
 #endif
 
@@ -2342,19 +2342,20 @@ yyreduce:
 #line 616 "interpreter1.y"
     {
 								(yyval)=new tnode;
-								if (lookup_variable(last_function_used_type_check.top(),(yyvsp[(3) - (3)])->NAME) != NULL)
+									
+								if ((yyvsp[(3) - (3)])->Node_Type == Node_Type_ARRAY)
 								{	
-									if ((yyvsp[(3) - (3)])->Node_Type == Node_Type_ARRAY)
+									if (lookup_variable(last_function_used_type_check.top(),(yyvsp[(3) - (3)])->NAME) != NULL)
 									{
 										// $3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
 										(yyvsp[(3) - (3)])->type = lookup_variable(last_function_used_type_check.top(),(yyvsp[(3) - (3)])->NAME)->TYPE;
+										// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+										// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
 									}
-									// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
-									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
-								}
-								else if ((yyvsp[(3) - (3)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(3) - (3)])->NAME)->size > 1)
-								{
-									yyerror("Array" + string(" ‘") + (yyvsp[(3) - (3)])->NAME + "’ can not be passed to the function.");
+									else if (Glookup((yyvsp[(3) - (3)])->NAME)->size > 1)
+									{
+										yyerror("Array" + string(" ‘") + (yyvsp[(3) - (3)])->NAME + "’ can not be passed to the function.");
+									}
 								}
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
 								// cout<<"Node_Type2 = "<<$3->type<<endl;
@@ -2378,24 +2379,24 @@ yyreduce:
     break;
 
   case 70:
-#line 651 "interpreter1.y"
+#line 652 "interpreter1.y"
     {
 								(yyval)=new tnode;
-								if (lookup_variable(last_function_used_type_check.top(),(yyvsp[(1) - (1)])->NAME) != NULL)
+								if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY)
 								{
+									if (lookup_variable(last_function_used_type_check.top(),(yyvsp[(1) - (1)])->NAME) != NULL)
+									{
 									// cout<<"In FUNC_ARG"<<endl;
 									// cout<<"Node_Type = "<<char($1->value)<<endl;
-									if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY)
-									{
 										// $1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 										(yyvsp[(1) - (1)])->type = lookup_variable(last_function_used_type_check.top(),(yyvsp[(1) - (1)])->NAME)->TYPE;
-									}
 									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
-								}
-								else if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(1) - (1)])->NAME)->size > 1)
-								{
-									yyerror("Array" + string(" ‘") + (yyvsp[(1) - (1)])->NAME + "’ can not be passed to the function.");
+									}
+									else if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(1) - (1)])->NAME)->size > 1)
+									{
+										yyerror("Array" + string(" ‘") + (yyvsp[(1) - (1)])->NAME + "’ can not be passed to the function.");
+									}
 								}
 								//$$=NULL;
 								// $$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
@@ -2410,7 +2411,7 @@ yyreduce:
     break;
 
   case 71:
-#line 679 "interpreter1.y"
+#line 680 "interpreter1.y"
     {	
 								// $$->Lentry = NULL;
 								(yyval)->Arg_List = NULL;
@@ -2418,7 +2419,7 @@ yyreduce:
     break;
 
   case 72:
-#line 743 "interpreter1.y"
+#line 744 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 							{	
@@ -2434,7 +2435,7 @@ yyreduce:
     break;
 
   case 73:
-#line 755 "interpreter1.y"
+#line 756 "interpreter1.y"
     {
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
 							{	
@@ -2450,18 +2451,18 @@ yyreduce:
     break;
 
   case 74:
-#line 769 "interpreter1.y"
+#line 770 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 75:
-#line 770 "interpreter1.y"
+#line 771 "interpreter1.y"
     {(yyval)=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2465 "y.tab.cpp"
+#line 2466 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2675,7 +2676,7 @@ yyreturn:
 }
 
 
-#line 773 "interpreter1.y"
+#line 774 "interpreter1.y"
 
 
 int yyerror(string s)
