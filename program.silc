@@ -36,7 +36,7 @@ integer main()
 	enddecl
 	begin
 
-		j=hello(z,a);
+		j=hello(z,a,a,b);
 		o = TRUE;
 
 		return j;

@@ -370,16 +370,16 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (Glookup(NAME)->Arg_List != NULL)
 			{
 				struct Lsymbol *temp = new Lsymbol;
-				struct Lsymbol *temp_2 = new Lsymbol;
+				struct tnode *temp_2 = new tnode;
 				temp = Glookup(NAME)->Arg_List->Lentry;
-				temp_2 = Arg_List->Lentry;
+				temp_2 = Arg_List;
 
 				while (temp != NULL && temp_2 != NULL)
 				{
 
 					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-					// cout<<"type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-					if (temp->TYPE != temp_2->TYPE)
+					// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->Node_Type<<endl;
+					if (temp->TYPE != temp_2->type)
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
@@ -389,7 +389,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					}
 
 					temp = temp->Next;
-					temp_2 = temp_2->Next;
+					temp_2 = temp_2->Arg_List;
 				}
 
 				// cout<<"end"<<endl;

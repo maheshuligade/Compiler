@@ -48,7 +48,7 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														{
 															//type_check($$);
 															/*evaluate($3);*/
-															codegen($$);
+															// codegen($$);
 														}
 													}
 
@@ -584,27 +584,30 @@ expr:expr PLUS expr		{
 							// lookup_variable("hello","w");
 							// cout<<"$1->NAME = "<<$1->NAME<<endl;
 							// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
-							struct Lsymbol *temp = new Lsymbol;
-							temp = $$->Arg_List->Lentry;
-							// temp = Glookup(last_function_used_type_check.top())->Local;
-							while (temp != NULL)
-							{
+							
 
-								if (lookup_variable(last_function_used_type_check.top(),temp->NAME)!=NULL)
-								{
-									// cout<<"change"<<endl;
-									temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
-									// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-								}
-								else
-								{
-									// cout<<"change2"<<endl;
-									temp->TYPE = Glookup(temp->NAME)->TYPE;
-									// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-								}
-								//cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-								temp = temp->Next;
-							}
+
+							// struct tnode *temp = new tnode;
+							// temp = $$->Arg_List;
+							// // temp = Glookup(last_function_used_type_check.top())->Local;
+							// while (temp != NULL)
+							// {
+
+							// 	if (lookup_variable(last_function_used_type_check.top(),temp->NAME)!=NULL)
+							// 	{
+							// 		// cout<<"change"<<endl;
+							// 		temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+							// 		cout<<"		type="<<temp->type<<" NAME2="<<temp->Node_Type<<endl;
+							// 	}
+							// 	else
+							// 	{
+							// 		// cout<<"change2"<<endl;
+							// 		temp->TYPE = Glookup(temp->NAME)->TYPE;
+							// 		// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	}
+							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	temp = temp->Arg_List;
+							// }
 
 
 						}
@@ -612,34 +615,70 @@ expr:expr PLUS expr		{
 
 ID_LIST: ID_LIST ',' expr		{
 								$$=new tnode;
-								if ($3->Node_Type == Node_Type_ARRAY && lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
-								{
-									$3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+								if (lookup_variable(last_function_used_type_check.top(),$3->NAME) != NULL)
+								{	
+									if ($3->Node_Type == Node_Type_ARRAY)
+									{
+										// $3->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+										$3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
+									}
 									// $3->type = lookup_variable(last_function_used_type_check.top(),$3->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
-
 								}
-								$$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
+								else if ($3->Node_Type == Node_Type_ARRAY && Glookup($3->NAME)->size > 1)
+								{
+									yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
+								}
+								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
 								// cout<<"Node_Type2 = "<<$3->type<<endl;
-
+								$$ = $1;
+								// $1->Arg_List = $3;
+								struct tnode *temp = new tnode;
+								temp = $1;
+								// cout<<$3->NAME<<endl;
+								while (temp->Arg_List != NULL)
+								{
+									// cout<<"temp = "<<temp->Node_Type<<endl;
+									temp = temp->Arg_List;
+								}
+								// temp->Arg_List = new tnode;
+								temp->Arg_List = $3;
+								// $3->Arg_List = $1;
+								// $$->Arg_List = $3;
+								// $3->Arg_List = NULL;
+								// cout<<$3->NAME<<endl;
 							}
 		| expr				{
 								$$=new tnode;
-								if ($1->Node_Type == Node_Type_ARRAY && lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+								if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
 								{
-									$1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+									// cout<<"In FUNC_ARG"<<endl;
+									// cout<<"Node_Type = "<<char($1->value)<<endl;
+									if ($1->Node_Type == Node_Type_ARRAY)
+									{
+										// $1->Lentry->TYPE = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+										$1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+									}
 									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
 								}
+								else if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
+								{
+									yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+								}
 								//$$=NULL;
-								$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
+								// $$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
 								// $$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 								// cout<<"Node_Type = "<<$1->type<<endl;
-
+								// cout<<$1->NAME<<endl;
+								// $$ = $1;
+								// $1->Arg_List = NULL;
+								$$ = $1;
 
 							}
 		|					{	
-								$$->Lentry = NULL;
+								// $$->Lentry = NULL;
+								$$->Arg_List = NULL;
 							}
 
 		;
