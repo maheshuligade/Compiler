@@ -311,7 +311,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 					// cout<<"NAME="<<temp_2->NAME<<endl;
 					// cout<<"NAME="<<temp->NAME<<endl;
-					cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
+					// cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
 					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
 					{
 						col=temp_2->col_no;
@@ -394,12 +394,20 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
 						if (temp_2->Node_Type == Node_Type_ARRAY)
 						{
-							yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+							yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
 						}
 						else
 						{
-							yyerror(string("function call argument type does not match with declaration."));						no_of_error++;
+							yyerror(string("function call argument type does not match with declaration."));
 						}
+					}
+
+					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->pass_by_type<<endl;
+
+					if (temp->pass_by_type == PASS_BY_REFERENCE && temp_2->Node_Type != Node_Type_ARRAY)
+					{
+						yyerror(string("function call argument pass by type does not match with declaration."));
+
 					}
 
 					temp = temp->Next;

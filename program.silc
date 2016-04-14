@@ -5,12 +5,12 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(boolean a;,integer b;);
+	integer hello(integer &a;,integer b;);
 	integer g,h;
 	boolean t;
 enddecl
 
-integer hello(integer a;,integer b;)
+integer hello(integer &a;,integer b;)
 {
 	decl
 	integer z;
@@ -37,7 +37,7 @@ integer main()
 	begin
 
 		o = TRUE;
-		j=hello(TRUE,a);
+		j=hello(1,a);
 
 		return j;
 	end
