@@ -311,7 +311,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 					// cout<<"NAME="<<temp_2->NAME<<endl;
 					// cout<<"NAME="<<temp->NAME<<endl;
-					// cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
+					cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
 					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
 					{
 						col=temp_2->col_no;
@@ -366,7 +366,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 		}
 		else
-		{
+		{	
 			if (Glookup(NAME)->Arg_List != NULL)
 			{
 				struct Lsymbol *temp = new Lsymbol;
@@ -383,9 +383,16 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
-						//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-						//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-						yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+					// 	//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+					// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+						if (temp_2->Node_Type == Node_Type_ARRAY)
+						{
+							yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");						no_of_error++;
+						}
+						else
+						{
+							yyerror(string("function call argument type does not match with declaration."));						no_of_error++;
+						}
 					}
 
 					temp = temp->Next;
