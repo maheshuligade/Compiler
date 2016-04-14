@@ -5,7 +5,7 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer b;);
+	integer hello(boolean a;,integer b;);
 	integer g,h;
 	boolean t;
 enddecl

@@ -326,6 +326,13 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
 						no_of_error++;
 					}
+					if (temp->TYPE != temp_2->TYPE)
+					{
+						col=temp_2->col_no;
+						line=temp_2->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+						no_of_error++;
+					}
 					temp = temp->Next;
 					temp_2 = temp_2->Next;
 				}
