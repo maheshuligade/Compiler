@@ -406,12 +406,46 @@ int codegen(struct tnode *expressionTree)
 		last_function_used.push(expressionTree->NAME);
 
 		fprintf(sim_code_file, "\n%s:\n",expressionTree->NAME);
+
+		/**Actions done by the calle function**/
+
+		/**Saves the context.**/
+		fprintf(sim_code_file, "PUSH BP\n");
+		fprintf(sim_code_file, "MOV BP,SP\n");
+
+
+		/**Pushes all local variables in the stack.**/
+		struct Lsymbol *temp = new Lsymbol;
+		temp = Glookup(expressionTree->NAME)->Local;
+
+		while (temp != NULL)
+		{
+			if (temp->pass_by_type == LOCAL_VARIABLE)
+			{	
+				int  bind;
+				reg_1 = get_reg();
+
+				if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
+				{
+						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+				}
+				free_reg(__LINE__);
+			}
+			temp = temp->Next;
+		}
+		delete temp;
+
+
+
 		reg_1 = codegen(expressionTree->ptr1);
-		
+
+
 		last_function_used.pop();
 		//Glookup(expressionTree->NAME);
 		// reg_1 = r;
-		// free_reg(__LINE__);
+		free_reg(__LINE__);
 		// cout<<"					reg = "<<reg_no<<endl;
 		return reg_1;
 	}
@@ -422,59 +456,89 @@ int codegen(struct tnode *expressionTree)
 		int r,bind;
 		// r = reg_1;
 		// reg_1 = 3;
+
+		/**Pushing Register in use in the stack.**/
 		r = 0;
-		while (r <= reg_1)
+		while (r <= max(reg_1,reg_2))
 		{
 			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
-		
+		r = r - 1;
 
+
+		/**Pushing Arguments  in the stack.**/
 
 		struct tnode *temp = new tnode;
 		struct Lsymbol *temp_2 = new Lsymbol;
 
 		temp = expressionTree->Arg_List;
-		temp_2 = Glookup(expressionTree->NAME)->Local;
+		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
 
-		while (temp_2 != NULL && temp_2 != NULL)
+		while (temp != NULL && temp_2 != NULL)
 		{
-			cout<<"NAME = "<<temp_2->pass_by_type<<endl;
+			// cout<<"NAME = "<<temp->Node_Type<<endl;
 			// cout<<"NAME2 = "<<temp_2->pass_by_type<<endl;
-			// if (temp_2->pass_by_type == PASS_BY_REFERENCE)
-			// {
+			if (temp_2->pass_by_type == PASS_BY_REFERENCE)
+			{
+				reg_1 = get_reg();
 
-			// }
-			// else if (temp_2->pass_by_type == PASS_BY_VALUE)
-			// {
-			// 	// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
-			// 	if (temp->Node_Type == Node_Type_ARRAY)
-			// 	{
-			// 		if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
-			// 		{
-			// 			bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
+				if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
+				{
+						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+				}
+				else if(Glookup(last_function_used.top()) != NULL)
+				{
+					bind = Glookup(last_function_used.top())->Binding;
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+				}
 
-			// 			//cout<<"Binding = "<<bind<<endl;
-			// 			fprintf(sim_code_file, "PUSH %d\n",bind);
-			// 		}
-			// 		else
-			// 		{
-			// 			bind = Memory[Glookup((temp->NAME))->Binding];
-			// 			fprintf(sim_code_file, "PUSH %d\n",bind);
-			// 			//cout<<"Binding = "<<bind<<endl;
-			// 		}	
-			// 	}
-			// 	else
-			// 	{
-			// 		fprintf(sim_code_file, "\n\n");
-			// 		reg_1 = codegen(expressionTree->ptr1);
-			// 		cout<<"reg_1 = "<<reg_1<<endl;
-			// 	}
-			// }
-			// temp = temp->Arg_List;
+				free_reg(__LINE__);
+			}
+			else if (temp_2->pass_by_type == PASS_BY_VALUE)
+			{
+				// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
+				if (temp->Node_Type == Node_Type_ARRAY)
+				{
+					reg_1 = get_reg();
+
+					if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
+					{
+						bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
+
+						//cout<<"Binding = "<<bind<<endl;
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+					}
+					else
+					{
+						bind = Memory[Glookup((temp->NAME))->Binding];
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+						//cout<<"Binding = "<<bind<<endl;
+					}	
+					free_reg(__LINE__);
+				}
+				else
+				{
+					// fprintf(sim_code_file, "\n\n");
+					reg_1 = codegen(temp);
+					// cout<<"Node_Type = "<<temp->Node_Type<<endl;
+					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+					cout<<"reg_1 = "<<reg_1<<endl;
+				}
+			}
+			temp = temp->Arg_List;
 			temp_2 = temp_2->Next;
 		}
 		delete temp;
 		delete temp_2;
+
+		/**Pushing space for the return value.**/
+		fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+
 		// if (expressionTree->Arg_List != NULL)
 		// {
 		// 	cout<<"NAME = "<<expressionTree->Arg_List->Lentry->NAME<<endl;
@@ -483,13 +547,57 @@ int codegen(struct tnode *expressionTree)
 		// reg_1 = codegen(expressionTree->ptr1);
 		// cout<<"Node_Type = "<<expressionTree->ptr1->Node_Type<<endl;
 		// cout<<"reg_1 = "<<reg_1<<endl;
-		get_reg();
+		
+
+
+		// get_reg();
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
+
+		while (r >= 0)
+		{
+			fprintf(sim_code_file, "POP R%d\n",r--);
+		}
+
 		return reg_1;
 	}
 	else if (expressionTree->Node_Type==Node_Type_RETURN)
 	{
+		reg_1 = get_reg();
+		reg_2 = get_reg();
+		/**Actions on encoutring RET statement**/
+
+		/**Poping local variables from the stack.**/
+
+		struct Lsymbol *temp = new Lsymbol;
+		temp =  Glookup(last_function_used.top())->Local;
+
+		int no_of_local_var = 0;
+		while (temp != NULL)
+		{	no_of_local_var++;
+			temp = temp->Next;
+		}
+
+		fprintf(sim_code_file, "MOV R%d,SP\n",reg_1);
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,no_of_local_var);
+		fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
+
+		fprintf(sim_code_file, "MOV SP,R%d\n",reg_1);
+
+		free_reg(__LINE__);
+
+		/**Set the Return value at BP - 2**/
+
+		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
+		fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
 		reg_1 = codegen(expressionTree->ptr1);
+		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_1);
+		fprintf(sim_code_file, "MOV BP,R%d\n",reg_1);
+		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
+		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+		fprintf(sim_code_file, "MOV BP,R%d\n",reg_1);
+
 		fprintf(sim_code_file, "RET\n");
 		free_reg(__LINE__);
 		return reg_1;
