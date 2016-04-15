@@ -477,7 +477,7 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										$$=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
 									}
 	|WRITE'('expr')' SEMICOLON		{	
-										cout<<"In WRITE"<<endl;
+										
 										$$=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
 									}
 	|IF '('expr')'THEN Slist ENDIF SEMICOLON{
@@ -494,7 +494,9 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	
 												}
 	|ID '('ID_LIST')' SEMICOLON		{
-										$$=NULL;
+										// $$=NULL;
+										$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
+
 									}
 	;
 	
