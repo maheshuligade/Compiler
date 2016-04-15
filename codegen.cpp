@@ -527,7 +527,7 @@ int codegen(struct tnode *expressionTree)
 					reg_1 = codegen(temp);
 					// cout<<"Node_Type = "<<temp->Node_Type<<endl;
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
-					cout<<"reg_1 = "<<reg_1<<endl;
+					// cout<<"reg_1 = "<<reg_1<<endl;
 				}
 			}
 			temp = temp->Arg_List;
@@ -590,13 +590,14 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
 		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
 		fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
-		reg_1 = codegen(expressionTree->ptr1);
-		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_1);
-		fprintf(sim_code_file, "MOV BP,R%d\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
-		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-		fprintf(sim_code_file, "MOV BP,R%d\n",reg_1);
+		reg_2 = codegen(expressionTree->ptr1);
+		// fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_1);
+		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
+		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
+		// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+		fprintf(sim_code_file, "MOV SP,BP\n");
+		fprintf(sim_code_file, "POP BP\n");
 
 		fprintf(sim_code_file, "RET\n");
 		free_reg(__LINE__);

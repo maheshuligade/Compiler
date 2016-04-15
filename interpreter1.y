@@ -476,8 +476,8 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										
 										$$=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
 									}
-	|WRITE'('expr')' SEMICOLON		{
-										
+	|WRITE'('expr')' SEMICOLON		{	
+										cout<<"In WRITE"<<endl;
 										$$=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
 									}
 	|IF '('expr')'THEN Slist ENDIF SEMICOLON{

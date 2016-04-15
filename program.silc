@@ -20,7 +20,8 @@ integer hello(integer &a;,integer b;)
 	begin
 	c=TRUE;
 	
-
+	z = 2;
+	write(z);
 	return 0;
 	end
 }
@@ -37,6 +38,8 @@ integer main()
 	begin
 
 		o = TRUE;
+		z = 1;
+		write(z);
 		j=hello(z,-1);
 
 		return j;
