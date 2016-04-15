@@ -48,6 +48,17 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														{
 															//type_check($$);
 															/*evaluate($3);*/
+															fprintf(sim_code_file, "START\n");
+															fprintf(sim_code_file, "MOV BP,257\n");
+															fprintf(sim_code_file, "MOV SP,257\n");
+															fprintf(sim_code_file, "PUSH BP\n");
+															fprintf(sim_code_file, "MOV R0,SP\n");
+															fprintf(sim_code_file, "MOV R1,%d\n",get_global_var_no());
+															fprintf(sim_code_file, "ADD R0,R1\n");
+															fprintf(sim_code_file, "MOV SP,R0\n");
+															fprintf(sim_code_file, "PUSH BP\n");
+															fprintf(sim_code_file, "call main\n");
+															fprintf(sim_code_file, "HALT\n");
 															codegen($$);
 														}
 													}
@@ -804,15 +815,14 @@ int main(int argc,char const *argv[])
 		strcpy(sim_code_filename,argv[1]);
 		change_extension(sim_code_filename);
 		sim_code_file=fopen(sim_code_filename,"w");
-		fprintf(sim_code_file, "START\n");
-		fprintf(sim_code_file, "MOV BP,257\n");
-		fprintf(sim_code_file, "MOV SP,257\n");
+		
+
+
 		//fprintf(sim_code_file, "MOV BP,1535\n");
 		//fprintf(sim_code_file, "MOV SP,1535\n");
 		yyin=fp;
 	}
-	fprintf(sim_code_file, "call main\n");	
-	fprintf(sim_code_file, "HALT\n");
+	
 
 	/**Main function name is pushed into the last_function_used_type_check stack for type_check**/
 

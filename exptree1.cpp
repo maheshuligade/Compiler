@@ -1514,4 +1514,23 @@ struct Lsymbol *Mark_Variables_local(struct Lsymbol *function_local_variable)
 	delete temp;
 	return function_local_variable;												
 }
+int get_global_var_no()
+{
+	/**This function returns the no of the global variables.**/
 
+	int no_of_global_var = 0;
+
+	struct Gsymbol *temp = new Gsymbol;
+	temp = Gsymbol_table;
+
+	while (temp != NULL)
+	{	
+		if (temp->Arg_List == NULL)
+		{
+			no_of_global_var = no_of_global_var + temp->size;
+		}
+		temp = temp->Next;
+	}
+
+	return no_of_global_var;
+}

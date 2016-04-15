@@ -98,6 +98,8 @@ int codegen(struct tnode *expressionTree);
 int evaluate(struct tnode* expressionTree);
 /*This function gives the codegen for  the location,where location = base address + offset*/
 int get_location(struct tnode *expressionTree);
+/**This function returns the no of the global variables.**/
+int get_global_var_no();
 /**
 	This function gives the binding of the variable if it is local variable then it returns the binding of the 
 	local variable otherwise it returns the binding of the global variable.
