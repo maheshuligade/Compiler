@@ -296,7 +296,8 @@ LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{
 
 												}
 				|								{	
-													$$ = NULL;
+													// $$ = NULL;
+													$$->Lentry = NULL;
 												}
 				;
 
