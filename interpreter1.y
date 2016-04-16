@@ -429,6 +429,19 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 									}
 RETURN_TYPE:RETURN expr SEMICOLON	{	
 										//cout<<"Node_Type="<<$2->Node_Type<<endl;
+										if ($2->Node_Type == Node_Type_ARRAY)
+										{
+											if (lookup_variable(last_function_used_type_check.top(),$2->NAME) != NULL)
+											{
+												$2->type = lookup_variable(last_function_used_type_check.top(),$2->NAME)->TYPE;
+											}
+											else if(Glookup($2->NAME) != NULL)
+											{
+												$2->type = Glookup($2->NAME)->TYPE;
+											}
+											// $2->type = get_type($2);
+											// cout<<$2->type<<endl;
+										}
 										$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);
 									}
 
