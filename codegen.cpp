@@ -6,7 +6,8 @@
 // 
 int reg=0;
 int left_value,right_value;
-int reg_no=0;
+int reg_no = 0;
+
 int label_no=0;
 stack <char *> last_function_used;
 
@@ -31,10 +32,17 @@ void change_extension(char *filename)
 	filename[i++]='\0';
 }
 
-int get_reg()
+int get_reg(int line)
 {	
 	/*This Function allocates the least unused register and returns its value*/
 	// cout<<"reg_get = "<<++reg_no<<endl;
+	// cout<<reg_no<<endl;
+	if (reg_no + 1 > 7)
+	{	
+		// cout<<line<<endl;
+		cout<<"exception:get_reg."<<endl;
+	}
+	// cout<<"reg_no = "<<reg_no<<endl;
 	return reg_no++;
 }
 
@@ -67,6 +75,7 @@ int codegen(struct tnode *expressionTree)
 	
 	if (expressionTree != NULL)
 	{
+		// cout<<"reg_no Node_Type = "<<reg_no<<endl;
 		// cout<<"Node_Type = "<<expressionTree->Node_Type<<endl;
 	}
 	if (expressionTree==NULL)
@@ -82,7 +91,7 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_LEAF)
 	{
-		reg_1=get_reg();
+		reg_1=get_reg(__LINE__);
 		
 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,expressionTree->value);		
 		return reg_1;
@@ -146,7 +155,7 @@ int codegen(struct tnode *expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_NOT)
 	{
 		reg_1=codegen(expressionTree->ptr1);
-		reg_2=get_reg();
+		reg_2=get_reg(__LINE__);
 
 		fprintf(sim_code_file, "MOV R%d,0\n",reg_2);
 		fprintf(sim_code_file, "EQ R%d,R%d\n",reg_2,reg_1);
@@ -174,7 +183,7 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_BOOLEAN_CONSTANT)
 	{	
-		reg_1=get_reg();
+		reg_1=get_reg(__LINE__);
 		
 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,expressionTree->value);
 		return reg_1;
@@ -270,9 +279,9 @@ int codegen(struct tnode *expressionTree)
 
 	// 	fprintf(sim_code_file, "\n");
 
-	// 	reg_1=get_reg();
+	// 	reg_1=get_reg(__LINE__);
 	// 	left_value=codegen(expressionTree->ptr2);
-	// 	reg_2=get_reg();
+	// 	reg_2=get_reg(__LINE__);
 	// 	right_value=codegen(expressionTree->ptr1);
 	// 	fprintf(sim_code_file, "MUL R%d,R%d\n\n",reg_1,reg_2);
 	// 	free_reg(__LINE__);
@@ -290,7 +299,7 @@ int codegen(struct tnode *expressionTree)
 		if (expressionTree->ptr1->Node_Type == Node_Type_ARRAY)
 		{
 			reg_1=get_location(expressionTree->ptr1);
-			reg_2=get_reg();
+			reg_2=get_reg(__LINE__);
 
 			fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
 			fprintf(sim_code_file, "OUT R%d\n",reg_2);
@@ -298,7 +307,7 @@ int codegen(struct tnode *expressionTree)
 		else
 		{
 			reg_1 = codegen(expressionTree->ptr1);
-			reg_2=get_reg();
+			reg_2=get_reg(__LINE__);
 			fprintf(sim_code_file, "\nMOV R%d,R%d\n",reg_2,reg_1);
 			fprintf(sim_code_file, "OUT R%d\n",reg_2);
 
@@ -319,7 +328,7 @@ int codegen(struct tnode *expressionTree)
 
 		fprintf(sim_code_file, "\n");
 
-		reg_1=get_reg();
+		reg_1=get_reg(__LINE__);
 		reg_2=get_location(expressionTree->ptr1);
 	
 		fprintf(sim_code_file, "IN R%d\n",reg_1);
@@ -424,7 +433,7 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "PUSH BP\n");
 		fprintf(sim_code_file, "MOV BP,SP\n");
 
-		cout<<"last_function_used = "<<last_function_used.top()<<endl;
+		// cout<<"last_function_used = "<<last_function_used.top()<<endl;
 
 		assign_binding(expressionTree);
 		/**Pushes all local variables in the stack.**/
@@ -437,7 +446,9 @@ int codegen(struct tnode *expressionTree)
 			if (temp->pass_by_type == LOCAL_VARIABLE)
 			{	
 				int  bind;
-				reg_1 = get_reg();
+				// cout<<reg_no<<endl;
+				reg_1 = get_reg(__LINE__);
+				// cout<<reg_no<<endl;
 
 				if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
 				{
@@ -452,7 +463,7 @@ int codegen(struct tnode *expressionTree)
 		delete temp;
 
 
-		// reg_2 = get_reg();
+		// reg_2 = get_reg(__LINE__);
 		// if (strcmp(last_function_used.top(), "main") != 0)
 		// {
 		// 	fprintf(sim_code_file, "MOV R7,SP\n");
@@ -518,13 +529,13 @@ int codegen(struct tnode *expressionTree)
 			// cout<<"NAME = "<<temp_2->NAME<<" pass_by_type = "<<temp_2->pass_by_type<<" binding = "<<temp_2->Binding<<endl;
 			if (temp_2->pass_by_type == PASS_BY_REFERENCE)
 			{
-				reg_1 = get_reg();
+				reg_1 = get_reg(__LINE__);
 
 				if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
 				{
 					if (lookup_variable((last_function_used.top()),(temp->NAME))->pass_by_type == PASS_BY_REFERENCE)
 					{	
-						reg_2 = get_reg();
+						reg_2 = get_reg(__LINE__);
 						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
 						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 						fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
@@ -546,7 +557,7 @@ int codegen(struct tnode *expressionTree)
 				}
 				else if(Glookup(last_function_used.top()) != NULL)
 				{
-					cout<<char(temp->value)<<endl;
+					// cout<<char(temp->value)<<endl;
 					// bind = Glookup(last_function_used.top())->Binding +;
 					reg_1 = get_location(temp);
 					// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
@@ -567,7 +578,7 @@ int codegen(struct tnode *expressionTree)
 				// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
 				if (temp->Node_Type == Node_Type_ARRAY)
 				{
-					reg_1 = get_reg();
+					reg_1 = get_reg(__LINE__);
 
 					if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
 					{
@@ -615,7 +626,7 @@ int codegen(struct tnode *expressionTree)
 		
 
 
-		// get_reg();
+		// get_reg(__LINE__);
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 
 		while (r >= 0)
@@ -623,8 +634,8 @@ int codegen(struct tnode *expressionTree)
 			fprintf(sim_code_file, "POP R%d\n",r--);
 		}
 		// cout<<reg_1<<endl;
-		// reg_1 = get_reg();
-		// reg_2 = get_reg();
+		// reg_1 = get_reg(__LINE__);
+		// reg_2 = get_reg(__LINE__);
 		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
 		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
 		// fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
@@ -634,8 +645,8 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_RETURN)
 	{
-		reg_1 = get_reg();
-		reg_2 = get_reg();
+		reg_1 = get_reg(__LINE__);
+		reg_2 = get_reg(__LINE__);
 		/**Actions on encoutring RET statement**/
 
 		/**Poping local variables from the stack.**/
@@ -700,7 +711,7 @@ int get_location(struct tnode *expressionTree)
 			// {
 				
 			// }
-			reg_1=get_reg();
+			reg_1=get_reg(__LINE__);
 			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,Glookup(expressionTree->NAME)->Binding);
 		
 			reg_2=codegen(expressionTree->ptr2);
@@ -713,7 +724,7 @@ int get_location(struct tnode *expressionTree)
 	{	
 			expressionTree->ptr2->value-=1;
 			// cout<<"before reg_1 = "<<reg_1<<" reg_2 = "<<reg_2<<endl;
-			reg_1=get_reg();
+			reg_1=get_reg(__LINE__);
 			reg_2=codegen(expressionTree->ptr2);
 			// cout<<"after reg_1 = "<<reg_1<<" reg_2 = "<<reg_2<<endl;
 			

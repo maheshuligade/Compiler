@@ -1466,7 +1466,7 @@ struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2
 			yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
 		}		
 	}
-
+	
 	return Node_1;
 }
 

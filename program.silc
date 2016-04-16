@@ -56,6 +56,7 @@ integer main()
 		boolean e;
 		boolean f;
 		integer z;
+		integer zerwe;
 		boolean o;
 	enddecl
 	begin
@@ -63,10 +64,11 @@ integer main()
 		o = TRUE;
 		z = 4;
 		a = 10;
+		read(z);
 		write(z);
 		d[10] = 1000;
 		j=hello(a,1);
-		write(z);
+		write(zerwe);
 		write(j);
 		write(a);
 		return j;
