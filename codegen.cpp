@@ -413,6 +413,7 @@ int codegen(struct tnode *expressionTree)
 		// int r;
 		// r = reg_1;
 		// reg_1 = 0;
+
 		last_function_used.push(expressionTree->NAME);
 
 		fprintf(sim_code_file, "\n%s:\n",expressionTree->NAME);
@@ -423,13 +424,16 @@ int codegen(struct tnode *expressionTree)
 		fprintf(sim_code_file, "PUSH BP\n");
 		fprintf(sim_code_file, "MOV BP,SP\n");
 
+		cout<<"last_function_used = "<<last_function_used.top()<<endl;
 
+		assign_binding(expressionTree);
 		/**Pushes all local variables in the stack.**/
 		struct Lsymbol *temp = new Lsymbol;
 		temp = Glookup(expressionTree->NAME)->Local;
-
 		while (temp != NULL)
-		{
+		{	
+
+			cout<<"NAME = "<<temp->NAME<<" pass_by_type = "<<temp->pass_by_type<<" binding = "<<temp->Binding<<endl;
 			if (temp->pass_by_type == LOCAL_VARIABLE)
 			{	
 				int  bind;
@@ -448,7 +452,16 @@ int codegen(struct tnode *expressionTree)
 		delete temp;
 
 
-
+		// reg_2 = get_reg();
+		// if (strcmp(last_function_used.top(), "main") != 0)
+		// {
+		// 	fprintf(sim_code_file, "MOV R7,SP\n");
+		// 	fprintf(sim_code_file, "MOV R6,4\n");
+		// 	fprintf(sim_code_file, "SUB R7,R6\n");
+		// 	fprintf(sim_code_file, "MOV R7,[R7]\n");
+		// 	fprintf(sim_code_file, "OUT R7\n");
+		// }
+		// free_reg(__LINE__);
 		reg_1 = codegen(expressionTree->ptr1);
 
 
@@ -463,7 +476,7 @@ int codegen(struct tnode *expressionTree)
 	{
 		//cout<<"NAME = "<<expressionTree->NAME<<endl;
 		// cout<<"R = "<<reg_1<<" R = "<<reg_2<<endl;
-		int r,bind;
+		int r,bind,position = -3;
 		// r = reg_1;
 		// reg_1 = 3;
 
@@ -484,10 +497,25 @@ int codegen(struct tnode *expressionTree)
 		temp = expressionTree->Arg_List;
 		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
 
+		/**Getting number of arguments**/
+		int no_of_arg = 0;
+		while (temp_2 != NULL)
+		{
+			no_of_arg++;
+			temp_2 = temp_2->Next;
+		}
+
+		position = -2- no_of_arg;
+		// cout<<"no_of_arg = "<<position<<endl;
+
+
+		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
 		while (temp != NULL && temp_2 != NULL)
 		{
 			// cout<<"NAME = "<<temp->Node_Type<<endl;
 			// cout<<"NAME2 = "<<temp_2->pass_by_type<<endl;
+			temp_2->Binding = position++;
+			// cout<<"NAME = "<<temp_2->NAME<<" pass_by_type = "<<temp_2->pass_by_type<<" binding = "<<temp_2->Binding<<endl;
 			if (temp_2->pass_by_type == PASS_BY_REFERENCE)
 			{
 				reg_1 = get_reg();
@@ -658,15 +686,33 @@ int get_location(struct tnode *expressionTree)
 			if (lookup_variable(last_function_used.top(),expressionTree->NAME) == NULL)
 			{
 				location = Glookup(expressionTree->NAME)->Binding;
+				fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+				fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 			}
 			else
-			{				
+			{	
+				cout<<"pass_by_type = "<<lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type<<endl;			
 				location = lookup_variable(last_function_used.top(),expressionTree->NAME)->Binding;
+				if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_REFERENCE)
+				{
+					// cout<<"location = "<<location<<endl;
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// fprintf(sim_code_file, "OUT R%d",reg_1);
+				}
+				else
+				{
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+
+				}
 			}
-			fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
-			fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 			free_reg(__LINE__);
-			return reg_1;
+			return reg_1;	
 	}
 	else 
 	{
@@ -718,10 +764,63 @@ int get_variable_binding(string last_function_used,char *NAME)
 		}
 		temp=temp->Next;
 	}
-
+	cout<<"Exception:get_variable_binding"<<endl;
 
 	delete temp;
 
 	return 0;
 
+}
+void assign_binding(struct tnode *expressionTree)
+{
+	/**
+		This function assigns the binding to the local variables and the 
+		argument relative to the stack
+	**/
+	
+	int no_of_local = 0,no_of_arg = 0,position_plus = 0,position_minus = 0;
+
+	struct Lsymbol *temp = new Lsymbol;
+	temp = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+
+	while (temp != NULL)
+	{
+		no_of_arg++;
+		temp = temp->Next;
+	}
+
+	// cout<<"no_of_arg = "<<no_of_arg<<endl;
+
+	temp = Glookup(expressionTree->NAME)->Local;
+
+	while (temp != NULL)
+	{
+		no_of_local++;
+		temp = temp->Next;
+	}
+	// cout<<"no_of_local = "<<no_of_local<<endl;
+		
+	no_of_local = no_of_local - no_of_arg;
+	// cout<<"no_of_local = "<<no_of_local<<endl;
+
+	temp = Glookup(expressionTree->NAME)->Local;
+
+	position_plus = 0;
+	position_minus = -2 - no_of_arg;
+
+	while (temp != NULL)
+	{	
+		if (no_of_local > position_plus)
+		{
+			temp->Binding = ++position_plus;
+			// cout<<temp->Binding<<endl;
+		}
+		else
+		{
+			temp->Binding = position_minus++;
+		}
+		temp = temp->Next;
+	}
+
+	delete temp;
 }

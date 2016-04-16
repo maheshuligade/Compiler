@@ -1400,11 +1400,11 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type)
 	new_node->TYPE=TYPE;
 	new_node->size=size;
 	new_node->value='a';
-	new_node->Binding=Global_Bind_Count;
+	// new_node->Binding=Global_Bind_Count;
 	new_node->line_no=yylineno;
 	new_node->col_no=column_no;
 	new_node->Next=NULL;
-	Global_Bind_Count+=1;
+	// Global_Bind_Count+=1;
 	new_node->pass_by_type = pass_by_type;
 
 	return new_node;

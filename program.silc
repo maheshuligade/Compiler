@@ -20,9 +20,10 @@ integer hello(integer &a;,integer b;)
 	begin
 	c=TRUE;
 	
-	z = 2;
+	z = 3;
 	f = 10;
-	write(-1);
+	write(a);
+	a = 7;
 	return 0;
 	end
 }
@@ -39,11 +40,11 @@ integer main()
 	begin
 
 		o = TRUE;
-		z = 1;
+		z = 4;
 		write(z);
 		d[10] = 1000;
-		j=hello(z,-1);
-
+		j=hello(z,-5);
+		write(z);
 		return j;
 	end
 

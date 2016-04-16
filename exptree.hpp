@@ -89,7 +89,8 @@ struct Lsymbol *lookup_variable(char *function_name,char *variable_name);
 **/
 struct Lsymbol *Mark_Variables_local(struct Lsymbol *function_local_variable);
 
-
+/**This function assigns the binding to the local variables and the argument relative to the stack*/
+void assign_binding(struct  tnode *expressionTree);
 void change_extension(char *filename);
 int codegen(struct tnode *expressionTree);
 
