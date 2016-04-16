@@ -155,9 +155,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{	
 				
-				if (Llookup(ptr1->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
 				{
-					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
 				}
 				else if(Glookup(ptr1->NAME)!=NULL)
 				{
@@ -172,9 +172,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
 				
-				if (Llookup(ptr2->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
 				{
-					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
 				}
 				else if(Glookup(ptr2->NAME)!=NULL)
 				{
@@ -196,9 +196,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	{	
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
-				if (Llookup(ptr1->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
 				{
-					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
 				}
 				else if(Glookup(ptr1->NAME)!=NULL)
 				{
@@ -214,9 +214,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
 				
-				if (Llookup(ptr2->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
 				{
-					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
 				}
 				else if(Glookup(ptr2->NAME)!=NULL)
 				{
@@ -240,9 +240,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 
 			if (ptr1->Node_Type==Node_Type_ARRAY)
 			{
-				if (Llookup(ptr1->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
 				{
-					ptr1_type=Llookup(ptr1->NAME)->TYPE;
+					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
 				}
 				else if(Glookup(ptr1->NAME)!=NULL)
 				{
@@ -258,9 +258,9 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			if (ptr2->Node_Type==Node_Type_ARRAY)
 			{
 				
-				if (Llookup(ptr2->NAME)!=NULL)
+				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
 				{
-					ptr2_type=Llookup(ptr2->NAME)->TYPE;
+					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
 				}
 				else if(Glookup(ptr2->NAME)!=NULL)
 				{
@@ -272,7 +272,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				ptr2_type=ptr2->type;
 			}
 
-			
+			// cout<<ptr1_type<<" "<<ptr2_type<<endl;
 			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
 			{	
 				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
