@@ -372,6 +372,13 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		{	
 			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 		}
+		else if (Glookup(NAME) != NULL)
+		{
+			if (Glookup(NAME)->Local == NULL)
+			{
+				yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
+			}
+		}
 		else
 		{	
 			if (Glookup(NAME)->Arg_List != NULL)

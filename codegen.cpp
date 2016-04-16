@@ -596,13 +596,13 @@ int codegen(struct tnode *expressionTree)
 			fprintf(sim_code_file, "POP R%d\n",r--);
 		}
 		cout<<reg_1<<endl;
-		reg_1 = get_reg();
-		reg_2 = get_reg();
-		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
-		fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
-		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-		free_reg(__LINE__);
+		// reg_1 = get_reg();
+		// reg_2 = get_reg();
+		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
+		// fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
+		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+		// free_reg(__LINE__);
 		return reg_1;
 	}
 	else if (expressionTree->Node_Type==Node_Type_RETURN)

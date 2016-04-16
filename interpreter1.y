@@ -506,10 +506,13 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 												}
 	|ID '('ID_LIST')' SEMICOLON		{
 										// $$=NULL;
-										if (Glookup($1->NAME)->Local == NULL)
-										{
-											yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
-										}
+										// if (Glookup($1->NAME) != NULL)
+										// {
+										// 	if (Glookup($1->NAME)->Local == NULL)
+										// 	{
+										// 		yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
+										// 	}
+										// }
 										$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 
 									}
@@ -601,11 +604,7 @@ expr:expr PLUS expr		{
 							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
 
 						}
-	|ID '('ID_LIST')'	{
-							if (Glookup($1->NAME)->Local == NULL)
-							{
-								yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
-							}
+	|ID '('ID_LIST')'	{	
 							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 							// cout<<"Arg_List = "<<$3->Lentry->TYPE<<endl;
 							// cout<<"ptr1 = "<<$$->Arg_List<<endl;
