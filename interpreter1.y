@@ -506,6 +506,10 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 												}
 	|ID '('ID_LIST')' SEMICOLON		{
 										// $$=NULL;
+										if (Glookup($1->NAME)->Local == NULL)
+										{
+											yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
+										}
 										$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 
 									}
@@ -598,6 +602,10 @@ expr:expr PLUS expr		{
 
 						}
 	|ID '('ID_LIST')'	{
+							if (Glookup($1->NAME)->Local == NULL)
+							{
+								yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
+							}
 							$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 							// cout<<"Arg_List = "<<$3->Lentry->TYPE<<endl;
 							// cout<<"ptr1 = "<<$$->Arg_List<<endl;
@@ -647,7 +655,7 @@ ID_LIST: ID_LIST ',' expr		{
 									}
 									else if (Glookup($3->NAME)->size > 1)
 									{
-										// yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
+										yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
 									}
 								}
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
