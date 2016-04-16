@@ -23,6 +23,8 @@ integer hello(integer &a;,integer b;)
 	z = 3;
 	f = 10;
 	write(a);
+	write(b);
+	write(z);
 	a = 7;
 	return 0;
 	end
@@ -43,7 +45,7 @@ integer main()
 		z = 4;
 		write(z);
 		d[10] = 1000;
-		j=hello(z,-5);
+		j=hello(z,1);
 		write(z);
 		return j;
 	end
