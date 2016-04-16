@@ -37,11 +37,10 @@ integer hello(integer &a;,integer b;)
 	integer f;
 	enddecl
 	begin
-	c=TRUE;
+	c=TRUE;	
 	
 	z = 3;
 	f = 10;
-	hello2(a,4);
 	write(a);
 	write(b);
 	write(z);
@@ -63,11 +62,13 @@ integer main()
 
 		o = TRUE;
 		z = 4;
+		a = 10;
 		write(z);
 		d[10] = 1000;
-		j=hello(z,1);
+		j=hello(a,1);
 		write(z);
 		write(j);
+		write(a);
 		return j;
 	end
 

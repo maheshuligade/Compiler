@@ -433,7 +433,7 @@ int codegen(struct tnode *expressionTree)
 		while (temp != NULL)
 		{	
 
-			cout<<"NAME = "<<temp->NAME<<" pass_by_type = "<<temp->pass_by_type<<" binding = "<<temp->Binding<<endl;
+			// cout<<"NAME = "<<temp->NAME<<" pass_by_type = "<<temp->pass_by_type<<" binding = "<<temp->Binding<<endl;
 			if (temp->pass_by_type == LOCAL_VARIABLE)
 			{	
 				int  bind;
@@ -522,16 +522,43 @@ int codegen(struct tnode *expressionTree)
 
 				if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
 				{
+					if (lookup_variable((last_function_used.top()),(temp->NAME))->pass_by_type == PASS_BY_REFERENCE)
+					{	
+						reg_2 = get_reg();
+						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+						fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+						fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+
+						// MOV R3,BP
+						// ADD R2,R3
+						// MOV R2,[R2]
+						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+						free_reg(__LINE__);
+					}
+					else 
+					{
 						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
 						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+					}
 				}
 				else if(Glookup(last_function_used.top()) != NULL)
 				{
-					bind = Glookup(last_function_used.top())->Binding;
-					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+					cout<<char(temp->value)<<endl;
+					// bind = Glookup(last_function_used.top())->Binding +;
+					reg_1 = get_location(temp);
+					// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 				}
+				// else if(Glookup(last_function_used.top()) != NULL)
+				// {
+				// 	bind = Glookup(last_function_used.top())->Binding;
+				// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+				// 	fprintf(sim_code_file, "PUSH R%d\n",reg_1);
+				// }
 
 				free_reg(__LINE__);
 			}
@@ -595,7 +622,7 @@ int codegen(struct tnode *expressionTree)
 		{
 			fprintf(sim_code_file, "POP R%d\n",r--);
 		}
-		cout<<reg_1<<endl;
+		// cout<<reg_1<<endl;
 		// reg_1 = get_reg();
 		// reg_2 = get_reg();
 		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
@@ -698,7 +725,7 @@ int get_location(struct tnode *expressionTree)
 			}
 			else
 			{	
-				cout<<"pass_by_type = "<<lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type<<endl;			
+				// cout<<"pass_by_type = "<<lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type<<endl;			
 				location = lookup_variable(last_function_used.top(),expressionTree->NAME)->Binding;
 				if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_REFERENCE)
 				{

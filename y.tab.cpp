@@ -2381,7 +2381,7 @@ yyreduce:
 									}
 									else if (Glookup((yyvsp[(3) - (3)])->NAME)->size > 1)
 									{
-										yyerror("Array" + string(" ‘") + (yyvsp[(3) - (3)])->NAME + "’ can not be passed to the function.");
+										// yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
 									}
 								}
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
@@ -2422,7 +2422,7 @@ yyreduce:
 									}
 									else if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(1) - (1)])->NAME)->size > 1)
 									{
-										yyerror("Array" + string(" ‘") + (yyvsp[(1) - (1)])->NAME + "’ can not be passed to the function.");
+										// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
 									}
 								}
 								//$$=NULL;

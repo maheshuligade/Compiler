@@ -654,7 +654,7 @@ ID_LIST: ID_LIST ',' expr		{
 									}
 									else if (Glookup($3->NAME)->size > 1)
 									{
-										yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
+										// yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
 									}
 								}
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
@@ -691,7 +691,7 @@ ID_LIST: ID_LIST ',' expr		{
 									}
 									else if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
 									{
-										yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+										// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
 									}
 								}
 								//$$=NULL;
