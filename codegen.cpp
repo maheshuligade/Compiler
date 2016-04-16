@@ -183,8 +183,8 @@ int codegen(struct tnode *expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
 	{
 
-			reg_1 = get_location(expressionTree->ptr1);
 			reg_2 = codegen(expressionTree->ptr2);
+			reg_1 = get_location(expressionTree->ptr1);
 			// cout<<"Node_Type in ASSIGNMENT = "<<expressionTree->ptr2->Node_Type<<endl;
 			fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
 			free_reg(__LINE__);
