@@ -82,7 +82,7 @@ GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 	{
 				;
 
 GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{	
-												struct tnode *temp;
+												struct tnode *temp = new tnode;
 												temp=$2;
 												while (temp!=NULL)
 												{	
@@ -110,6 +110,7 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													}
 													temp=temp->Arg_List;
 												}
+												delete temp;
 
 											}
 

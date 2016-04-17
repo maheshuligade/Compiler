@@ -39,12 +39,12 @@ integer hello(integer &a;,integer b;)
 	begin
 	c=TRUE;	
 	
-	z = 3;
-	f = 10;
 	write(a);
 	write(b);
-	write(z);
-	a = 7;
+	z = hello2(a,b);
+	write(a);
+	a = 5;
+	b = 5;
 	return 5;
 	end
 }
@@ -65,11 +65,10 @@ integer main()
 		z = 4;
 		a = 10;
 		read(z);
-		write(z);
-		d[10] = 1000;
-		j=hello(a,1);
-		write(j);
+	
+		j=hello(a,21);
 		write(a);
+		write(z);
 		return j;
 	end
 
