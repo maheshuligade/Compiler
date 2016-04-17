@@ -378,9 +378,10 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 			{
 				yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
 			}
-		}
-		else
-		{	
+		// }
+		// else
+		// {	
+			// cout<<"Node_Type = "<<ptr1->Node_Type<<endl;
 			if (Glookup(NAME)->Arg_List != NULL)
 			{
 				struct Lsymbol *temp = new Lsymbol;
