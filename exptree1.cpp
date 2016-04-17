@@ -374,7 +374,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		}
 		else if (Glookup(NAME) != NULL)
 		{
-			if (Glookup(NAME)->Local == NULL)
+			if (Glookup(NAME)->BODY == NULL)
 			{
 				yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
 			}

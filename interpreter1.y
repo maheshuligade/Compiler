@@ -181,6 +181,7 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 													of the respective function.
 												**/
 												// $$->Arg_List->Arg_List->Lentry = $1->Arg_List->Lentry;
+												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
@@ -249,7 +250,7 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
-												
+												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
 												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
