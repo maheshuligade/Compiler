@@ -458,29 +458,29 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 }
 
 
-struct tnode* makeOperatorNode(char op,struct tnode* left,struct tnode* right)
-{
-	struct tnode* new_operator_node;
-	new_operator_node=(struct tnode*)malloc(sizeof(struct tnode));
-	new_operator_node->NAME=(char *)malloc(sizeof(char));
-	*(new_operator_node->NAME)=op;
-	new_operator_node->ptr1=left;
-	new_operator_node->ptr2=right;
-	return new_operator_node;
-}
-struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* ptr1,struct tnode* ptr2,struct tnode *ptr3)
-{
-	struct tnode* new_statement_node;
-	new_statement_node=(struct tnode*)malloc(sizeof(struct tnode));
-	new_statement_node->NAME=(char *)malloc(sizeof(char));
-	new_statement_node->value=value;
-	new_statement_node->Node_Type=Node_Type;
-	*(new_statement_node->NAME)=c;
-	new_statement_node->ptr1=ptr1;
-	new_statement_node->ptr2=ptr2;
-	new_statement_node->ptr3=ptr3;
-	return new_statement_node;
-}
+// struct tnode* makeOperatorNode(char op,struct tnode* left,struct tnode* right)
+// {
+// 	struct tnode* new_operator_node;
+// 	new_operator_node=(struct tnode*)malloc(sizeof(struct tnode));
+// 	new_operator_node->NAME=(char *)malloc(sizeof(char));
+// 	*(new_operator_node->NAME)=op;
+// 	new_operator_node->ptr1=left;
+// 	new_operator_node->ptr2=right;
+// 	return new_operator_node;
+// }
+// struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* ptr1,struct tnode* ptr2,struct tnode *ptr3)
+// {
+// 	struct tnode* new_statement_node;
+// 	new_statement_node=(struct tnode*)malloc(sizeof(struct tnode));
+// 	new_statement_node->NAME=(char *)malloc(sizeof(char));
+// 	new_statement_node->value=value;
+// 	new_statement_node->Node_Type=Node_Type;
+// 	*(new_statement_node->NAME)=c;
+// 	new_statement_node->ptr1=ptr1;
+// 	new_statement_node->ptr2=ptr2;
+// 	new_statement_node->ptr3=ptr3;
+// 	return new_statement_node;
+// }
 
 
 struct Gsymbol *Glookup(char *NAME)

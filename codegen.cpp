@@ -4,15 +4,15 @@
 #include "y.tab.hpp"
 #include <string>
 // 
-int reg=0;
-int left_value,right_value;
-int reg_no = 0;
+// int reg=0;
+// int left_value,right_value;
+static int reg_no = 0;
 
-int label_no=0;
-stack <char *> last_function_used;
+static int label_no=0;
+static stack <char *> last_function_used;
 
 
-int MEMORY_LOC;
+static int MEMORY_LOC;
 void change_extension(char *filename)
 {	
 	/*This Function changes the extension of the input_source_program.silc to input_source_program.sim*/
@@ -37,9 +37,10 @@ int get_reg(int line)
 	/*This Function allocates the least unused register and returns its value*/
 	// cout<<"reg_get = "<<++reg_no<<endl;
 	// cout<<reg_no<<endl;
-	if (reg_no + 1 > 7)
+
+	if (reg_no  > 7)
 	{	
-		// cout<<line<<endl;
+		cout<<line<<endl;
 		cout<<"exception:get_reg."<<endl;
 	}
 	// cout<<"reg_no = "<<reg_no<<endl;
@@ -192,8 +193,8 @@ int codegen(struct tnode *expressionTree)
 	else if (expressionTree->Node_Type==Node_Type_ASSIGNMENT)
 	{
 
-			reg_2 = codegen(expressionTree->ptr2);
 			reg_1 = get_location(expressionTree->ptr1);
+			reg_2 = codegen(expressionTree->ptr2);
 			// cout<<"Node_Type in ASSIGNMENT = "<<expressionTree->ptr2->Node_Type<<endl;
 			fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
 			free_reg(__LINE__);
@@ -422,7 +423,7 @@ int codegen(struct tnode *expressionTree)
 		// int r;
 		// r = reg_1;
 		// reg_1 = 0;
-
+		cout<<"NAME = "<<expressionTree->NAME<<endl;
 		last_function_used.push(expressionTree->NAME);
 
 		fprintf(sim_code_file, "\n%s:\n",expressionTree->NAME);
@@ -493,13 +494,14 @@ int codegen(struct tnode *expressionTree)
 
 		/**Pushing Register in use in the stack.**/
 		r = 0;
-		while (r <= max(reg_1,reg_2))
+		while (r < reg_no)
 		{
 			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
 		r = r - 1;
-
-
+		// cout<<reg_no<<endl;
+		// cout<<r<<endl;
+		reg_no = 0;
 		/**Pushing Arguments  in the stack.**/
 
 		struct tnode *temp = new tnode;
@@ -582,16 +584,18 @@ int codegen(struct tnode *expressionTree)
 
 					if (lookup_variable((last_function_used.top()),(temp->NAME)) != NULL)
 					{
-						bind = Memory[lookup_variable((last_function_used.top()),(temp->NAME))->Binding];
+						bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
 
 						//cout<<"Binding = "<<bind<<endl;
 						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					}
 					else
 					{
-						bind = Memory[Glookup((temp->NAME))->Binding];
+						bind = Glookup((temp->NAME))->Binding;
 						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+						fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						//cout<<"Binding = "<<bind<<endl;
 					}	
@@ -629,7 +633,7 @@ int codegen(struct tnode *expressionTree)
 		// get_reg(__LINE__);
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 
-		while (r >= 0)
+		while (r-1 >= 0)
 		{
 			fprintf(sim_code_file, "POP R%d\n",r--);
 		}

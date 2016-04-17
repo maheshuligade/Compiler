@@ -68,7 +68,6 @@ integer main()
 		write(z);
 		d[10] = 1000;
 		j=hello(a,1);
-		write(zerwe);
 		write(j);
 		write(a);
 		return j;

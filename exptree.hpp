@@ -122,11 +122,11 @@ extern stack <char * > last_function_used_type_check;
 
 extern 	int yyerror(std::string s);
 extern int column_no;
-extern char error_output[200];
+// extern char error_output[200];
 extern char input_file_name[100];
 extern int yylineno;
-extern int BP;
-extern int SP;
+// extern int BP;
+// extern int SP;
 extern 	FILE *fp,*sim_code_file;
 extern int Memory[1000000];
 extern struct Gsymbol *Gsymbol_table;

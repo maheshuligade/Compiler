@@ -44,6 +44,11 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														$$->ptr1=$3;
 														$$->ptr2=$2;
 
+														// while (!last_function_used_type_check.empty())
+														// {
+														// 	cout<<last_function_used_type_check.top()<<endl;
+														// 	last_function_used_type_check.pop();
+														// }
 														if (no_of_error==0)
 														{
 															//type_check($$);
