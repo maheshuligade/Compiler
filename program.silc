@@ -5,70 +5,32 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer &a;,integer b;);
-	integer hello2(integer &a;,integer b;);
+	integer hello(integer a;,integer b;);
 	integer g,h;
 	boolean t;
 enddecl
-integer hello2(integer &a;,integer b;)
+integer hello(integer a;,integer b;)
 {
-	decl
-	integer z;
-	boolean w;
-	integer f;
-	enddecl
-	begin
-	c=TRUE;
 	
-	z = 3;
-	f = 10;
-	write(a);
-	write(b);
-	write(z);
-	a = 9;
-	return 0;
-	end
-}
-integer hello(integer &a;,integer b;)
-{
-	decl
-	integer z;
-	boolean w;
-	integer f;
-	enddecl
 	begin
-	c=TRUE;	
 	
-	write(a);
-	write(b);
-	z = hello2(a,b);
-	write(a);
-	a = 5;
-	b = 5;
+	
 	return 5;
 	end
 }
 integer main()
 {
 	decl
-		boolean b;
-		boolean c;
-		boolean e;
-		boolean f;
-		integer z;
-		integer zerwe;
-		boolean o;
+		
+		integer j;
+	
 	enddecl
 	begin
 
-		o = TRUE;
-		z = 4;
-		a = 10;
-		read(z);
 	
 		j=hello(a,21);
-		write(a);
-		write(z);
+		
+		write(j);
 		return j;
 	end
 
