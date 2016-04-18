@@ -503,7 +503,7 @@ int codegen(struct tnode *expressionTree)
 
 		/**Pushing Register in use in the stack.**/
 		r = 0;
-		while (r <= reg_no)
+		while (r < reg_no)
 		{
 			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
@@ -699,7 +699,7 @@ int codegen(struct tnode *expressionTree)
 		// cout<<"reg_no = "<<reg_no<<endl;
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 
-		while (r >= 0)
+		while (r-1 >= 0)
 		{
 			fprintf(sim_code_file, "POP R%d\n",r--);
 		}
@@ -709,9 +709,9 @@ int codegen(struct tnode *expressionTree)
 		reg_1 = get_reg(__LINE__);
 		// reg_1 = 0;
 		reg_2 = get_reg(__LINE__);
-		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
-		fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
+		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
+		// fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		free_reg(__LINE__);
 		return reg_1;

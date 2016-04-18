@@ -1,41 +1,36 @@
 decl
-	integer a,j,k,l;
-	integer b;
-	boolean c;
-	integer d[11];
-	integer e;
-	integer f;
-	integer hello();
-	integer g,h;
-	boolean t;
+	integer swap(integer &x, &y;);
+	integer a, b, result;
 enddecl
-integer hello()
-{
-	decl
-	enddecl	
-	begin
-	
 
-	return 5;
-	end
+integer swap(integer &x, &y;){
+decl
+	integer temp;
+enddecl
+begin
+	temp = x;
+	x = y;
+	y = temp;
+	write(x);
+    write(y);
+	return  20;
+end
 }
-integer main()
-{
-	decl
-		
-		integer j;
+integer main(){
+begin
+	a = 56;
+	b = 45;
 	
-	enddecl
-	begin
-
-	
-		j=hello();
-		
-		write(j);
-		return j;
-	end
-
+	result = 98;
+    
+    write(a);
+    write(b);
+    
+    result = swap(a, b);
+    
+    write(a);
+    write(b);
+    write(result);
+	return 1;
+end
 }
-
-
-		
