@@ -10,7 +10,7 @@ int alphabet[200]={0};
 struct Gsymbol *Gsymbol_table=NULL;
 struct Lsymbol *Lsymbol_table=NULL;
 int Memory[1000000];
-int Global_Bind_Count = 257;
+int Global_Bind_Count = 0;
 char error_output[200];
 int no_of_error=0;
 int ptr1_type,ptr2_type;
@@ -374,7 +374,8 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 		}
 		else if (Glookup(NAME) != NULL)
 		{
-			if (Glookup(NAME)->BODY == NULL)
+			// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+			if (Glookup(NAME)->BODY == NULL && (strcmp(NAME ,last_function_used_type_check.top())) != 0)
 			{
 				yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
 			}
@@ -393,7 +394,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				{
 
 					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-					// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->Node_Type<<endl;
+					// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
 					if (temp->TYPE != temp_2->type)
 					{
 						col=temp_2->col_no;
@@ -423,6 +424,10 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				}
 
 				// cout<<"end"<<endl;
+				if (temp_2 != NULL)
+				{
+					cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
+				}
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
 					yyerror("function call number of arguments does not match declaration.");
