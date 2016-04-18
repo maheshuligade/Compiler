@@ -432,6 +432,7 @@ int codegen(struct tnode *expressionTree)
 		// int r;
 		// r = reg_1;
 		// reg_1 = 0;
+		reg_no = 0;
 		cout<<"NAME = "<<expressionTree->NAME<<endl;
 		last_function_used.push(expressionTree->NAME);
 
@@ -605,7 +606,7 @@ int codegen(struct tnode *expressionTree)
 				// 	fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 				// }
 
-				// free_reg(__LINE__);
+				free_reg(__LINE__);
 			}
 			else if (temp_2->pass_by_type == PASS_BY_VALUE)
 			{
@@ -662,7 +663,7 @@ int codegen(struct tnode *expressionTree)
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						//cout<<"Binding = "<<bind<<endl;
 					}	
-					// free_reg(__LINE__);
+					free_reg(__LINE__);
 				}
 				else
 				{
@@ -671,7 +672,7 @@ int codegen(struct tnode *expressionTree)
 					// cout<<"Node_Type = "<<temp->Node_Type<<endl;
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					// cout<<"reg_1 = "<<reg_1<<endl;
-					free_reg(__LINE__);
+					// free_reg(__LINE__);
 
 				}
 			}
@@ -706,13 +707,14 @@ int codegen(struct tnode *expressionTree)
 		// reg_no = r;
 		// cout<<"reg_no = "<<reg_no<<endl;
 		int i;
-		i = arg_for_pop;
+		i = arg_for_pop - 2;
 		while (i >= 0)
 		{	
 			fprintf(sim_code_file, "POP R0\n");
 			i--;
 		}
 		i = reg_no;
+		// cout<<reg_no<<endl;
 		while (i >= 0)
 		{
 			// cout<<"I"<<endl;
@@ -856,6 +858,7 @@ int get_location(struct tnode *expressionTree)
 					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 
 				}

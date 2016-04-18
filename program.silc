@@ -1,5 +1,5 @@
 decl
-	integer swap(integer &x, &y;), a, b, result;
+	integer swap(integer &x, &y;), a, b,result;
 enddecl
 
 integer swap(integer &x, &y;){
@@ -16,6 +16,10 @@ begin
 end
 }
 integer main(){
+decl
+	integer result;
+enddecl
+
 begin
 	a = 56;
 	b = 45;
