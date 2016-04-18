@@ -5,16 +5,17 @@ decl
 	integer d[11];
 	integer e;
 	integer f;
-	integer hello(integer a;,integer b;);
+	integer hello();
 	integer g,h;
 	boolean t;
 enddecl
-integer hello(integer a;,integer b;)
+integer hello()
 {
-	
+	decl
+	enddecl	
 	begin
 	
-	
+
 	return 5;
 	end
 }
@@ -28,7 +29,7 @@ integer main()
 	begin
 
 	
-		j=hello(a,21);
+		j=hello();
 		
 		write(j);
 		return j;

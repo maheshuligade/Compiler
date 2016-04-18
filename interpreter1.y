@@ -533,6 +533,11 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 										// 		yyerror(string("Definiation of function named ‘") + $1->NAME + "’ does not exist in this scope.");
 										// 	}
 										// }
+										if ((strcmp($3->Arg_List->NAME ,last_function_used_type_check.top())) != 0)
+										{
+											cout<<"NULL"<<endl;
+										}
+
 										$$=Make_Node(get_type($1),Node_Type_FUNCTION_CALL,'c',$1->NAME,$3,NULL,NULL,$3);
 
 									}
