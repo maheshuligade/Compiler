@@ -1,6 +1,5 @@
 decl
-	integer swap(integer &x, &y;);
-	integer a, b, result;
+	integer swap(integer &x, &y;), a, b, result;
 enddecl
 
 integer swap(integer &x, &y;){
@@ -13,24 +12,20 @@ begin
 	y = temp;
 	write(x);
     write(y);
-	return  20;
+	return 0-2;
 end
 }
 integer main(){
 begin
 	a = 56;
 	b = 45;
-	
 	result = 98;
-    
     write(a);
     write(b);
-    
     result = swap(a, b);
-    
     write(a);
     write(b);
     write(result);
-	return 1;
+	return 0-1;
 end
 }

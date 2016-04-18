@@ -430,7 +430,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 				}
 				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
 				{
-					// yyerror("function call number of arguments does not match declaration.");
+					yyerror("function call number of arguments does not match declaration.");
 				}
 
 				delete temp;

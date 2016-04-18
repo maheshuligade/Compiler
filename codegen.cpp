@@ -510,7 +510,7 @@ int codegen(struct tnode *expressionTree)
 		r = r - 1;
 		// cout<<reg_no<<endl;
 		// cout<<r<<endl;
-		reg_no = 0;
+		// reg_no = 0; //For the exception:free_reg problem
 		/**Pushing Arguments  in the stack.**/
 
 		struct tnode *temp = new tnode;
@@ -529,11 +529,11 @@ int codegen(struct tnode *expressionTree)
 
 		position = -2- no_of_arg;
 		// cout<<"no_of_arg = "<<position<<endl;
-
+		int arg_for_pop = 0;
 
 		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
 		while (temp != NULL && temp_2 != NULL)
-		{
+		{	arg_for_pop++;
 			// cout<<"NAME = "<<temp->Node_Type<<endl;
 			// cout<<"NAME2 = "<<temp_2->pass_by_type<<endl;
 			temp_2->Binding = position++;
@@ -697,13 +697,29 @@ int codegen(struct tnode *expressionTree)
 
 		// get_reg(__LINE__);
 		// cout<<"reg_no = "<<reg_no<<endl;
+		// reg_no = 0;
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
+		// cout<<"reg_no = "<<reg_no<<endl;
 
-		while (r-1 >= 0)
-		{
-			fprintf(sim_code_file, "POP R%d\n",r--);
+		fprintf(sim_code_file, "POP R0\n");
+		// fprintf(sim_code_file, "OUT R0\n");
+		// reg_no = r;
+		// cout<<"reg_no = "<<reg_no<<endl;
+		int i;
+		i = arg_for_pop;
+		while (i >= 0)
+		{	
+			fprintf(sim_code_file, "POP R0\n");
+			i--;
 		}
-		// cout<<reg_1<<endl;
+		i = reg_no;
+		while (i >= 0)
+		{
+			// cout<<"I"<<endl;
+			fprintf(sim_code_file, "POP R%d\n",i--);
+		}
+		// cout<<reg_1<	<endl;
+		// cout<<r<<endl;
 
 		/**For the exception:free_reg problem**/
 		reg_1 = get_reg(__LINE__);
@@ -712,7 +728,13 @@ int codegen(struct tnode *expressionTree)
 		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
 		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
 		// fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
+		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+		// cout<<arg_for_pop + r<<endl;
+		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r +2);
+		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+		// fprintf(sim_code_file, "OUT R%d\n",reg_1);
 		free_reg(__LINE__);
 		return reg_1;
 	}
