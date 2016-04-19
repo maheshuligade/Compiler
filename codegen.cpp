@@ -728,7 +728,12 @@ int codegen(struct tnode *expressionTree)
 
 		int no_of_local_var = 0;
 		while (temp_local != NULL)
-		{	no_of_local_var++;
+		{	
+			// cout<<"NAME = "<<temp_local->pass_by_type<<endl;
+			if (temp_local->pass_by_type == LOCAL_VARIABLE)
+			{
+				no_of_local_var++;
+			}
 			temp_local = temp_local->Next;
 		}
 		/**For the exception:free_reg problem**/
@@ -740,8 +745,11 @@ int codegen(struct tnode *expressionTree)
 		// fprintf(sim_code_file, "SUB R%d,R%d\n",reg_1,reg_2);
 		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// cout<<arg_for_pop + r<<endl;
+		// cout<<"arg_for_pop = "<<arg_for_pop<<endl;
+		// cout<<"r = "<<r<<endl;
+		// cout<<"no_of_local_var = "<<no_of_local_var<<endl;
 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r +2 + no_of_local_var);
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r + 2 + no_of_local_var);
 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// fprintf(sim_code_file, "OUT R%d\n",reg_1);
@@ -781,6 +789,7 @@ int codegen(struct tnode *expressionTree)
 		reg_2 = codegen(expressionTree->ptr1);
 		// fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_1);
 		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
+		// fprintf(sim_code_file, "OUT R%d\n",reg_2);
 		// fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
 		// fprintf(sim_code_file, "MOV R%d,2\n",reg_2);
 		// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
