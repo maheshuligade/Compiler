@@ -707,6 +707,7 @@ int codegen(struct tnode *expressionTree)
 		// reg_no = r;
 		// cout<<"reg_no = "<<reg_no<<endl;
 		int i;
+		// cout<<arg_for_pop<<endl;
 		i = arg_for_pop - 2;
 		while (i >= 0)
 		{	
@@ -722,7 +723,14 @@ int codegen(struct tnode *expressionTree)
 		}
 		// cout<<reg_1<	<endl;
 		// cout<<r<<endl;
+		struct Lsymbol *temp_local = new Lsymbol;
+		temp_local =  Glookup(last_function_used.top())->Local;
 
+		int no_of_local_var = 0;
+		while (temp_local != NULL)
+		{	no_of_local_var++;
+			temp_local = temp_local->Next;
+		}
 		/**For the exception:free_reg problem**/
 		reg_1 = get_reg(__LINE__);
 		// reg_1 = 0;
@@ -733,7 +741,7 @@ int codegen(struct tnode *expressionTree)
 		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// cout<<arg_for_pop + r<<endl;
 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r +2);
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r +2 + no_of_local_var);
 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// fprintf(sim_code_file, "OUT R%d\n",reg_1);

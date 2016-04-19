@@ -17,7 +17,6 @@ end
 }
 integer main(){
 decl
-	integer result;
 enddecl
 
 begin
