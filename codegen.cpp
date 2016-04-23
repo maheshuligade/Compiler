@@ -165,12 +165,15 @@ int codegen(struct tnode *expressionTree)
 	}
 	else if (expressionTree->Node_Type==Node_Type_OR)
 	{
-		reg_1=codegen(expressionTree->ptr2);
-		reg_2=codegen(expressionTree->ptr1);
+		reg_1=codegen(expressionTree->ptr1);
+		reg_2=codegen(expressionTree->ptr2);
 		
-		fprintf(sim_code_file, "ADD R%d,R%d\n\n",reg_2,reg_1);
+		fprintf(sim_code_file, "ADD R%d,R%d\n\n",reg_1,reg_2);
+		fprintf(sim_code_file, "MOV R%d,0\n",reg_2);
+		fprintf(sim_code_file, "NE R%d,R%d\n",reg_1,reg_2);
+
 		free_reg(__LINE__);
-		return reg_2;
+		return reg_1;
 	}
 	else if (expressionTree->Node_Type==Node_Type_AND)
 	{
