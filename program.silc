@@ -1,31 +1,79 @@
 decl
-	integer fact(integer n;);
+	integer A[20];
+	integer quicksort(integer lo,hi;);
+	integer partition(integer lo,hi;);
+	integer swap(integer &x, &y;);
 enddecl
 
-integer fact(integer n;)
-{
-	decl
-		integer f;
+
+integer swap(integer &x, &y;){
+decl
+	integer temp;
+enddecl
+begin
+	temp = x;
+	x = y;
+	y = temp;
+	return 0;
+end
+}
+integer partition(integer lo, hi;){
+	decl	
+		integer pivot, i, j, temp;
 	enddecl
 	begin
-		if(n==1) then
-			f=1;
-		else
-			f=n*fact(n-1);
+		pivot = A[hi];
+		j = lo;
+		i = lo;
+		while (j < hi) do
+			if(A[j] <= pivot) then
+				temp = swap(A[i],A[j]);
+				i = i+1;
+			endif;
+			j = j+1;
+		endwhile;
+		temp = swap(A[i],A[hi]);
+		return i;
+	end
+}
+integer quicksort(integer lo, hi;){
+	decl
+		integer p, temp;
+	enddecl
+	begin
+		if (lo < hi) then
+			p = partition(lo, hi);
+			temp = quicksort(lo, p-1);
+			temp = quicksort(p+1, hi);
 		endif;
-		return f;
+		return 0;
 	end
 }
 
-integer main()
-{
-	decl
-		integer a,res;
-	enddecl
-	begin
-		read(a);
-		res = fact(a);
-		write(res);
-		return 0;
-	end	
-}	
+
+integer main(){
+decl
+	integer i, n, result;
+enddecl
+begin
+	read(n);
+	i = 0;
+	while(i<n) do
+		read(A[i]);
+		i = i+1;
+	endwhile;
+	
+	result = quicksort(0,n-1);
+	
+	i = 0;
+	while(i<n) do
+		write(A[i]);
+		i = i+1;
+	endwhile;
+	
+	return 0;
+end
+}
+
+
+
