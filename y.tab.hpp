@@ -77,7 +77,11 @@
      ENDDECL = 293,
      TRUE = 294,
      FALSE = 295,
-     ASSIGNMENT = 296
+     DOT = 296,
+     NEW = 297,
+     FREE = 298,
+     TYPEDEF = 299,
+     ASSIGNMENT = 300
    };
 #endif
 /* Tokens.  */
@@ -119,7 +123,11 @@
 #define ENDDECL 293
 #define TRUE 294
 #define FALSE 295
-#define ASSIGNMENT 296
+#define DOT 296
+#define NEW 297
+#define FREE 298
+#define TYPEDEF 299
+#define ASSIGNMENT 300
 
 
 

@@ -26,6 +26,7 @@
 %token NOT OR AND
 %token DECL ENDDECL
 %token TRUE FALSE
+%token DOT ALLOCATE INITIALIZE FREE TYPEDEF	
 
 %right ASSIGNMENT 
 %left OR 
@@ -39,7 +40,7 @@
 %right NOT
 
 %%
-PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {	
+PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
 														$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 														$$->ptr1=$3;
 														$$->ptr2=$2;

@@ -58,6 +58,11 @@
 "=="		{column_no+=yyleng; return ISEQUAL; }
 "%"			{column_no+=yyleng; return MODULUS;}
 "^"			{column_no+=yyleng; return POWER;}
+"."			{column_no+=yyleng; return DOT;}
+"allocate"	{column_no+=yyleng; return ALLOCATE;}
+"initialize"{column_no+=yyleng; return INITIALIZE;}
+"free"		{column_no+=yyleng; return FREE;}
+"typedef"	{column_no+=yyleng; return TYPEDEF;}
 " "			{column_no+=yyleng;}
 "return"	{column_no+=yyleng; return RETURN;}
 [a-zA-Z]+[a-zA-Z0-9]*	{a=Make_Node(ID,ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;return ID;}	
