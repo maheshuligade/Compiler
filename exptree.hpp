@@ -52,7 +52,20 @@ struct Lsymbol
 	int pass_by_type; //wheter the argument is PASS_BY_VALUE or PASS_BY_REFERENCE or Local variable
 };
 
+struct Typetable
+{
+	char *NAME;					//For storing type Name
+	struct Fieldlist *Fields;	//Pointer to the head of the fields list.
+	struct Typetable *Next;		//Pointer to  the Next type table entry.
+};
+ 
 
+struct Fieldlist
+{	
+	char *NAME;					//For storing the Name of the field
+	struct Typetable *TYPE;		//Pointer to the type table entry.
+	struct Fieldlist *Next;		//Pointer to the Next field.
+};
 struct tnode* Make_Node(int type,int Node_Type,int value,  char *NAME,struct tnode* ptr1,struct tnode* ptr2,struct tnode* ptr3,struct tnode* Arg_List);
 
  /*Make tnode and the value of the field*/
@@ -114,7 +127,22 @@ int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
 int type_check(struct tnode* expressionTree);
 
+/**For initilizing the Typetable entries to the primitive data types.**/
+void Typetable_Crate();
 
+/**Searches through the typetable and returns the pointer to the type table entry of type name**/
+struct Typetable *Tlookup(char *NAME);
+
+/**
+	Installs a new type table entry for the name with the given fields and returns the pointer to the typetable Entry.	
+**/
+struct Typetable *Tinstall(char *NAME,struct Fieldlist *Fields);
+
+/**Creates a Fieldlist entry with the given name and the type**/
+void Finstall(char *NAME,struct Typetable *TYPE);
+
+/**Searches for the field of the given name in the list and returns the pointer to the matchingg entry.**/
+struct Fieldlist *Flookup(char *NAME,struct Fieldlist *List);
 
 /**	Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
 	type_check

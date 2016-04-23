@@ -78,10 +78,8 @@
      TRUE = 294,
      FALSE = 295,
      DOT = 296,
-     NEW = 297,
-     FREE = 298,
-     TYPEDEF = 299,
-     ASSIGNMENT = 300
+     TYPEDEF = 297,
+     ASSIGNMENT = 298
    };
 #endif
 /* Tokens.  */
@@ -124,10 +122,8 @@
 #define TRUE 294
 #define FALSE 295
 #define DOT 296
-#define NEW 297
-#define FREE 298
-#define TYPEDEF 299
-#define ASSIGNMENT 300
+#define TYPEDEF 297
+#define ASSIGNMENT 298
 
 
 

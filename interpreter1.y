@@ -26,7 +26,7 @@
 %token NOT OR AND
 %token DECL ENDDECL
 %token TRUE FALSE
-%token DOT ALLOCATE INITIALIZE FREE TYPEDEF	
+%token DOT TYPEDEF	
 
 %right ASSIGNMENT 
 %left OR 
@@ -40,10 +40,10 @@
 %right NOT
 
 %%
-PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
+PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
 														$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
-														$$->ptr1=$3;
-														$$->ptr2=$2;
+														$$->ptr1=$4;
+														$$->ptr2=$3;
 
 														// while (!last_function_used_type_check.empty())
 														// {
@@ -68,7 +68,9 @@ PROGRAM: GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 															codegen($$);
 														}
 													}
-
+USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{}
+						|										{}
+						;
 GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL {$$=$2;}
 				|		{$$=NULL;}
 				;
@@ -848,10 +850,12 @@ IDS:ID 					{
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 							$$->Lentry->Next = NULL;
 						}
+	|ID DOT ID 			{}
 	
 	;
 TYPE:INTEGER	{$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
 	|BOOLEAN	{$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
+	|ID			{}
 	;
 
 %%
