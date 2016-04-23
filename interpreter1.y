@@ -11,6 +11,7 @@
 	// extern int Memory[1000];
 	extern FILE *yyin;
 	extern int no_of_error;
+	
 	int BP=1535;
 	int SP=1535;
 	int i;
@@ -41,7 +42,7 @@
 
 %%
 PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
-														$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+														$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 														$$->ptr1=$4;
 														$$->ptr2=$3;
 
@@ -50,6 +51,7 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														// 	cout<<last_function_used_type_check.top()<<endl;
 														// 	last_function_used_type_check.pop();
 														// }
+														cout<<"END"<<endl;
 														if (no_of_error==0)
 														{
 															//type_check($$);
@@ -202,7 +204,7 @@ ARG:TYPE L_ID_LIST 	{
 
 FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{
 																			//$$=$1;
-																			$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+																			$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 																			$$->ptr1=$1;
 																			$$->ptr2=$2;
 																		}
@@ -283,8 +285,9 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
+
 												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
-												$$=Make_Node(TYPE_INT,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
+												$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
 												// last_function_used_type_check.push(($2->NAME));
@@ -305,7 +308,6 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')' 
 					'{' LOCAL_DEF_BLOCK 	
 											{	
-
 												if ($4->Lentry!=NULL)
 												{
 													cout<<input_file_name<<":"<<$4->Lentry->line_no<<":"<<$4->Lentry->col_no<<":"<<"error:"<<"main funtion can not have any arguments"<<endl;
@@ -314,17 +316,19 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 
 												//$$=$7;/*evaluate($$);*/
 												// $2->NAME="main";
+												
 												if ($2->NAME ==  NULL)
 												{
 													$2->NAME = (char *)malloc(20*sizeof(char));
 												}
 												strcpy($2->NAME,"main");
-												Ginstall($2->NAME,TYPE_INT,1,'f',$4);
+												Ginstall($2->NAME,Tlookup(INTEGER_NAME),1,'f',$4);
 												if ($$ == NULL)
 												{
 													$$ = new tnode;
 												}
 												$$->type = $1->type;
+
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
 
@@ -336,13 +340,16 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 											//	Glookup($2->NAME)->Arg_List->Arg_List = new tnode;
 												// Glookup($2->NAME)->Arg_List->Arg_List = $4;									
 												last_function_used_type_check.push(($2->NAME));
-												
+												cout<<"After main Local"<<endl;
 											}
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
-													//$$ = $2;
+													// $$ = $2;
+													if ($$ == NULL)
+													{
+														$$ = new tnode;
+													}
 													$$->Lentry = $2->Lentry;
 													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
-
 
 												}
 				|								{	
@@ -359,7 +366,17 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{
 													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 												}
 
-				|								{$$->Lentry = NULL;}
+				|								{
+													if ($$ == NULL)
+													{
+														$$ = new tnode;
+													}
+													// if ($$->Lentry == NULL)
+													// {
+													// 	$$->Lentry = new Lsymbol;
+													// }
+													$$->Lentry = NULL;
+												}
 				;
 
 LOCAL_DECL:TYPE L_ID_LIST SEMICOLON	{	
@@ -406,8 +423,8 @@ L_ID:ID									{
 													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
 												}	
 											}
-											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,1,PASS_BY_VALUE);
+											$$=Make_Node(Tlookup(VOID_NAME),Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
+											$$->Lentry = Make_Arg_Node($1->NAME,Tlookup(VOID_NAME),1,PASS_BY_VALUE);
 											$$->Lentry->Next = NULL;
 										}
 	| '&' ID							{
@@ -418,14 +435,14 @@ L_ID:ID									{
 													yyerror(string("‘") + $1->NAME + "’ was declared as array.");
 												}	
 											}
-											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'a',$2->NAME,$2,makeLeafNode(1),NULL,NULL);
-											$$->Lentry = Make_Arg_Node($2->NAME,TYPE_VOID,1,PASS_BY_REFERENCE);
+											$$=Make_Node(Tlookup(VOID_NAME),Node_Type_ARRAY,'a',$2->NAME,$2,makeLeafNode(1),NULL,NULL);
+											$$->Lentry = Make_Arg_Node($2->NAME,Tlookup(VOID_NAME),1,PASS_BY_REFERENCE);
 											$$->Lentry->Next = NULL;
 										}
 	|ID'['expr']'						{
 											yyerror("Array" + string(" ‘") + $1->NAME + "’ should be declared as global.");
-											$$=Make_Node(TYPE_VOID,Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
-											$$->Lentry = Make_Arg_Node($1->NAME,TYPE_VOID,2,PASS_BY_VALUE);
+											$$=Make_Node(Tlookup(VOID_NAME),Node_Type_ARRAY,'A',$1->NAME,$1,$3,NULL,NULL);
+											$$->Lentry = Make_Arg_Node($1->NAME,Tlookup(VOID_NAME),2,PASS_BY_VALUE);
 											$$->Lentry->Next = NULL;
 										}
 	;		
@@ -455,10 +472,11 @@ L_ID:ID									{
 
 BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										//$$=$2;
-										$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 										$$->ptr1=$2;
 										$$->ptr2=$3;
 										// evaluate($$);
+										cout<<"In body"<<endl;
 										// 	<<"Memory"<<endl;
 										// for (int i = 0; i < 20; i++)
 										// {
@@ -467,6 +485,7 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										// exit(0);
 									}
 RETURN_TYPE:RETURN expr SEMICOLON	{	
+										cout<<"IN return"<<endl;
 										//cout<<"Node_Type="<<$2->Node_Type<<endl;
 										if ($2->Node_Type == Node_Type_ARRAY)
 										{
@@ -484,11 +503,11 @@ RETURN_TYPE:RETURN expr SEMICOLON	{
 										$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);
 									}
 
-Slist: Stmts	{$$=$1;}
+Slist: Stmts	{$$=$1; cout<<"IN Slist"<<endl;}
 	 | 			{$$=NULL;}
 Stmts:Stmts Stmt 	{		
 
-							$$=Make_Node(TYPE_VOID,Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
+							$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 							$$->ptr1=$1;
 							$$->ptr2=$2;
 							
@@ -537,23 +556,23 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	// 								}
 	|READ'('IDS')'	SEMICOLON  		{
 										
-										$$=Make_Node(TYPE_VOID,Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
+										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
 									}
 	|WRITE'('expr')' SEMICOLON		{	
-										
-										$$=Make_Node(TYPE_VOID,Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
+										cout<<"In write"<<endl;
+										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
 									}
 	|IF '('expr')'THEN Slist ENDIF SEMICOLON{
 												
-												$$=Make_Node(TYPE_VOID,Node_Type_IF,'i',NULL,$3,$6,NULL,NULL);
+												$$=Make_Node(Tlookup(VOID_NAME),Node_Type_IF,'i',NULL,$3,$6,NULL,NULL);
 											}
 	|IF '('expr')'THEN Slist ELSE Slist ENDIF SEMICOLON{	
 														
-														$$=Make_Node(TYPE_VOID,Node_Type_IF,'I',NULL,$3,$6,$8,NULL);
+														$$=Make_Node(Tlookup(VOID_NAME),Node_Type_IF,'I',NULL,$3,$6,$8,NULL);
 													}
 	|WHILE '('expr')'DO Slist ENDWHILE SEMICOLON{
 													
-													$$=Make_Node(TYPE_VOID,Node_Type_WHILE,'w',NULL,$3,$6,NULL,NULL);
+													$$=Make_Node(Tlookup(VOID_NAME),Node_Type_WHILE,'w',NULL,$3,$6,NULL,NULL);
 	
 												}
 	|ID '('ID_LIST')' SEMICOLON		{
@@ -583,82 +602,82 @@ expr:expr PLUS expr		{
 							// 	//$$=Make_Node(Glookup($1->NAME)->TYPE,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 							// }
 							//cout<<"ptr1->type="<<$1->type<<" ptr2->type="<<$3->type<<endl;
-							$$=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_PLUS,'+',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MINUS expr	{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,$1,$3,NULL,NULL);
 						}
 
 	|expr DIV expr		{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_DIV,'/',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_DIV,'/',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MUL expr		{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_MUL,'*',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MUL,'*',NULL,$1,$3,NULL,NULL);
 						}
 	|expr POWER expr	{	
 							
-							$$=Make_Node(TYPE_INT,Node_Type_POWER,'^',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_POWER,'^',NULL,$1,$3,NULL,NULL);
 						}
 	|expr MODULUS expr	{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
 						}
 	|'('expr')'			{$$=$2;$$->type=$2->type;}
-	|NUM				{$$=$1;$$->type=$1->type;}
+	|NUM				{cout<<"IN NUM"<<endl;$$=$1;$$->type=$1->type;}
 	|IDS				{$$=$1; $$->type=$1->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
 	|MINUS expr 		{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
 						}
 	|PLUS expr 			{
 							
-							$$=Make_Node(TYPE_INT,Node_Type_PLUS,'+',NULL,makeLeafNode(0),$2,NULL,NULL);
+							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_PLUS,'+',NULL,makeLeafNode(0),$2,NULL,NULL);
 						}
 	|expr LESS expr		{
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_LT,'<',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_LT,'<',NULL,$1,$3,NULL,NULL);
 						}
 	|expr LTEQUAL expr {
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_LE,'L',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_LE,'L',NULL,$1,$3,NULL,NULL);
 						}
 	|expr GREATER expr {
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_GT,'>',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_GT,'>',NULL,$1,$3,NULL,NULL);
 						}
 	|expr GTEQUAL expr {
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_GE,'G',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_GE,'G',NULL,$1,$3,NULL,NULL);
 						}
 	|expr NOTEQUAL expr {
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_NE,'N',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_NE,'N',NULL,$1,$3,NULL,NULL);
 						}
 	|expr ISEQUAL expr  {
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_EQ,'E',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_EQ,'E',NULL,$1,$3,NULL,NULL);
 						}						
 	|NOT expr 		{
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_NOT,'L',NULL,$2,NULL,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_NOT,'L',NULL,$2,NULL,NULL,NULL);
 						}						
 	|expr OR expr 		{
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_OR,'L',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_OR,'L',NULL,$1,$3,NULL,NULL);
 						}
 	|expr AND expr		{
 							
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_AND,'L',NULL,$1,$3,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_AND,'L',NULL,$1,$3,NULL,NULL);
 						}
 	|TRUE				{
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,1,NULL,$1,NULL,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_BOOLEAN_CONSTANT,1,NULL,$1,NULL,NULL,NULL);
 
 						}
 	|FALSE				{
-							$$=Make_Node(TYPE_BOOLEAN,Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
+							$$=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_BOOLEAN_CONSTANT,0,NULL,$1,NULL,NULL,NULL);
 
 						}
 	|ID '('ID_LIST')'	{	
@@ -853,8 +872,8 @@ IDS:ID 					{
 	|ID DOT ID 			{}
 	
 	;
-TYPE:INTEGER	{$$=Make_Node(TYPE_INT,TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL);}
-	|BOOLEAN	{$$=Make_Node(TYPE_BOOLEAN,TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
+TYPE:INTEGER	{$$=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
+	|BOOLEAN	{$$=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
 	|ID			{}
 	;
 
@@ -893,11 +912,16 @@ int main(int argc,char const *argv[])
 
 	/**Main function name is pushed into the last_function_used_type_check stack for type_check**/
 
+	Typetable_Crate();
 	char *main = (char *)malloc(20*sizeof(char));
 	strcpy(main,"main");
 	last_function_used_type_check.push(main);
 	
+	// Tlookup(INTEGER_NAME);
+	cout<<"IN"<<endl;
+	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl;
 	yyparse();
+	// cout<<"OUT"<<endl;
 	fclose(sim_code_file);
 	
 	if (no_of_error!=0)

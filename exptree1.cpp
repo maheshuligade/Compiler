@@ -13,7 +13,7 @@ int Memory[1000000];
 int Global_Bind_Count = 0;
 char error_output[200];
 int no_of_error=0;
-int ptr1_type,ptr2_type;
+struct Typetable *ptr1_type,*ptr2_type;
 string types_array[5]={"void","boolean","integer"};
 extern FILE *sim_code_file;
 
@@ -29,7 +29,7 @@ struct tnode* makeLeafNode(int n)
 	new_leaf_node->Node_Type=Node_Type_LEAF;
 	new_leaf_node->NAME=(char *)malloc(sizeof(char));
 	new_leaf_node->NAME=NULL;
-	new_leaf_node->type=TYPE_INT;
+	new_leaf_node->type=Tlookup(INTEGER_NAME);
 	new_leaf_node->value=n;
 	new_leaf_node->ptr1=NULL;
 	new_leaf_node->ptr2=NULL;
@@ -38,414 +38,415 @@ struct tnode* makeLeafNode(int n)
 }
 
 
-struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode* ptr1,struct tnode* ptr2,struct tnode* ptr3,struct tnode* Arg_List)
+struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAME,struct tnode* ptr1,struct tnode* ptr2,struct tnode* ptr3,struct tnode* Arg_List)
 {	
 	
 	struct tnode *new_node;
 	new_node=(struct tnode* )malloc(sizeof(struct tnode));
-	
-	if (Node_Type==Node_Type_ASSIGNMENT)
-	{	
-		// if (Glookup($1->NAME)->size <= evaluate($3))
-		// {
-		// 	cout<<"Array     "<<endl;
-		// }
-		//cout<<"NAME="<<NAME<<" size="<<Glookup(NAME)->size<<" Index="<<evaluate(ptr1->ptr2)<<endl;
-		if (lookup_variable(last_function_used_type_check.top(),NAME) == NULL)
+		
+		if (Node_Type==Node_Type_ASSIGNMENT)
+		{	
+			// if (Glookup($1->NAME)->size <= evaluate($3))
+			// {
+			// 	cout<<"Array     "<<endl;
+			// }
+			//cout<<"NAME="<<NAME<<" size="<<Glookup(NAME)->size<<" Index="<<evaluate(ptr1->ptr2)<<endl;
+			if (lookup_variable(last_function_used_type_check.top(),NAME) == NULL)
+			{
+				if (Glookup(NAME)==NULL)
+				{	
+					//If the varible is not decraired
+					// if(Llookup(NAME)==NULL)
+					// {
+						yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
+						//new_node=NULL;
+					// }
+					
+				}
+				else 
+				{	if (Glookup(NAME)->TYPE == Tlookup(BOOLEAN_NAME) && ptr2->value!=0 && ptr2->value!=1)
+					{
+						yyerror("boolean Type can be TRUE or FALSE");
+					}
+					
+					if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
+					{	
+						//If Array is outof bound
+					
+						yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
+					}
+				}
+			}
+			else if (lookup_variable(last_function_used_type_check.top(),NAME)->TYPE == Tlookup(BOOLEAN_NAME) && ptr2->value!=0 && ptr2->value!=1)
+			{
+						yyerror("boolean Type can be TRUE or FALSE");
+			}
+			// if (Glookup(NAME) != NULL)
+			// {
+			// 	//else
+			// 	if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
+			// 	{	
+			// 		//If Array is outof bound
+					
+			// 		yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
+			// 	}
+				
+			// }
+			
+		 }
+		else if (Node_Type==Node_Type_IF)
+		{		
+
+				if ((!is_boolean(ptr1)))
+				{
+					yyerror("if statement requires boolean type condition.");
+				}
+				else if (ptr1->type == Tlookup(VOID_NAME))
+				{	
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
+					{
+						if (Glookup(ptr1->NAME)->TYPE!=Tlookup(BOOLEAN_NAME))
+						{
+							yyerror("if statement requires boolean type condition.");
+						}
+					}
+					else 
+					{
+						if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=Tlookup(BOOLEAN_NAME))
+						{
+							yyerror("if statement requires boolean type condition.");
+						}					
+					}
+				}
+				
+		}	
+		else if (Node_Type==Node_Type_WHILE)
+		{		
+
+				if (!is_boolean(ptr1))
+				{
+					yyerror("while loop requires boolean type condition.");
+				}
+				else if (ptr1->type==Tlookup(VOID_NAME))
+				{
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
+					{
+						if (Glookup(ptr1->NAME)->TYPE!=Tlookup(BOOLEAN_NAME))
+						{
+							yyerror("while loop requires boolean type condition.");
+						}
+					}
+					else 
+					{
+						if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=Tlookup(BOOLEAN_NAME))
+						{
+							yyerror("while loop requires boolean type condition.");
+						}					
+					}
+					// if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					// {
+					// 	yyerror("while loop requires boolean type condition.");
+					// }
+				}
+				
+		}	
+		else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
+		{		
+				if (ptr1->Node_Type==Node_Type_ARRAY)
+				{	
+					
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
+					{
+						ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
+					}
+					else if(Glookup(ptr1->NAME)!=NULL)
+					{
+						ptr1_type=Glookup(ptr1->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr1_type=ptr1->type;
+				}
+
+				if (ptr2->Node_Type==Node_Type_ARRAY)
+				{
+					
+					if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
+					{
+						ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
+					}
+					else if(Glookup(ptr2->NAME)!=NULL)
+					{
+						ptr2_type=Glookup(ptr2->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr2_type=ptr2->type;
+				}
+
+				// if (ptr1_type!=ptr2_type && (ptr1_type != Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+				// {	
+				// 	//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+				// 	yyerror("compairing different types.");
+				// }
+		}
+		else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
+		{	
+				if (ptr1->Node_Type==Node_Type_ARRAY)
+				{
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
+					{
+						ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
+					}
+					else if(Glookup(ptr1->NAME)!=NULL)
+					{
+						ptr1_type=Glookup(ptr1->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr1_type=ptr1->type;
+				}
+
+
+				if (ptr2->Node_Type==Node_Type_ARRAY)
+				{
+					
+					if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
+					{
+						ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
+					}
+					else if(Glookup(ptr2->NAME)!=NULL)
+					{
+						ptr2_type=Glookup(ptr2->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr2_type=ptr2->type;
+				}
+
+			
+				/*if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+				{	
+					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+					yyerror("compairing different types.");
+				}*/
+		}
+		else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
+		{		
+
+				if (ptr1->Node_Type==Node_Type_ARRAY)
+				{
+					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
+					{
+						ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
+					}
+					else if(Glookup(ptr1->NAME)!=NULL)
+					{
+						ptr1_type=Glookup(ptr1->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr1_type=ptr1->type;
+				}
+
+
+				if (ptr2->Node_Type==Node_Type_ARRAY)
+				{
+					
+					if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
+					{
+						ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
+					}
+					else if(Glookup(ptr2->NAME)!=NULL)
+					{
+						ptr2_type=Glookup(ptr2->NAME)->TYPE;
+					}
+				}
+				else
+				{
+					ptr2_type = ptr2->type;
+				}
+
+				// cout<<ptr1_type<<" "<<ptr2_type<<endl;
+				/*if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
+				{	
+					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+					yyerror("Arithmetic Operations of  different types.");
+				}*/
+		}
+		else if (Node_Type==Node_Type_FUNCTION_DEF)
 		{
+			if (ptr1->ptr2!=NULL)
+			{	
+				if(type!=ptr1->ptr2->type)
+				{
+					col=ptr1->ptr2->col_no;
+					line=ptr1->ptr2->line_no;
+					cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
+					no_of_error++;
+				}
+			}
 			if (Glookup(NAME)==NULL)
 			{	
-				//If the varible is not decraired
-				// if(Llookup(NAME)==NULL)
-				// {
-					yyerror(std::string ("‘") + NAME + "’ was not declared in this scope");
-					//new_node=NULL;
-				// }
-				
-			}
-			else 
-			{	if (Glookup(NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
-				{
-					yyerror("boolean Type can be TRUE or FALSE");
-				}
-				
-				if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
-				{	
-					//If Array is outof bound
-				
-					yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
-				}
-			}
-		}
-		else if (lookup_variable(last_function_used_type_check.top(),NAME)->TYPE==TYPE_BOOLEAN && ptr2->value!=0 && ptr2->value!=1)
-		{
-					yyerror("boolean Type can be TRUE or FALSE");
-		}
-		// if (Glookup(NAME) != NULL)
-		// {
-		// 	//else
-		// 	if ((Glookup(NAME)->size<evaluate(ptr1->ptr2))&&(Glookup(NAME)->value=='A'))
-		// 	{	
-		// 		//If Array is outof bound
-				
-		// 		yyerror(std::string ("Array ") + ("‘") + NAME + "’ is out of bound.");
-		// 	}
-			
-		// }
-		
-	 }
-	else if (Node_Type==Node_Type_IF)
-	{		
+					// Ginstall(NAME,ptr1->type,1,'f',NULL);
 
-			if ((!is_boolean(ptr1)))
-			{
-				yyerror("if statement requires boolean type condition.");
+				yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 			}
-			else if (ptr1->type==TYPE_VOID)
-			{	
-				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
+			else
+			{
+				struct Lsymbol *temp = new Lsymbol;
+				struct Lsymbol *temp_2 = new Lsymbol;
+				if (Glookup(NAME)!=NULL && Arg_List!=NULL)
 				{
-					if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					temp = Arg_List->Lentry;
+					temp_2 = Glookup(NAME)->Arg_List->Lentry;
+					// cout<<"NAME="<<Glookup(NAME)->NAME<<endl;
+					while (temp != NULL && temp_2 != NULL)
 					{
-						yyerror("if statement requires boolean type condition.");
+
+						// cout<<"NAME="<<temp_2->NAME<<endl;
+						// cout<<"NAME="<<temp->NAME<<endl;
+						// cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
+						if (strcmp(temp->NAME , temp_2->NAME) != 0 )
+						{
+							col=temp_2->col_no;
+							line=temp_2->line_no;
+							cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+							no_of_error++;
+						}
+						if (temp->pass_by_type != temp_2->pass_by_type)
+						{
+							col=temp_2->col_no;
+							line=temp_2->line_no;
+							cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+							no_of_error++;
+						}
+						if (temp->TYPE != temp_2->TYPE)
+						{
+							col=temp_2->col_no;
+							line=temp_2->line_no;
+							cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
+							no_of_error++;
+						}
+						temp = temp->Next;
+						temp_2 = temp_2->Next;
 					}
-				}
-				else 
-				{
-					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
+					// cout<<"end"<<endl;
+					if (temp !=NULL && temp_2 ==NULL)
 					{
-						yyerror("if statement requires boolean type condition.");
-					}					
-				}
-			}
-			
-	}	
-	else if (Node_Type==Node_Type_WHILE)
-	{		
+						col=temp->col_no;
+						line=temp->line_no;
+						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
+						no_of_error++;
 
-			if (!is_boolean(ptr1))
-			{
-				yyerror("while loop requires boolean type condition.");
-			}
-			else if (ptr1->type==TYPE_VOID)
-			{
-				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME) == NULL)
-				{
-					if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
-					{
-						yyerror("while loop requires boolean type condition.");
 					}
-				}
-				else 
-				{
-					if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
-					{
-						yyerror("while loop requires boolean type condition.");
-					}					
-				}
-				// if (Glookup(ptr1->NAME)->TYPE!=TYPE_BOOLEAN)
-				// {
-				// 	yyerror("while loop requires boolean type condition.");
-				// }
-			}
-			
-	}	
-	else if ((Node_Type==Node_Type_LT ||Node_Type==Node_Type_LE || Node_Type==Node_Type_GT||Node_Type==Node_Type_GE)&&  ptr1->type!=ptr2->type)
-	{		
-			if (ptr1->Node_Type==Node_Type_ARRAY)
-			{	
-				
-				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
-				{
-					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
-				}
-				else if(Glookup(ptr1->NAME)!=NULL)
-				{
-					ptr1_type=Glookup(ptr1->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr1_type=ptr1->type;
-			}
-
-			if (ptr2->Node_Type==Node_Type_ARRAY)
-			{
-				
-				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
-				{
-					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
-				}
-				else if(Glookup(ptr2->NAME)!=NULL)
-				{
-					ptr2_type=Glookup(ptr2->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr2_type=ptr2->type;
-			}
-
-			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	
-				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
-				yyerror("compairing different types.");
-			}
-	}
-	else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
-	{	
-			if (ptr1->Node_Type==Node_Type_ARRAY)
-			{
-				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
-				{
-					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
-				}
-				else if(Glookup(ptr1->NAME)!=NULL)
-				{
-					ptr1_type=Glookup(ptr1->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr1_type=ptr1->type;
-			}
-
-
-			if (ptr2->Node_Type==Node_Type_ARRAY)
-			{
-				
-				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
-				{
-					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
-				}
-				else if(Glookup(ptr2->NAME)!=NULL)
-				{
-					ptr2_type=Glookup(ptr2->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr2_type=ptr2->type;
-			}
-
-		
-			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	
-				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
-				yyerror("compairing different types.");
-			}
-	}
-	else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
-	{		
-
-			if (ptr1->Node_Type==Node_Type_ARRAY)
-			{
-				if (lookup_variable(last_function_used_type_check.top(),ptr1->NAME)!=NULL)
-				{
-					ptr1_type=lookup_variable(last_function_used_type_check.top(),ptr1->NAME)->TYPE;
-				}
-				else if(Glookup(ptr1->NAME)!=NULL)
-				{
-					ptr1_type=Glookup(ptr1->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr1_type=ptr1->type;
-			}
-
-
-			if (ptr2->Node_Type==Node_Type_ARRAY)
-			{
-				
-				if (lookup_variable(last_function_used_type_check.top(),ptr2->NAME)!=NULL)
-				{
-					ptr2_type=lookup_variable(last_function_used_type_check.top(),ptr2->NAME)->TYPE;
-				}
-				else if(Glookup(ptr2->NAME)!=NULL)
-				{
-					ptr2_type=Glookup(ptr2->NAME)->TYPE;
-				}
-			}
-			else
-			{
-				ptr2_type=ptr2->type;
-			}
-
-			// cout<<ptr1_type<<" "<<ptr2_type<<endl;
-			if (ptr1_type!=ptr2_type && (ptr1_type!=Node_Type_LEAF || ptr2_type!=Node_Type_LEAF))
-			{	
-				//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
-				yyerror("Arithmetic Operations of  different types.");
-			}
-	}
-	else if (Node_Type==Node_Type_FUNCTION_DEF)
-	{
-		if (ptr1->ptr2!=NULL)
-		{	
-			if(type!=ptr1->ptr2->type)
-			{
-				col=ptr1->ptr2->col_no;
-				line=ptr1->ptr2->line_no;
-				cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"return type mismatched."<<endl;
-				no_of_error++;
-			}
-		}
-		if (Glookup(NAME)==NULL)
-		{	
-				// Ginstall(NAME,ptr1->type,1,'f',NULL);
-
-			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
-		}
-		else
-		{
-			struct Lsymbol *temp = new Lsymbol;
-			struct Lsymbol *temp_2 = new Lsymbol;
-			if (Glookup(NAME)!=NULL && Arg_List!=NULL)
-			{
-				temp = Arg_List->Lentry;
-				temp_2 = Glookup(NAME)->Arg_List->Lentry;
-				// cout<<"NAME="<<Glookup(NAME)->NAME<<endl;
-				while (temp != NULL && temp_2 != NULL)
-				{
-
-					// cout<<"NAME="<<temp_2->NAME<<endl;
-					// cout<<"NAME="<<temp->NAME<<endl;
-					// cout<<"NAME_1="<<temp->NAME<<" NAME_2="<<temp_2->NAME<<endl;
-					if (strcmp(temp->NAME , temp_2->NAME) != 0 )
+					if (temp ==NULL && temp_2 !=NULL)
 					{
 						col=temp_2->col_no;
 						line=temp_2->line_no;
 						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
 						no_of_error++;
-					}
-					if (temp->pass_by_type != temp_2->pass_by_type)
-					{
-						col=temp_2->col_no;
-						line=temp_2->line_no;
-						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
-						no_of_error++;
-					}
-					if (temp->TYPE != temp_2->TYPE)
-					{
-						col=temp_2->col_no;
-						line=temp_2->line_no;
-						cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition arguments pass by type does not match with declaration."<<endl;
-						no_of_error++;
-					}
-					temp = temp->Next;
-					temp_2 = temp_2->Next;
-				}
-				// cout<<"end"<<endl;
-				if (temp !=NULL && temp_2 ==NULL)
-				{
-					col=temp->col_no;
-					line=temp->line_no;
-					cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
-					no_of_error++;
-
-				}
-				if (temp ==NULL && temp_2 !=NULL)
-				{
-					col=temp_2->col_no;
-					line=temp_2->line_no;
-					cout<<input_file_name<<":"<<line<<":"<<col<<":"<<"error:"<<"function definition does not match declaration."<<endl;
-					no_of_error++;
-
-				}
-			}
-			delete temp;
-			delete temp_2;
-
-			if (Glookup(NAME)->TYPE != type)
-			{
-					//cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
-					yyerror("function definition type does not match declaration.");
-					no_of_error++;
-				
-			}
-		}
-	}
-	else if (Node_Type == Node_Type_FUNCTION_CALL)
-	{
-		if (Glookup(NAME)==NULL)
-		{	
-			yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
-		}
-		else if (Glookup(NAME) != NULL)
-		{
-			// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
-			if (Glookup(NAME)->BODY == NULL && (strcmp(NAME ,last_function_used_type_check.top())) != 0)
-			{
-				yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
-			}
-		// }
-		// else
-		// {	
-			// cout<<"Node_Type = "<<ptr1->Node_Type<<endl;
-			if (Glookup(NAME)->Arg_List != NULL)
-			{
-				struct Lsymbol *temp = new Lsymbol;
-				struct tnode *temp_2 = new tnode;
-				temp = Glookup(NAME)->Arg_List->Lentry;
-				temp_2 = Arg_List;
-
-				while (temp != NULL && temp_2 != NULL)
-				{
-
-					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-					// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
-					if (temp->TYPE != temp_2->type)
-					{
-						col=temp_2->col_no;
-						line=temp_2->line_no;
-					// 	//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-					// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-						if (temp_2->Node_Type == Node_Type_ARRAY)
-						{
-							yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
-						}
-						else
-						{
-							yyerror(string("function call argument type does not match with declaration."));
-						}
-					}
-
-					// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->pass_by_type<<endl;
-
-					if (temp->pass_by_type == PASS_BY_REFERENCE && temp_2->Node_Type != Node_Type_ARRAY)
-					{
-						yyerror(string("function call argument pass by type does not match with declaration."));
 
 					}
-
-					temp = temp->Next;
-					temp_2 = temp_2->Arg_List;
 				}
-
-				// cout<<"end"<<endl;
-				if (temp_2 != NULL)
-				{
-					cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
-				}
-				if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
-				{
-					yyerror("function call number of arguments does not match declaration.");
-				}
-
 				delete temp;
-				// delete temp_2; //why need not to free?
+				delete temp_2;
+
+				if (Glookup(NAME)->TYPE != type)
+				{
+						//cout<<"NAME = "<<NAME << " type = "<<type <<" TYPE = "<<Glookup(NAME)->TYPE<<endl;		
+						yyerror("function definition type does not match declaration.");
+						no_of_error++;
+					
+				}
 			}
 		}
-	}
+		else if (Node_Type == Node_Type_FUNCTION_CALL)
+		{
+			if (Glookup(NAME)==NULL)
+			{	
+				yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
+			}
+			else if (Glookup(NAME) != NULL)
+			{
+				// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+				if (Glookup(NAME)->BODY == NULL && (strcmp(NAME ,last_function_used_type_check.top())) != 0)
+				{
+					yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
+				}
+			// }
+			// else
+			// {	
+				// cout<<"Node_Type = "<<ptr1->Node_Type<<endl;
+				if (Glookup(NAME)->Arg_List != NULL)
+				{
+					struct Lsymbol *temp = new Lsymbol;
+					struct tnode *temp_2 = new tnode;
+					temp = Glookup(NAME)->Arg_List->Lentry;
+					temp_2 = Arg_List;
+
+					while (temp != NULL && temp_2 != NULL)
+					{
+
+						// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
+						// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
+						if (temp->TYPE != temp_2->type)
+						{
+							col=temp_2->col_no;
+							line=temp_2->line_no;
+						// 	//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+						// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+							if (temp_2->Node_Type == Node_Type_ARRAY)
+							{
+								yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+							}
+							else
+							{
+								yyerror(string("function call argument type does not match with declaration."));
+							}
+						}
+
+						// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->pass_by_type<<endl;
+
+						if (temp->pass_by_type == PASS_BY_REFERENCE && temp_2->Node_Type != Node_Type_ARRAY)
+						{
+							yyerror(string("function call argument pass by type does not match with declaration."));
+
+						}
+
+						temp = temp->Next;
+						temp_2 = temp_2->Arg_List;
+					}
+
+					// cout<<"end"<<endl;
+					if (temp_2 != NULL)
+					{
+						cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
+					}
+					if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
+					{
+						yyerror("function call number of arguments does not match declaration.");
+					}
+
+					delete temp;
+					// delete temp_2; //why need not to free?
+				}
+			}
+		}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
 
-	new_node->type=type;
+	new_node->type = type;
 	new_node->Node_Type=Node_Type;
 	new_node->NAME=(char *)malloc(20*sizeof(char));
 	if(NAME!=NULL)
 	{
 		
+	// cout<<"NAME = "<<NAME<<endl;
 		strcpy(new_node->NAME,NAME);
 	}
 	else
@@ -460,6 +461,7 @@ struct tnode* Make_Node(int type,int Node_Type,int value,char *NAME,struct tnode
 	new_node->col_no=column_no;
 	new_node->Arg_List = Arg_List;
 	return new_node;
+	return NULL;
 
 }
 
@@ -509,7 +511,7 @@ struct Gsymbol *Glookup(char *NAME)
 	return temp;
 }
 
-void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
+void Ginstall(char * NAME,struct Typetable *TYPE,int size,int value,struct tnode* Arg_List)
 {	
 
 	if (size==0)
@@ -536,7 +538,7 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 		struct Gsymbol *new_node=(struct Gsymbol *)malloc(sizeof(struct Gsymbol));
 		new_node->NAME=(char *)malloc(20*sizeof(char));
 		strcpy(new_node->NAME,NAME);
-		new_node->TYPE=TYPE;
+		new_node->TYPE = TYPE;
 		new_node->size=size;
 		new_node->value=value;
 		new_node->Binding=Global_Bind_Count;
@@ -549,7 +551,7 @@ void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode* Arg_List)
 	}
 	else
 	{
-		yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
+		yyerror("redeclaration of ‘" + string(TYPE->NAME) +" "+NAME+"’");
 	}
 	 
 	
@@ -573,7 +575,7 @@ struct Lsymbol *Llookup(char *NAME)
 
 }
 
-void Linstall(char * NAME,int TYPE)
+void Linstall(char * NAME,struct Typetable *TYPE)
 {
 	
 	if (Llookup(NAME)==NULL)
@@ -593,7 +595,8 @@ void Linstall(char * NAME,int TYPE)
 	}
 	else
 	{
-		yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
+		// yyerror("redeclaration of ‘" + types_array[TYPE - 21] +" "+NAME+"’");
+		yyerror("redeclaration of ‘" + string(TYPE->NAME) +" "+NAME+"’");
 	}
 
 }
@@ -1386,7 +1389,7 @@ int is_boolean(struct tnode* expressionTree)
 	}
 	return 0;
 }
-int get_type(struct tnode *expressionTree)
+struct Typetable *get_type(struct tnode *expressionTree)
 {	
 	/*This function return the type of the variables and the Arrays;*/
 	if (Llookup(expressionTree->NAME)!=NULL)
@@ -1397,9 +1400,9 @@ int get_type(struct tnode *expressionTree)
 	{
 		return Glookup(expressionTree->NAME)->TYPE;		
 	}
-	return TYPE_VOID;
+	return Tlookup(VOID_NAME);
 }
-struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type)
+struct Lsymbol *Make_Arg_Node(char *NAME,struct Typetable *TYPE,int size,int pass_by_type)
 {
 	/**
 		Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and

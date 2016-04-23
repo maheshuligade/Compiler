@@ -2,25 +2,37 @@
 #include <math.h>
 #include "exptree.hpp"
 #include <string.h>
+#include <string.h>
 #include "y.tab.hpp"
 #include <stdio.h>
 #include <iostream>
 using namespace std;
 
+char *INTEGER_NAME;
+char *BOOLEAN_NAME;
+char *VOID_NAME;
+char *ID_NAME;
 struct Typetable *Typetable_Table = NULL;
 struct Fieldlist *Fieldlist_Table = NULL;
 
 void Typetable_Crate()
 {
 	/**For initilizing the Typetable entries to the primitive data types.**/
-	char *INTEGER_NAME = (char *)malloc(20*sizeof(char));
-	char *BOOLEAN_NAME = (char *)malloc(20*sizeof(char));
-
+	
+	
+	INTEGER_NAME = (char *)malloc(20*sizeof(char));
+	BOOLEAN_NAME = (char *)malloc(20*sizeof(char));
+	VOID_NAME = (char *)malloc(20*sizeof(char));
+	ID_NAME = (char *)malloc(20*sizeof(char));
 	strcpy(INTEGER_NAME,"integer");
 	strcpy(BOOLEAN_NAME,"boolean");
+	strcpy(VOID_NAME,"void");
+	strcpy(ID_NAME,"ID");
 
 	Tinstall(INTEGER_NAME, NULL);
 	Tinstall(BOOLEAN_NAME,NULL);
+	Tinstall(VOID_NAME,NULL);
+	Tinstall(ID_NAME,NULL);
 }
 
 struct Typetable *Tlookup(char *NAME)
@@ -49,11 +61,10 @@ struct Typetable *Tinstall(char *NAME,struct Fieldlist *Fields)
 		Installs a new type table entry for the name with the given fields and returns the pointer to the typetable Entry.	
 	**/
 	struct Typetable *new_node = new Typetable;
-	
+	new_node->NAME = (char *)malloc(20*sizeof(char));
+
 	if (Tlookup(NAME) == NULL)
 	{
-		
-		new_node->NAME = (char *)malloc(20*sizeof(char));
 		strcpy(new_node->NAME,NAME);
 		new_node->Fields = new Fieldlist;
 		new_node->Fields = Fields;

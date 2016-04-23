@@ -4,7 +4,7 @@
 using namespace std;
 typedef struct tnode
 {
-	int type;							//Interger ,Boolean or Void (for statements) 
+	struct Typetable *type;				//Interger ,Boolean or Void (for statements) 
 										//Must Point to the type expression tree for user defined types
 	int Node_Type;						/*This field should carry the folling information:
 											(a).Operator:(+,/,*,etc) for expression
@@ -24,7 +24,7 @@ typedef struct tnode
 struct Gsymbol
 {
 	char *NAME;		//Name of the identifier
-	int TYPE;		//Type can be integer or boolean
+	struct Typetable *TYPE;		//Type can be integer or boolean
 	/*The TYPE field must be a Type_Struct if the user defined types are allowed*/
 	int size;		//Size field of arrays
 	int Binding;	//Address of the Identifier in the Memory
@@ -42,7 +42,7 @@ struct Gsymbol
 struct Lsymbol
 {
 	char *NAME;		//Name of the identifier
-	int TYPE;		//Type can be integer or boolean
+	struct Typetable *TYPE;		//Type can be integer or boolean
 	/*The TYPE field must be a Type_Struct if the user defined types are allowed*/
 	int value;		//For variables and array to detect typecheck
 	int size;		//Size field of arrays typecheck
@@ -66,7 +66,7 @@ struct Fieldlist
 	struct Typetable *TYPE;		//Pointer to the type table entry.
 	struct Fieldlist *Next;		//Pointer to the Next field.
 };
-struct tnode* Make_Node(int type,int Node_Type,int value,  char *NAME,struct tnode* ptr1,struct tnode* ptr2,struct tnode* ptr3,struct tnode* Arg_List);
+struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,  char *NAME,struct tnode* ptr1,struct tnode* ptr2,struct tnode* ptr3,struct tnode* Arg_List);
 
  /*Make tnode and the value of the field*/
 struct tnode* makeLeafNode(int n);
@@ -79,7 +79,7 @@ struct tnode* makeStatementNode(char c,int Node_Type, int value,struct tnode* pt
 	Make_Arg_Node is used to make the arguments in the function declaration and definition stores the local variables and
 	which is linked to the Lentry of the Function node later.
 **/
-struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type);
+struct Lsymbol *Make_Arg_Node(char *NAME,struct Typetable *TYPE,int size,int pass_by_type);
 /**
 	Make_Arg_Node_List is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
 	contains the local variable and which is linked to the Lentry of the Function node later.
@@ -87,10 +87,10 @@ struct Lsymbol *Make_Arg_Node(char *NAME,int TYPE,int size,int pass_by_type);
 struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2,int value);
 
 struct Gsymbol *Glookup(char *NAME);
-void Ginstall(char * NAME,int TYPE,int size,int value,struct tnode *Arg_List);
+void Ginstall(char * NAME,struct Typetable *TYPE,int size,int value,struct tnode *Arg_List);
 
 struct Lsymbol *Llookup(char *NAME);
-void Linstall(char * NAME,int TYPE);
+void Linstall(char * NAME,struct Typetable *TYPE);
 
 /**
 	Lookup variable in the local and gloabal symbol table ,If the variable is not there in the local
@@ -121,7 +121,7 @@ int get_global_var_no();
 **/
 int get_variable_binding(string last_function_used,char *NAME);
 /*This function return the type of the variables and the Arrays;*/
-int get_type(struct tnode *expressionTree);
+struct Typetable *get_type(struct tnode *expressionTree);
 /*To check whether it returns boolean value for type_check in if and while for undefined variable in conditon*/
 int is_boolean(struct tnode* expressionTree);
 /*To type_check an expression tree*/
@@ -160,6 +160,11 @@ extern 	FILE *fp,*sim_code_file;
 extern int Memory[1000000];
 extern struct Gsymbol *Gsymbol_table;
 extern struct Lsymbol *Lsymbol_table;
+extern char *INTEGER_NAME;
+extern char *BOOLEAN_NAME;
+extern char *VOID_NAME;
+extern char *ID_NAME;
+
 #define YYSTYPE tnode*
 #define Node_Type_LEAF						1
 #define Node_Type_ID						2

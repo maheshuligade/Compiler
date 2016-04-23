@@ -836,7 +836,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 15 "interpreter.l"
-{column_no+=yyleng; number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=TYPE_VOID; yylval->type=TYPE_INT;return NUM;}
+{column_no+=yyleng;  number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=Tlookup(VOID_NAME); yylval->type=Tlookup(INTEGER_NAME); return NUM;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -877,202 +877,202 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 23 "interpreter.l"
-{column_no+=yyleng; return READ;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return READ;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 24 "interpreter.l"
-{column_no+=yyleng; return WRITE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;  return WRITE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 25 "interpreter.l"
-{column_no+=yyleng; return SEMICOLON;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return SEMICOLON;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 26 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 27 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 28 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 29 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 30 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 31 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 32 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 33 "interpreter.l"
-{column_no+=yyleng; return *yytext;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return *yytext;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 34 "interpreter.l"
-{column_no+=yyleng; return IF;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return IF;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 35 "interpreter.l"
-{column_no+=yyleng; return THEN;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return THEN;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 36 "interpreter.l"
-{column_no+=yyleng; return ELSE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ELSE;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 37 "interpreter.l"
-{column_no+=yyleng; return ENDIF;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ENDIF;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 38 "interpreter.l"
-{column_no+=yyleng; return WHILE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return WHILE;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 39 "interpreter.l"
-{column_no+=yyleng; return DO;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return DO;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 40 "interpreter.l"
-{column_no+=yyleng; return ENDWHILE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ENDWHILE;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 41 "interpreter.l"
-{column_no+=yyleng; return BEGIN1;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return BEGIN1;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 42 "interpreter.l"
-{column_no+=yyleng; return END;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return END;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 43 "interpreter.l"
-{column_no+=yyleng; return MAIN;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return MAIN;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 44 "interpreter.l"
-{column_no+=yyleng; return INTEGER;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return INTEGER;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 45 "interpreter.l"
-{column_no+=yyleng; return BOOLEAN;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return BOOLEAN;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 46 "interpreter.l"
-{column_no+=yyleng; return NOT;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return NOT;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 47 "interpreter.l"
-{column_no+=yyleng; return OR;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return OR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 48 "interpreter.l"
-{column_no+=yyleng; return AND;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return AND;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 49 "interpreter.l"
-{column_no+=yyleng; return FALSE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return FALSE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 50 "interpreter.l"
-{column_no+=yyleng; return TRUE;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return TRUE;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 51 "interpreter.l"
-{column_no+=yyleng; return DECL;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return DECL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 52 "interpreter.l"
-{column_no+=yyleng; return ENDDECL;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ENDDECL;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 53 "interpreter.l"
-{column_no+=yyleng; return LESS;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return LESS;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 54 "interpreter.l"
-{column_no+=yyleng; return LTEQUAL;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return LTEQUAL;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 55 "interpreter.l"
-{column_no+=yyleng; return GREATER;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return GREATER;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 56 "interpreter.l"
-{column_no+=yyleng; return GTEQUAL;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return GTEQUAL;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 57 "interpreter.l"
-{column_no+=yyleng; return NOTEQUAL;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return NOTEQUAL;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 58 "interpreter.l"
-{column_no+=yyleng; return ISEQUAL; }
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ISEQUAL; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 59 "interpreter.l"
-{column_no+=yyleng; return MODULUS;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return MODULUS;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 60 "interpreter.l"
-{column_no+=yyleng; return POWER;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return POWER;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 61 "interpreter.l"
-{column_no+=yyleng; return DOT;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return DOT;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 62 "interpreter.l"
-{column_no+=yyleng; return TYPEDEF;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return TYPEDEF;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
@@ -1082,12 +1082,12 @@ YY_RULE_SETUP
 case 50:
 YY_RULE_SETUP
 #line 64 "interpreter.l"
-{column_no+=yyleng; return RETURN;}
+{column_no+=yyleng; a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return RETURN;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 65 "interpreter.l"
-{a=Make_Node(ID,ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a;return ID;}	
+{a=Make_Node(Tlookup(ID_NAME),ID,*yytext - 'a',yytext,NULL,NULL,NULL,NULL);;yylval=a; return ID;}	
 	YY_BREAK
 case 52:
 YY_RULE_SETUP

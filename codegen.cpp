@@ -154,7 +154,7 @@ int codegen(struct tnode *expressionTree)
 		return reg_1;
 	}
 	else if (expressionTree->Node_Type==Node_Type_NOT)
-	{
+	{ 
 		reg_1=codegen(expressionTree->ptr1);
 		reg_2=get_reg(__LINE__);
 
