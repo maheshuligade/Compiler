@@ -23,11 +23,9 @@ integer main()
 		integer a,res;
 	enddecl
 	begin
-		a= 3; 
-		res = 4;
-		if(a == 4 OR res == 5)then
-			write(a);
-		endif;
+		read(a);
+		res = fact(a);
+		write(res);
 		return 0;
 	end	
 }	
