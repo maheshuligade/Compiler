@@ -145,7 +145,7 @@ G_ID:IDS									{
 // 		|PARAM				{}
 // 		|					{}
 // 		;
-ARGS:ARGS ',' ARG 	{
+ARGS:ARGS SEMICOLON ARG 	{
 						//$$=$3;
 						//$$->Arg_List=$1;
 						$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'A');
@@ -165,8 +165,37 @@ ARGS:ARGS ',' ARG 	{
 
 					
 												
-ARG:LOCAL_DECL	{$$->Lentry = $1->Lentry;}
+ARG:TYPE L_ID_LIST 	{
+
+						struct Lsymbol *temp= new Lsymbol;
+						temp = $2->Lentry;
+						while (temp!=NULL)
+						{
+							temp->TYPE=$1->type;
+
+							temp=temp->Next;
+						}
+						delete temp;
+
+						$$=$2;
+						$$->Lentry = $2->Lentry;
+
+					}
 	// |			{$$->Lentry = NULL;}
+
+// FL_ID_LIST : FL_ID_LIST ',' FL_ID 				{	
+// 												// $$->Lentry=$3->Lentry;
+// 												// $$->Lentry->Next=$1->Lentry;
+// 												$$->Lentry = Make_Arg_Node_List($1->Lentry,$3->Lentry,'V');
+
+// 											}
+// 			|FL_ID 							{	
+// 												// $$->Lentry = $1->Lentry;
+// 												// $$->Lentry->Next = NULL;
+// 												$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'V');
+												
+// 											}
+// 			;
 
 FUNC_DEF_BLOCKS: FUNC_DEF_BLOCKS FUNC_DEF_BLOCK 						{
 																			//$$=$1;
@@ -330,7 +359,7 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{
 				|								{$$->Lentry = NULL;}
 				;
 
-LOCAL_DECL:TYPE L_ID_LIST SEMICOLON 		{	
+LOCAL_DECL:TYPE L_ID_LIST SEMICOLON	{	
 												struct Lsymbol *temp= new Lsymbol;
 												temp = $2->Lentry;
 												while (temp!=NULL)
