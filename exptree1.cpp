@@ -50,6 +50,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 			// {
 			// 	cout<<"Array     "<<endl;
 			// }
+
 			//cout<<"NAME="<<NAME<<" size="<<Glookup(NAME)->size<<" Index="<<evaluate(ptr1->ptr2)<<endl;
 			if (lookup_variable(last_function_used_type_check.top(),NAME) == NULL)
 			{
@@ -191,6 +192,11 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 				// 	//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				// 	yyerror("compairing different types.");
 				// }
+				if (ptr1_type!=ptr2_type)
+				{	
+					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+					yyerror("compairing different types.");
+				}
 		}
 		else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
 		{	
@@ -234,6 +240,11 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
 				}*/
+				if (ptr1_type!=ptr2_type)
+				{	
+					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+					yyerror("compairing different types.");
+				}
 		}
 		else if ((Node_Type==Node_Type_PLUS)||(Node_Type==Node_Type_MINUS)||(Node_Type==Node_Type_DIV)||(Node_Type==Node_Type_MUL)||(Node_Type==Node_Type_MODULUS)||(Node_Type==Node_Type_POWER))
 		{		
@@ -278,6 +289,16 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("Arithmetic Operations of  different types.");
 				}*/
+				if (ptr1_type!=ptr2_type)
+				{	
+					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
+					yyerror("Arithmetic Operations of  different types.");				
+				}
+
+				if (ptr1_type == Tlookup(BOOLEAN_NAME) || ptr2_type == Tlookup(BOOLEAN_NAME))
+				{
+					yyerror("Arithmetic Operations  not allowed for boolean types.");				
+				}
 		}
 		else if (Node_Type==Node_Type_FUNCTION_DEF)
 		{
@@ -445,8 +466,11 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 	new_node->NAME=(char *)malloc(20*sizeof(char));
 	if(NAME!=NULL)
 	{
+		if (type == Tlookup(ID_NAME))
+		{
 		
-	// cout<<"NAME = "<<NAME<<endl;
+	cout<<"NAME = "<<NAME<<endl;
+		}
 		strcpy(new_node->NAME,NAME);
 	}
 	else

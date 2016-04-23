@@ -1,5 +1,6 @@
 decl
 	integer fact(integer n);
+	boolean b;
 enddecl
 
 integer fact(integer n)

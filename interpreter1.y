@@ -216,7 +216,10 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 													of the respective function.
 												**/
 												// $$->Arg_List->Arg_List->Lentry = $1->Arg_List->Lentry;
-												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
+												if (Glookup($1->NAME) !=  NULL)
+												{
+													Glookup($1->NAME)->BODY = $2; //For storing the fuction body
+												}
 												$$=Make_Node($1->type,Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;
@@ -263,6 +266,7 @@ FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK
 												{
 													$$ = new tnode;
 												}
+
 												$$->type = $1->type;
 												$$->NAME = $2->NAME;
 												$$->Arg_List = $4;
@@ -270,9 +274,21 @@ FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK
 												$7->Lentry = Mark_Variables_local($7->Lentry);
 
 												$$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry,'V');
-												Glookup($2->NAME)->Local = $$->Lentry;
+												
+												if (Glookup($2->NAME) == NULL)
+												{
+													yyerror(std::string ("Function named ‘") + $2->NAME + "’ is  not declared in this scope.");
+
+												}
+												else
+												{
+
+													Glookup($2->NAME)->Local = $$->Lentry;
+												}
+																						
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;									
 												last_function_used_type_check.push(($2->NAME));
+
 												
 											}
 
@@ -285,7 +301,7 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
-
+												cout<<"IN main body"<<endl;
 												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
 												$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
@@ -555,7 +571,7 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	// 									//cout<<"size="<<evaluate($2->ptr2)<<endl;
 	// 								}
 	|READ'('IDS')'	SEMICOLON  		{
-										
+										cout<<"IN read"<<endl;
 										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
 									}
 	|WRITE'('expr')' SEMICOLON		{	
@@ -889,6 +905,7 @@ int yyerror(string s)
 int main(int argc,char const *argv[])
 {	
 	
+	Typetable_Crate();
 	if (argc < 2)
 	{
 		cout<<"silc:fatal error: no input files\ncompilation terminated."<<endl;
@@ -912,7 +929,6 @@ int main(int argc,char const *argv[])
 
 	/**Main function name is pushed into the last_function_used_type_check stack for type_check**/
 
-	Typetable_Crate();
 	char *main = (char *)malloc(20*sizeof(char));
 	strcpy(main,"main");
 	last_function_used_type_check.push(main);
