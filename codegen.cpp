@@ -499,13 +499,14 @@ int codegen(struct tnode *expressionTree)
 		//cout<<"NAME = "<<expressionTree->NAME<<endl;
 		// cout<<"R = "<<reg_1<<" R = "<<reg_2<<endl;
 		int r,bind,position = -3;
+		int register_pushed[10],reg_push_no = 0;;
 		// r = reg_1;
 		// reg_1 = 3;
 
 		/**Pushing Register in use in the stack.**/
 		r = 0;
 		while (r < reg_no)
-		{
+		{	register_pushed[reg_push_no++] = r;
 			fprintf(sim_code_file, "PUSH R%d\n",r++);
 		}
 		r = r - 1;
@@ -559,6 +560,7 @@ int codegen(struct tnode *expressionTree)
 						// MOV R3,BP
 						// ADD R2,R3
 						// MOV R2,[R2]
+						register_pushed[reg_push_no++] = reg_1;
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						free_reg(__LINE__);
 					}
@@ -571,6 +573,7 @@ int codegen(struct tnode *expressionTree)
 						fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 						// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 						// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+						register_pushed[reg_push_no++] = reg_1;
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						free_reg(__LINE__);
 
@@ -584,6 +587,8 @@ int codegen(struct tnode *expressionTree)
 						fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 						// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 						// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+						register_pushed[reg_push_no++] = reg_1;
+
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						free_reg(__LINE__);
 
@@ -596,6 +601,7 @@ int codegen(struct tnode *expressionTree)
 					reg_1 = get_location(temp);
 					// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					register_pushed[reg_push_no++] = reg_1;
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					free_reg(__LINE__);
 				}
@@ -624,6 +630,7 @@ int codegen(struct tnode *expressionTree)
 							//cout<<"Binding = "<<bind<<endl;
 							fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							register_pushed[reg_push_no++] = reg_1;
 							fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						}
 						else 
@@ -637,6 +644,7 @@ int codegen(struct tnode *expressionTree)
 							fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							register_pushed[reg_push_no++] = reg_1;
 							fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 							free_reg(__LINE__);
 						}
@@ -650,6 +658,8 @@ int codegen(struct tnode *expressionTree)
 							fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							register_pushed[reg_push_no++] = reg_1;
+
 							fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 							free_reg(__LINE__);
 						}
@@ -660,6 +670,7 @@ int codegen(struct tnode *expressionTree)
 						bind = Glookup((temp->NAME))->Binding;
 						fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 						fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+						register_pushed[reg_push_no++] = reg_1;
 						fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 						//cout<<"Binding = "<<bind<<endl;
 					}	
@@ -670,6 +681,7 @@ int codegen(struct tnode *expressionTree)
 					// fprintf(sim_code_file, "\n\n");
 					reg_1 = codegen(temp);
 					// cout<<"Node_Type = "<<temp->Node_Type<<endl;
+					register_pushed[reg_push_no++] = reg_1;
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					// cout<<"reg_1 = "<<reg_1<<endl;
 					// free_reg(__LINE__);
@@ -683,6 +695,7 @@ int codegen(struct tnode *expressionTree)
 		delete temp_2;
 
 		/**Pushing space for the return value.**/
+		register_pushed[reg_push_no++] = reg_1;
 		fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 
 		// if (expressionTree->Arg_List != NULL)
@@ -701,28 +714,35 @@ int codegen(struct tnode *expressionTree)
 		// reg_no = 0;
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 		// cout<<"reg_no = "<<reg_no<<endl;
+		cout<<"reg = "<<reg_push_no<<endl;
+		while (reg_push_no > 0)
+		{
+			// cout<<"reg_push_no = "<<register_pushed[--reg_push_no]<<endl;
+			fprintf(sim_code_file, "POP R%d\n",register_pushed[--reg_push_no]);
+		}
 
-		fprintf(sim_code_file, "POP R0\n");
+		// fprintf(sim_code_file, "POP R0\n");
 		// fprintf(sim_code_file, "OUT R0\n");
 		// reg_no = r;
 		// cout<<"reg_no = "<<reg_no<<endl;
 		int i;
 		// cout<<arg_for_pop<<endl;
-		i = arg_for_pop - 2;
-		while (i >= 0)
-		{	
-			fprintf(sim_code_file, "POP R0\n");
-			i--;
-		}
-		i = reg_no;
+		// i = arg_for_pop - 2;
+		// while (i >= 0)
+		// {	
+		// 	fprintf(sim_code_file, "POP R0\n");
+		// 	i--;
+		// }
+		// i = reg_no;
 		// cout<<reg_no<<endl;
-		while (i >= 0)
-		{
-			// cout<<"I"<<endl;
-			fprintf(sim_code_file, "POP R%d\n",i--);
-		}
+		// while (i >= 0)
+		// {
+		// 	// cout<<"I"<<endl;
+		// 	fprintf(sim_code_file, "POP R%d\n",i--);
+		// }
 		// cout<<reg_1<	<endl;
 		// cout<<r<<endl;
+
 		struct Lsymbol *temp_local = new Lsymbol;
 		temp_local =  Glookup(last_function_used.top())->Local;
 
@@ -749,7 +769,7 @@ int codegen(struct tnode *expressionTree)
 		// cout<<"r = "<<r<<endl;
 		// cout<<"no_of_local_var = "<<no_of_local_var<<endl;
 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
-		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop+r + 2 + no_of_local_var);
+		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop + r + 2 + no_of_local_var);
 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// fprintf(sim_code_file, "OUT R%d\n",reg_1);
