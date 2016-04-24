@@ -84,7 +84,8 @@ GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL {$$=$2;}
 				;
 
 
-GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 	{		
+GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 	{	
+														
 													$$=NULL;
 												}
 				|								{	
@@ -367,16 +368,18 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 											}
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													// $$ = $2;
-													if ($$ == NULL)
-													{
+													// if ($$ == NULL)
+													// {
 														$$ = new tnode;
-													}
+													// }
 													$$->Lentry = $2->Lentry;
 													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 
 												}
 				|								{	
 													// $$ = NULL;
+													$$ = new tnode;
+
 													$$->Lentry = NULL;
 												}
 				;
@@ -385,15 +388,17 @@ LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{
 LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{	
 													//$1->Lentry->Next = $2->Lentry;
 													//$$ = $1;
+													$$ = new tnode;
+
 													$$->Lentry = Make_Arg_Node_List($2->Lentry,$1->Lentry,'V');
 													// Glookup(last_function_used_type_check.top())->Arg_List->Lentry->Next = $$->Lentry;
 												}
 
 				|								{
-													if ($$ == NULL)
-													{
+													// if ($$ == NULL)
+													// {
 														$$ = new tnode;
-													}
+													// }
 													// if ($$->Lentry == NULL)
 													// {
 													// 	$$->Lentry = new Lsymbol;
@@ -966,7 +971,7 @@ int main(int argc,char const *argv[])
 	
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
-	cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
+	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
 	yyparse();
 	// cout<<"OUT"<<endl;
 	fclose(sim_code_file);
