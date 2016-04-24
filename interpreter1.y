@@ -71,26 +71,116 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														}
 													}
 USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{
+
+
+																	if ($4 == NULL)
+																	{
+																		yyerror("User defined data types required atleast one member.");
+																		exit(0);
+																	}
 																	// cout<<"NAME = "<<$4->NAME<<endl;
-// 
-																	Tinstall($2->NAME,NULL);
+																	struct tnode *temp = new tnode;
+																	struct Fieldlist *temp_2,*temp_3;
+																	int size = 0;
+																	temp = $4;
+
+																	temp_2 = new Fieldlist;
+																	temp_2->NAME = (char *)malloc(20*sizeof(char));
+
+																	// temp_3 = new Fieldlist;
+
+																	temp_3 = temp_2;
+																	
+																	while (temp != NULL)
+																	{																			
+																		// cout<<"NAME =    "<<temp->NAME<<" type = "<<temp->type->NAME<<endl;
+
+																		strcpy(temp_2->NAME,temp->NAME); 
+																		temp_2->TYPE = Tlookup(temp->type->NAME);
+
+																		if (temp->Arg_List != NULL)
+																		{
+																			temp_2->Next = new Fieldlist;
+																			temp_2->Next->NAME = (char *)malloc(20*sizeof(char));
+																		}
+
+																		temp = temp->Arg_List;
+																		temp_2 = temp_2->Next;
+																		
+
+																		size++;
+																	}
+
+																	// cout<<"size = "<<size<<endl;
+
+																	while(temp_3 != NULL)
+																	{
+																		// cout<<"NAME =    "<<temp_3->NAME<<" type = "<<temp_3->TYPE->NAME<<endl;
+
+																		temp_3 = temp_3->Next;
+																	}
 																	// cout<<"NAME = "<<$2->NAME<<endl;
+																	Tinstall($2->NAME,temp_2);
+
+																	if (size > 8)
+																	{
+																		yyerror("User defined data types  can have maximum eight member.");
+																		// exit(0);
+																	}
+																	// Finstall(temp_2,$2->NAME);
+																	// cout<<"NAME = "<<$2->NAME<<endl;
+																	// cout<<"TYPE = "<<Tlookup($2->NAME)->NAME<<endl;
+																	// Ginstall($2->NAME,$2->type,size,'U',$4);
+																	// cout<<"Data Type = "<<Tlookup($2->NAME)->Fields->NAME<<endl;
 
 																}
 						|										{}
 						;
-GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL {$$=$2;}
+GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL	 {
+													//$$=$2;cout<<"NAME = "<<$2->type->NAME<<endl;
+													struct tnode *temp = new tnode;
+													temp=$2;
+													while (temp != NULL)
+													{	
+														// cout<<"NAME =    "<<temp->NAME<<" type = "<<temp->type->NAME<<char(temp->value)<<endl;
+														
+
+														if (temp->value == 'f')
+														{
+															Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
+															Glookup(temp->NAME)->TYPE = temp->type;
+
+														}
+														else if ((strcmp(temp->type->NAME,INTEGER_NAME) != 0) && (strcmp(temp->type->NAME,BOOLEAN_NAME) != 0) && (strcmp(temp->type->NAME,VOID_NAME) != 0) )
+														{
+															Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
+															Glookup(temp->NAME)->TYPE = temp->type;
+														}
+														else
+														{
+															Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+															Glookup(temp->NAME)->TYPE = temp->type;
+
+														}
+														temp=temp->Arg_List;
+
+													}
+													delete temp;
+												}
 				|		{$$=NULL;}
 				;
 
 
 GLOBAL_DEF_LISTS:GLOBAL_DEF_LISTS GLOBAL_DECL 	{	
-														
-													$$=NULL;
+													// $$ = $1;
+													// $$->Arg_List = $2;
+													$$ = Make_Arg_Node_List_for_global($1,$2,'G');
 												}
-				|								{	
-													$$=NULL;
-												}
+				|GLOBAL_DECL					{ $$ = Make_Arg_Node_List_for_global($1,NULL,'G');}
+				
+				// |								{	
+				// 									$$=NULL;
+				// 								}
 				;
 
 GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{	
@@ -98,33 +188,34 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 												temp=$2;
 												while (temp!=NULL)
 												{	
-													//cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
-													if (temp->value == 'f')
-													{
-														//cout<<"NAME = "<<temp->NAME<<endl;
-														// cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
-														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
-														// struct Lsymbol *temp_2 = new Lsymbol;
+													temp->type = $1->type;
+													// cout<<"NAME="<<temp->NAME<<" TYPE="<<$1->type<<endl;
+													// if (temp->value == 'f')
+													// {
+													// 	//cout<<"NAME = "<<temp->NAME<<endl;
+													// 	// cout<<"NAME="<<temp->Lentry->Next->NAME<<endl;
+													// 	Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
+													// 	// struct Lsymbol *temp_2 = new Lsymbol;
 
-														// temp_2 =Glookup(temp->NAME)->Lentry;
+													// 	// temp_2 =Glookup(temp->NAME)->Lentry;
 
-														// while(temp_2!=NULL)
-														// {
-														// 	cout<<"temp f = "<<temp_2->NAME<<" type = "<<temp_2->TYPE<<endl;
-														// 	temp_2 = temp_2->Next;
-														// }
-														// cout<<"size = "<<sizeof(struct Gsymbol)<<endl;
+													// 	// while(temp_2!=NULL)
+													// 	// {
+													// 	// 	cout<<"temp f = "<<temp_2->NAME<<" type = "<<temp_2->TYPE<<endl;
+													// 	// 	temp_2 = temp_2->Next;
+													// 	// }
+													// 	// cout<<"size = "<<sizeof(struct Gsymbol)<<endl;
 
-													}
-													else
-													{
-														Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
-													}
+													// }
+													// else
+													// {
+													// 	Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,NULL);
+													// }
 													temp=temp->Arg_List;
 												}
 												delete temp;
 
-
+												$$ = $2;
 											}
 
 G_ID_LIST : G_ID_LIST ',' G_ID 				{	
@@ -916,7 +1007,9 @@ IDS:ID 					{
 									yyerror(string("Unknown type of User defined variable ‘") + $1->NAME + "’.");
 								}
 								// cout<<"IN Tlookup"<<endl;
-								// cout<<Glookup($1->NAME)->TYPE<<endl;
+								// cout<<"NAME = "<<$1->NAME<<endl;
+								// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
+								// cout<<Flookup($1->NAME,Tlookup($1->type->nA)->Fields)<<endl;
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);

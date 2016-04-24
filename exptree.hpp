@@ -87,6 +87,13 @@ struct Lsymbol *Make_Arg_Node(char *NAME,struct Typetable *TYPE,int size,int pas
 **/
 struct Lsymbol *Make_Arg_Node_List(struct Lsymbol *Node_1,struct Lsymbol *Node_2,int value);
 
+/**
+	Make_Arg_Node_List_for_global is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
+	contains the global variable and which is linked to the Lentry of the Function node later.
+**/
+struct tnode *Make_Arg_Node_List_for_global(struct tnode *Node_1,struct tnode *Node_2,int value);
+
+
 struct Gsymbol *Glookup(char *NAME);
 void Ginstall(char * NAME,struct Typetable *TYPE,int size,int value,struct tnode *Arg_List);
 

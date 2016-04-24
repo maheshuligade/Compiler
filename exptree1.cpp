@@ -1579,3 +1579,60 @@ int get_global_var_no()
 
 	return no_of_global_var;
 }
+
+
+
+
+
+struct tnode *Make_Arg_Node_List_for_global(struct tnode *Node_1,struct tnode *Node_2,int value)
+{
+	/**
+		Make_Arg_Node_List_for_global is used to combine two arguments into one and also checks the redeclaration of the arguments and also 
+		contains the global variable and which is linked to the Lentry of the Function node later.
+	**/
+	struct tnode *temp = new tnode;
+	struct tnode *temp_2 = new tnode;
+	temp = Node_1;
+
+
+	while (temp!=NULL)
+	{
+		temp_2 = Node_2;
+		while (temp_2!=NULL)
+		{
+			
+			if (Node_2!=NULL)
+			{
+				if (strcmp(temp->NAME,temp_2->NAME)==0 && value!='c')
+				{
+					cout<<input_file_name<<":"<<temp_2->line_no<<":"<<temp_2->col_no<<":"<<"error:"<<"redeclaration of variable‘"<<temp->NAME<<"’"<<endl;
+					no_of_error++;
+				}
+			}
+			
+			temp_2 = temp_2->Arg_List;
+		}
+		temp = temp->Arg_List;
+	}
+	temp = Node_1;
+
+	/**Checks the Glookal varoables are array or not.**/
+	if (temp != NULL)
+	{
+		while (temp->Arg_List!=NULL)
+		{
+			// if (temp->size > 1)
+			// {
+			// 	yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+			// }
+			temp = temp->Arg_List;
+		}
+		temp->Arg_List = Node_2;
+		// if (temp->size > 1)
+		// {
+		// 	yyerror("Array" + string(" ‘") + temp->NAME + "’ can not be passed to the function.");
+		// }		
+	}
+	
+	return Node_1;
+}
