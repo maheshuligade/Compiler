@@ -1479,7 +1479,7 @@ yyreduce:
 															fprintf(sim_code_file, "PUSH BP\n");
 															fprintf(sim_code_file, "call main\n");
 															fprintf(sim_code_file, "HALT\n");
-															//codegen($$);
+															codegen((yyval));
 														}
 													}
 #line 1486 "y.tab.cpp" /* yacc.c:1646  */
@@ -2654,7 +2654,7 @@ yyreduce:
 								}
 								
 							}
-							(yyval)=Make_Node(get_type((yyvsp[-2])),Node_Type_ARRAY,'A',(yyvsp[0])->NAME,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
+							(yyval)=Make_Node(get_type((yyvsp[-2])),Node_Type_ARRAY,'u',(yyvsp[0])->NAME,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 							(yyval)->Lentry = Make_Arg_Node((yyvsp[-2])->NAME,get_type((yyvsp[-2])),1,LOCAL_VARIABLE);
 							(yyval)->Lentry->Next = NULL;
 						}
@@ -2956,6 +2956,17 @@ int main(int argc,char const *argv[])
 	strcpy(main,"main");
 	last_function_used_type_check.push(main);
 	
+	char *INITIALIZE = (char *)malloc(20*sizeof(char));
+	strcpy(INITIALIZE,"initialize");
+	char *ALLOCATE = (char *)malloc(20*sizeof(char));
+	strcpy(ALLOCATE,"allocate");
+	char *FREE = (char *)malloc(20*sizeof(char));
+	strcpy(FREE,"free");
+
+	Ginstall(INITIALIZE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	Ginstall(ALLOCATE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	Ginstall(FREE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	// /Ginstall($2->NAME,$2->type,size,'U',$4);
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
 	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?

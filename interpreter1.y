@@ -67,7 +67,7 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 															fprintf(sim_code_file, "PUSH BP\n");
 															fprintf(sim_code_file, "call main\n");
 															fprintf(sim_code_file, "HALT\n");
-															//codegen($$);
+															codegen($$);
 														}
 													}
 USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{
@@ -1028,7 +1028,7 @@ IDS:ID 					{
 								}
 								
 							}
-							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
+							$$=Make_Node(get_type($1),Node_Type_ARRAY,'u',$3->NAME,$1,$3,NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 							$$->Lentry->Next = NULL;
 						}
@@ -1086,6 +1086,17 @@ int main(int argc,char const *argv[])
 	strcpy(main,"main");
 	last_function_used_type_check.push(main);
 	
+	char *INITIALIZE = (char *)malloc(20*sizeof(char));
+	strcpy(INITIALIZE,"initialize");
+	char *ALLOCATE = (char *)malloc(20*sizeof(char));
+	strcpy(ALLOCATE,"allocate");
+	char *FREE = (char *)malloc(20*sizeof(char));
+	strcpy(FREE,"free");
+
+	Ginstall(INITIALIZE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	Ginstall(ALLOCATE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	Ginstall(FREE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	// /Ginstall($2->NAME,$2->type,size,'U',$4);
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
 	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
