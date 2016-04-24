@@ -152,6 +152,13 @@ void Finstall(char *NAME,struct Typetable *TYPE);
 /**Searches for the field of the given name in the list and returns the pointer to the matchingg entry.**/
 struct Fieldlist *Flookup(char *NAME,struct Fieldlist *List);
 
+/**Prints the cpde for the Library Function initilize()**/
+void print_code_initialize();
+/**Prints the cpde for the Library Function allocate()**/
+void print_code_allocate();
+/**Prints the cpde for the Library Function free()**/
+void print_code_free();
+
 /**	Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
 	type_check
 **/
