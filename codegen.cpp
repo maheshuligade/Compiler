@@ -925,7 +925,7 @@ int get_location(struct tnode *expressionTree)
 	{
 		reg_1 = get_reg(__LINE__);
 
-		return reg_1
+		return reg_1;
 	}
 	else 
 	{
