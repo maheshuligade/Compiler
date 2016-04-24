@@ -529,7 +529,7 @@ static const yytype_uint16 yyrline[] =
      637,   640,   678,   682,   686,   690,   694,   699,   719,   728,
      733,   737,   741,   745,   749,   750,   751,   752,   756,   760,
      764,   768,   772,   776,   780,   784,   788,   792,   796,   800,
-     804,   841,   877,   910,   974,   986,   998,  1029,  1030,  1031
+     804,   841,   877,   910,   974,   986,   998,  1037,  1038,  1039
 };
 #endif
 
@@ -2588,7 +2588,7 @@ yyreduce:
   case 74:
 #line 974 "interpreter1.y" /* yacc.c:1646  */
     {	
-							if (Glookup((yyvsp[0])->NAME)!=NULL)
+							if (Glookup((yyvsp[0])->NAME) != NULL)
 							{	
 								if (Glookup((yyvsp[0])->NAME)->size > 1)
 								{
@@ -2623,11 +2623,14 @@ yyreduce:
 #line 998 "interpreter1.y" /* yacc.c:1646  */
     {
 							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
-							if (Glookup((yyvsp[-2])->NAME) == NULL)
-							{	
-								yyerror(string("User defined variable ‘") + (yyvsp[-2])->NAME + "’ is  not defined in this scope.");
-								exit(0);
-								// cout<<"NAME = "<<$1->NAME<<endl;
+							if (lookup_variable(last_function_used_type_check.top(),(yyvsp[-2])->NAME) == NULL)
+							{
+								if (Glookup((yyvsp[-2])->NAME) == NULL)
+								{	
+									yyerror(string("User defined variable ‘") + (yyvsp[-2])->NAME + "’ is  not defined in this scope.");
+									exit(0);
+									// cout<<"NAME = "<<$1->NAME<<endl;
+								}
 							}
 							else if (Glookup((yyvsp[-2])->NAME) != NULL)
 							{
@@ -2640,39 +2643,51 @@ yyreduce:
 								// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
 								// cout<<Glookup($1->NAME)->TYPE->Fields<<endl;
 								// cout<<"Fields = "<<Tlookup($1->type->NAME)<<endl;
+								// cout<<Glookup($1->NAME)->TYPE<<endl;
 								// cout<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<endl;
-								/*if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
+								if (Glookup((yyvsp[-2])->NAME)->TYPE != NULL)
 								{
-									yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
-								}*/
+									if (Flookup((yyvsp[0])->NAME,Glookup((yyvsp[-2])->NAME)->TYPE->Fields) == NULL )
+									{
+										yyerror("‘" + string((yyvsp[0])->NAME) + "’ is not a member of user defined variable ‘"+ (yyvsp[-2])->NAME + "’.");
+									}
+								}
+								
 							}
 							(yyval)=Make_Node(get_type((yyvsp[-2])),Node_Type_ARRAY,'A',(yyvsp[0])->NAME,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 							(yyval)->Lentry = Make_Arg_Node((yyvsp[-2])->NAME,get_type((yyvsp[-2])),1,LOCAL_VARIABLE);
 							(yyval)->Lentry->Next = NULL;
 						}
-#line 2654 "y.tab.cpp" /* yacc.c:1646  */
+#line 2662 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 1029 "interpreter1.y" /* yacc.c:1646  */
+#line 1037 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
-#line 2660 "y.tab.cpp" /* yacc.c:1646  */
+#line 2668 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 1030 "interpreter1.y" /* yacc.c:1646  */
+#line 1038 "interpreter1.y" /* yacc.c:1646  */
     {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
-#line 2666 "y.tab.cpp" /* yacc.c:1646  */
+#line 2674 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 1031 "interpreter1.y" /* yacc.c:1646  */
-    {(yyval)=Make_Node(Tlookup((yyvsp[0])->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
-#line 2672 "y.tab.cpp" /* yacc.c:1646  */
+#line 1039 "interpreter1.y" /* yacc.c:1646  */
+    {	
+					// cout<<"NAME = "<<Tlookup($1->NAME)<<endl;
+					if (Tlookup((yyvsp[0])->NAME) == NULL)
+					{
+						yyerror(string("Unknown type of User defined variable ‘") + (yyvsp[0])->NAME + "’.");
+					}
+					(yyval)=Make_Node(Tlookup((yyvsp[0])->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);
+				}
+#line 2687 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2676 "y.tab.cpp" /* yacc.c:1646  */
+#line 2691 "y.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2900,7 +2915,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1034 "interpreter1.y" /* yacc.c:1906  */
+#line 1049 "interpreter1.y" /* yacc.c:1906  */
 
 
 int yyerror(string s)

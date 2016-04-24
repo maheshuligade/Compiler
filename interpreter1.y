@@ -972,7 +972,7 @@ ID_LIST: ID_LIST ',' expr		{
 		// 					}
 
 IDS:ID 					{	
-							if (Glookup($1->NAME)!=NULL)
+							if (Glookup($1->NAME) != NULL)
 							{	
 								if (Glookup($1->NAME)->size > 1)
 								{
@@ -997,11 +997,14 @@ IDS:ID 					{
 						}
 	|ID DOT ID 			{
 							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
-							if (Glookup($1->NAME) == NULL)
-							{	
-								yyerror(string("User defined variable ‘") + $1->NAME + "’ is  not defined in this scope.");
-								exit(0);
-								// cout<<"NAME = "<<$1->NAME<<endl;
+							if (lookup_variable(last_function_used_type_check.top(),$1->NAME) == NULL)
+							{
+								if (Glookup($1->NAME) == NULL)
+								{	
+									yyerror(string("User defined variable ‘") + $1->NAME + "’ is  not defined in this scope.");
+									exit(0);
+									// cout<<"NAME = "<<$1->NAME<<endl;
+								}
 							}
 							else if (Glookup($1->NAME) != NULL)
 							{
@@ -1014,11 +1017,16 @@ IDS:ID 					{
 								// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
 								// cout<<Glookup($1->NAME)->TYPE->Fields<<endl;
 								// cout<<"Fields = "<<Tlookup($1->type->NAME)<<endl;
+								// cout<<Glookup($1->NAME)->TYPE<<endl;
 								// cout<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<endl;
-								/*if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
+								if (Glookup($1->NAME)->TYPE != NULL)
 								{
-									yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
-								}*/
+									if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
+									{
+										yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
+									}
+								}
+								
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
@@ -1028,7 +1036,14 @@ IDS:ID 					{
 	;
 TYPE:INTEGER	{$$=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
 	|BOOLEAN	{$$=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
-	|ID			{$$=Make_Node(Tlookup($1->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
+	|ID			{	
+					// cout<<"NAME = "<<Tlookup($1->NAME)<<endl;
+					if (Tlookup($1->NAME) == NULL)
+					{
+						yyerror(string("Unknown type of User defined variable ‘") + $1->NAME + "’.");
+					}
+					$$=Make_Node(Tlookup($1->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);
+				}
 	;
 
 %%

@@ -1,15 +1,22 @@
-
+typedef name1{
+	integer b;
+	integer a;
+	integer c;
+}
 decl
 	integer i;
 	name1 A;
 enddecl
 integer main(){
 decl
+	name1 b;
+	integer d;
 enddecl
 begin
+	d  = 2;
 	i = initialize();
 	A = allocate();
-	read(A.c);
+	read(b.c);
 	read(A.b);
 	read(A.a);
 	write(A.b);
