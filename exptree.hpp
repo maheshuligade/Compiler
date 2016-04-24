@@ -15,7 +15,8 @@ typedef struct tnode
 	struct tnode *ptr1,*ptr2,*ptr3; 	/*Maximum of three subtrees (3 Required for IF THEN ELSE)*/
 	struct tnode *Arg_List;				//List of arguments for functions
 	int line_no,col_no;
-	
+	struct Fieldlist *Fields;				//Pointer to the head of the fields list in case  of the user defined variable.
+
 	struct Gsymbol *Gentry; 					//For global identifiers/Functions
 	struct Lsymbol *Lentry;						//For local variables;
 } tnode;
@@ -203,3 +204,4 @@ extern char *ID_NAME;
 #define PASS_BY_VALUE						35
 #define PASS_BY_REFERENCE					36
 #define LOCAL_VARIABLE						37
+#define TYPE_USER							38

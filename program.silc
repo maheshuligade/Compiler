@@ -1,32 +1,25 @@
-decl
-	integer fact(integer n);
-	boolean b;
-enddecl
-
-integer fact(integer n)
-{
-	decl
-		integer f;
-	enddecl
-	begin
-		if(n==1) then
-			f=1;
-		else
-			f=n*fact(n-1);
-		endif;
-		return f;
-	end
+typedef name1{
+	integer b;
+	integer a;
 }
-
-integer main()
-{
-	decl
-		integer a,res;
-	enddecl
-	begin
-		read(a);
-		res = fact(a);
-		write(res);
-		return 0;
-	end	
-}	
+decl
+	integer i;
+	name1 A;
+enddecl
+integer main(){
+decl
+enddecl
+begin
+	i = initialize();
+	A = allocate();
+	read(A.c);
+	read(A.b);
+	read(A.a);
+	write(A.b);
+	write(A.a);
+	i = free(A);
+	write(A.b);
+	write(A.a);
+	return 0;
+end
+}

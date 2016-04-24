@@ -530,14 +530,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    44,    44,    73,    74,    76,    77,    81,    84,    89,
-     122,   127,   137,   140,   153,   158,   168,   173,   205,   211,
-     213,   261,   295,   319,   324,   361,   371,   378,   385,   398,
-     421,   427,   434,   446,   458,   489,   503,   522,   523,   524,
-     532,   535,   573,   577,   581,   585,   589,   594,   614,   623,
-     628,   632,   636,   640,   644,   645,   646,   647,   651,   655,
-     659,   663,   667,   671,   675,   679,   683,   687,   691,   695,
-     699,   736,   772,   800,   864,   876,   888,   891,   892,   893
+       0,    44,    44,    73,    80,    82,    83,    87,    90,    95,
+     129,   134,   144,   147,   160,   165,   175,   180,   212,   218,
+     220,   269,   302,   326,   331,   368,   378,   385,   392,   405,
+     428,   434,   441,   453,   465,   496,   510,   529,   530,   531,
+     539,   542,   580,   584,   588,   592,   596,   601,   621,   630,
+     635,   639,   643,   647,   651,   652,   653,   654,   658,   662,
+     666,   670,   674,   678,   682,   686,   690,   694,   698,   702,
+     706,   743,   779,   812,   876,   888,   900,   922,   923,   924
 };
 #endif
 
@@ -1618,47 +1618,53 @@ yyreduce:
 															fprintf(sim_code_file, "PUSH BP\n");
 															fprintf(sim_code_file, "call main\n");
 															fprintf(sim_code_file, "HALT\n");
-															codegen((yyval));
+															//codegen($$);
 														}
 													}
     break;
 
   case 3:
 #line 73 "interpreter1.y"
-    {}
+    {
+																	// cout<<"NAME = "<<$4->NAME<<endl;
+// 
+																	Tinstall((yyvsp[(2) - (5)])->NAME,NULL);
+																	// cout<<"NAME = "<<$2->NAME<<endl;
+
+																}
     break;
 
   case 4:
-#line 74 "interpreter1.y"
+#line 80 "interpreter1.y"
     {}
     break;
 
   case 5:
-#line 76 "interpreter1.y"
+#line 82 "interpreter1.y"
     {(yyval)=(yyvsp[(2) - (3)]);}
     break;
 
   case 6:
-#line 77 "interpreter1.y"
+#line 83 "interpreter1.y"
     {(yyval)=NULL;}
     break;
 
   case 7:
-#line 81 "interpreter1.y"
+#line 87 "interpreter1.y"
     {		
 													(yyval)=NULL;
 												}
     break;
 
   case 8:
-#line 84 "interpreter1.y"
+#line 90 "interpreter1.y"
     {	
 													(yyval)=NULL;
 												}
     break;
 
   case 9:
-#line 89 "interpreter1.y"
+#line 95 "interpreter1.y"
     {	
 												struct tnode *temp = new tnode;
 												temp=(yyvsp[(2) - (3)]);
@@ -1690,11 +1696,12 @@ yyreduce:
 												}
 												delete temp;
 
+
 											}
     break;
 
   case 10:
-#line 122 "interpreter1.y"
+#line 129 "interpreter1.y"
     {	
 												(yyval)=(yyvsp[(3) - (3)]);
 												(yyval)->Arg_List=(yyvsp[(1) - (3)]);
@@ -1703,7 +1710,7 @@ yyreduce:
     break;
 
   case 11:
-#line 127 "interpreter1.y"
+#line 134 "interpreter1.y"
     {	
 												(yyval)=(yyvsp[(1) - (1)]);
 												if ((yyval)==NULL)
@@ -1716,14 +1723,14 @@ yyreduce:
     break;
 
   case 12:
-#line 137 "interpreter1.y"
+#line 144 "interpreter1.y"
     {
 												(yyval)=(yyvsp[(1) - (1)]);
 											}
     break;
 
   case 13:
-#line 140 "interpreter1.y"
+#line 147 "interpreter1.y"
     {
 	 											// $$=$1;
 												(yyval)=Make_Node(get_type((yyvsp[(1) - (4)])),Node_Type_ARRAY,'f',(yyvsp[(1) - (4)])->NAME,(yyvsp[(1) - (4)]),makeLeafNode(1),NULL,(yyvsp[(3) - (4)]));
@@ -1734,7 +1741,7 @@ yyreduce:
     break;
 
   case 14:
-#line 153 "interpreter1.y"
+#line 160 "interpreter1.y"
     {
 						//$$=$3;
 						//$$->Arg_List=$1;
@@ -1743,7 +1750,7 @@ yyreduce:
     break;
 
   case 15:
-#line 158 "interpreter1.y"
+#line 165 "interpreter1.y"
     {	
 						//$$=$1;
 						if ((yyval)==NULL)
@@ -1757,12 +1764,12 @@ yyreduce:
     break;
 
   case 16:
-#line 168 "interpreter1.y"
+#line 175 "interpreter1.y"
     {(yyval)->Lentry = NULL;}
     break;
 
   case 17:
-#line 173 "interpreter1.y"
+#line 180 "interpreter1.y"
     {
 
 						struct Lsymbol *temp= new Lsymbol;
@@ -1782,7 +1789,7 @@ yyreduce:
     break;
 
   case 18:
-#line 205 "interpreter1.y"
+#line 212 "interpreter1.y"
     {
 																			//$$=$1;
 																			(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -1792,18 +1799,19 @@ yyreduce:
     break;
 
   case 19:
-#line 211 "interpreter1.y"
+#line 218 "interpreter1.y"
     {(yyval)=NULL;}
     break;
 
   case 20:
-#line 213 "interpreter1.y"
+#line 220 "interpreter1.y"
     {	
 												/**
 													This makes the funtion node $$->Lentry points to the local symbol table 
 													of the respective function.
 												**/
 												// $$->Arg_List->Arg_List->Lentry = $1->Arg_List->Lentry;
+
 												if (Glookup((yyvsp[(1) - (3)])->NAME) !=  NULL)
 												{
 													Glookup((yyvsp[(1) - (3)])->NAME)->BODY = (yyvsp[(2) - (3)]); //For storing the fuction body
@@ -1847,7 +1855,7 @@ yyreduce:
     break;
 
   case 21:
-#line 262 "interpreter1.y"
+#line 270 "interpreter1.y"
     {	
 
 	
@@ -1867,14 +1875,13 @@ yyreduce:
 												if (Glookup((yyvsp[(2) - (7)])->NAME) == NULL)
 												{
 													yyerror(std::string ("Function named ‘") + (yyvsp[(2) - (7)])->NAME + "’ is  not declared in this scope.");
-
+													exit(0);
 												}
 												else
 												{
 
 													Glookup((yyvsp[(2) - (7)])->NAME)->Local = (yyval)->Lentry;
 												}
-																						
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;									
 												last_function_used_type_check.push(((yyvsp[(2) - (7)])->NAME));
 
@@ -1883,7 +1890,7 @@ yyreduce:
     break;
 
   case 22:
-#line 296 "interpreter1.y"
+#line 303 "interpreter1.y"
     {	
 												/**
 													This makes the funtion node $$->Lentry points to the local symbol table 
@@ -1910,14 +1917,14 @@ yyreduce:
     break;
 
   case 23:
-#line 319 "interpreter1.y"
+#line 326 "interpreter1.y"
     {
 												yyerror("‘main’ funtion is not defined in this scope.");
 											}
     break;
 
   case 24:
-#line 326 "interpreter1.y"
+#line 333 "interpreter1.y"
     {	
 												if ((yyvsp[(4) - (7)])->Lentry!=NULL)
 												{
@@ -1956,7 +1963,7 @@ yyreduce:
     break;
 
   case 25:
-#line 361 "interpreter1.y"
+#line 368 "interpreter1.y"
     {	
 													// $$ = $2;
 													if ((yyval) == NULL)
@@ -1970,7 +1977,7 @@ yyreduce:
     break;
 
   case 26:
-#line 371 "interpreter1.y"
+#line 378 "interpreter1.y"
     {	
 													// $$ = NULL;
 													(yyval)->Lentry = NULL;
@@ -1978,7 +1985,7 @@ yyreduce:
     break;
 
   case 27:
-#line 378 "interpreter1.y"
+#line 385 "interpreter1.y"
     {	
 													//$1->Lentry->Next = $2->Lentry;
 													//$$ = $1;
@@ -1988,7 +1995,7 @@ yyreduce:
     break;
 
   case 28:
-#line 385 "interpreter1.y"
+#line 392 "interpreter1.y"
     {
 													if ((yyval) == NULL)
 													{
@@ -2003,7 +2010,7 @@ yyreduce:
     break;
 
   case 29:
-#line 398 "interpreter1.y"
+#line 405 "interpreter1.y"
     {	
 												struct Lsymbol *temp= new Lsymbol;
 												temp = (yyvsp[(2) - (3)])->Lentry;
@@ -2029,7 +2036,7 @@ yyreduce:
     break;
 
   case 30:
-#line 421 "interpreter1.y"
+#line 428 "interpreter1.y"
     {	
 												// $$->Lentry=$3->Lentry;
 												// $$->Lentry->Next=$1->Lentry;
@@ -2039,7 +2046,7 @@ yyreduce:
     break;
 
   case 31:
-#line 427 "interpreter1.y"
+#line 434 "interpreter1.y"
     {	
 												// $$->Lentry = $1->Lentry;
 												// $$->Lentry->Next = NULL;
@@ -2049,7 +2056,7 @@ yyreduce:
     break;
 
   case 32:
-#line 434 "interpreter1.y"
+#line 441 "interpreter1.y"
     {
 											if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 											{	
@@ -2065,7 +2072,7 @@ yyreduce:
     break;
 
   case 33:
-#line 446 "interpreter1.y"
+#line 453 "interpreter1.y"
     {
 											if (Glookup((yyvsp[(1) - (2)])->NAME)!=NULL)
 											{	
@@ -2081,7 +2088,7 @@ yyreduce:
     break;
 
   case 34:
-#line 458 "interpreter1.y"
+#line 465 "interpreter1.y"
     {
 											yyerror("Array" + string(" ‘") + (yyvsp[(1) - (4)])->NAME + "’ should be declared as global.");
 											(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_ARRAY,'A',(yyvsp[(1) - (4)])->NAME,(yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),NULL,NULL);
@@ -2091,7 +2098,7 @@ yyreduce:
     break;
 
   case 35:
-#line 489 "interpreter1.y"
+#line 496 "interpreter1.y"
     {
 										//$$=$2;
 										(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -2109,7 +2116,7 @@ yyreduce:
     break;
 
   case 36:
-#line 503 "interpreter1.y"
+#line 510 "interpreter1.y"
     {	
 										cout<<"IN return"<<endl;
 										//cout<<"Node_Type="<<$2->Node_Type<<endl;
@@ -2131,17 +2138,17 @@ yyreduce:
     break;
 
   case 37:
-#line 522 "interpreter1.y"
+#line 529 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]); cout<<"IN Slist"<<endl;}
     break;
 
   case 38:
-#line 523 "interpreter1.y"
+#line 530 "interpreter1.y"
     {(yyval)=NULL;}
     break;
 
   case 39:
-#line 524 "interpreter1.y"
+#line 531 "interpreter1.y"
     {		
 
 							(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -2153,12 +2160,12 @@ yyreduce:
     break;
 
   case 40:
-#line 532 "interpreter1.y"
+#line 539 "interpreter1.y"
     {(yyval)=(yyvsp[(1) - (1)]);}
     break;
 
   case 41:
-#line 535 "interpreter1.y"
+#line 542 "interpreter1.y"
     { 
 										//$1->type=$3->type;
 										// if ($1->type==TYPE_VOID)
@@ -2194,7 +2201,7 @@ yyreduce:
     break;
 
   case 42:
-#line 573 "interpreter1.y"
+#line 580 "interpreter1.y"
     {
 										cout<<"IN read"<<endl;
 										(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_READ,'r',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
@@ -2202,7 +2209,7 @@ yyreduce:
     break;
 
   case 43:
-#line 577 "interpreter1.y"
+#line 584 "interpreter1.y"
     {	
 										cout<<"In write"<<endl;
 										(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_WRITE,'W',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
@@ -2210,7 +2217,7 @@ yyreduce:
     break;
 
   case 44:
-#line 581 "interpreter1.y"
+#line 588 "interpreter1.y"
     {
 												
 												(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_IF,'i',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
@@ -2218,7 +2225,7 @@ yyreduce:
     break;
 
   case 45:
-#line 585 "interpreter1.y"
+#line 592 "interpreter1.y"
     {	
 														
 														(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_IF,'I',NULL,(yyvsp[(3) - (10)]),(yyvsp[(6) - (10)]),(yyvsp[(8) - (10)]),NULL);
@@ -2226,7 +2233,7 @@ yyreduce:
     break;
 
   case 46:
-#line 589 "interpreter1.y"
+#line 596 "interpreter1.y"
     {
 													
 													(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_WHILE,'w',NULL,(yyvsp[(3) - (8)]),(yyvsp[(6) - (8)]),NULL,NULL);
@@ -2235,7 +2242,7 @@ yyreduce:
     break;
 
   case 47:
-#line 594 "interpreter1.y"
+#line 601 "interpreter1.y"
     {
 										// $$=NULL;
 										// if (Glookup($1->NAME) != NULL)
@@ -2256,7 +2263,7 @@ yyreduce:
     break;
 
   case 48:
-#line 614 "interpreter1.y"
+#line 621 "interpreter1.y"
     {	
 							// //if ($1->type==TYPE_VOID)
 							// {
@@ -2269,7 +2276,7 @@ yyreduce:
     break;
 
   case 49:
-#line 623 "interpreter1.y"
+#line 630 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2277,7 +2284,7 @@ yyreduce:
     break;
 
   case 50:
-#line 628 "interpreter1.y"
+#line 635 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_DIV,'/',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2285,7 +2292,7 @@ yyreduce:
     break;
 
   case 51:
-#line 632 "interpreter1.y"
+#line 639 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MUL,'*',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2293,7 +2300,7 @@ yyreduce:
     break;
 
   case 52:
-#line 636 "interpreter1.y"
+#line 643 "interpreter1.y"
     {	
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_POWER,'^',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2301,7 +2308,7 @@ yyreduce:
     break;
 
   case 53:
-#line 640 "interpreter1.y"
+#line 647 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MODULUS,'%',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2309,22 +2316,22 @@ yyreduce:
     break;
 
   case 54:
-#line 644 "interpreter1.y"
+#line 651 "interpreter1.y"
     {(yyval)=(yyvsp[(2) - (3)]);(yyval)->type=(yyvsp[(2) - (3)])->type;}
     break;
 
   case 55:
-#line 645 "interpreter1.y"
+#line 652 "interpreter1.y"
     {cout<<"IN NUM"<<endl;(yyval)=(yyvsp[(1) - (1)]);(yyval)->type=(yyvsp[(1) - (1)])->type;}
     break;
 
   case 56:
-#line 646 "interpreter1.y"
-    {(yyval)=(yyvsp[(1) - (1)]); (yyval)->type=(yyvsp[(1) - (1)])->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
+#line 653 "interpreter1.y"
+    {(yyval)=(yyvsp[(1) - (1)]); (yyval)->type=(yyvsp[(1) - (1)])->type; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
     break;
 
   case 57:
-#line 647 "interpreter1.y"
+#line 654 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
@@ -2332,7 +2339,7 @@ yyreduce:
     break;
 
   case 58:
-#line 651 "interpreter1.y"
+#line 658 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_PLUS,'+',NULL,makeLeafNode(0),(yyvsp[(2) - (2)]),NULL,NULL);
@@ -2340,7 +2347,7 @@ yyreduce:
     break;
 
   case 59:
-#line 655 "interpreter1.y"
+#line 662 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_LT,'<',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2348,7 +2355,7 @@ yyreduce:
     break;
 
   case 60:
-#line 659 "interpreter1.y"
+#line 666 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_LE,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2356,7 +2363,7 @@ yyreduce:
     break;
 
   case 61:
-#line 663 "interpreter1.y"
+#line 670 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_GT,'>',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2364,7 +2371,7 @@ yyreduce:
     break;
 
   case 62:
-#line 667 "interpreter1.y"
+#line 674 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_GE,'G',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2372,7 +2379,7 @@ yyreduce:
     break;
 
   case 63:
-#line 671 "interpreter1.y"
+#line 678 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_NE,'N',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2380,7 +2387,7 @@ yyreduce:
     break;
 
   case 64:
-#line 675 "interpreter1.y"
+#line 682 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_EQ,'E',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2388,7 +2395,7 @@ yyreduce:
     break;
 
   case 65:
-#line 679 "interpreter1.y"
+#line 686 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_NOT,'L',NULL,(yyvsp[(2) - (2)]),NULL,NULL,NULL);
@@ -2396,7 +2403,7 @@ yyreduce:
     break;
 
   case 66:
-#line 683 "interpreter1.y"
+#line 690 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_OR,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2404,7 +2411,7 @@ yyreduce:
     break;
 
   case 67:
-#line 687 "interpreter1.y"
+#line 694 "interpreter1.y"
     {
 							
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_AND,'L',NULL,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
@@ -2412,7 +2419,7 @@ yyreduce:
     break;
 
   case 68:
-#line 691 "interpreter1.y"
+#line 698 "interpreter1.y"
     {
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_BOOLEAN_CONSTANT,1,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
@@ -2420,7 +2427,7 @@ yyreduce:
     break;
 
   case 69:
-#line 695 "interpreter1.y"
+#line 702 "interpreter1.y"
     {
 							(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),Node_Type_BOOLEAN_CONSTANT,0,NULL,(yyvsp[(1) - (1)]),NULL,NULL,NULL);
 
@@ -2428,7 +2435,7 @@ yyreduce:
     break;
 
   case 70:
-#line 699 "interpreter1.y"
+#line 706 "interpreter1.y"
     {	
 							// cout<<"Arg_List = "<<$3->Arg_List<<endl;
 							(yyval)=Make_Node(get_type((yyvsp[(1) - (4)])),Node_Type_FUNCTION_CALL,'c',(yyvsp[(1) - (4)])->NAME,(yyvsp[(3) - (4)]),NULL,NULL,(yyvsp[(3) - (4)]));
@@ -2467,7 +2474,7 @@ yyreduce:
     break;
 
   case 71:
-#line 736 "interpreter1.y"
+#line 743 "interpreter1.y"
     {
 								(yyval)=new tnode;
 									
@@ -2507,8 +2514,9 @@ yyreduce:
     break;
 
   case 72:
-#line 772 "interpreter1.y"
+#line 779 "interpreter1.y"
     {
+
 								(yyval)=new tnode;
 								if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY)
 								{
@@ -2521,11 +2529,15 @@ yyreduce:
 									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
 									}
-									else if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(1) - (1)])->NAME)->size > 1)
-									{
-										// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+									else if(Glookup((yyvsp[(1) - (1)])->NAME) != NULL)
+									{	
+										if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY && Glookup((yyvsp[(1) - (1)])->NAME)->size > 1)
+										{
+											// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+										}
 									}
 								}
+
 								//$$=NULL;
 								// $$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
 								// $$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
@@ -2539,7 +2551,7 @@ yyreduce:
     break;
 
   case 73:
-#line 800 "interpreter1.y"
+#line 812 "interpreter1.y"
     {	
 								// $$->Lentry = NULL;
 								(yyval)->Arg_List = NULL;
@@ -2547,7 +2559,7 @@ yyreduce:
     break;
 
   case 74:
-#line 864 "interpreter1.y"
+#line 876 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME)!=NULL)
 							{	
@@ -2563,7 +2575,7 @@ yyreduce:
     break;
 
   case 75:
-#line 876 "interpreter1.y"
+#line 888 "interpreter1.y"
     {
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
 							{	
@@ -2579,28 +2591,47 @@ yyreduce:
     break;
 
   case 76:
-#line 888 "interpreter1.y"
-    {}
+#line 900 "interpreter1.y"
+    {
+							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
+							if (Glookup((yyvsp[(1) - (3)])->NAME) == NULL)
+							{	
+								yyerror(string("User defined variable ‘") + (yyvsp[(1) - (3)])->NAME + "’ is  not defined in this scope.");
+								// cout<<"NAME = "<<$1->NAME<<endl;
+							}
+							else if (Glookup((yyvsp[(1) - (3)])->NAME) != NULL)
+							{
+								if (Glookup((yyvsp[(1) - (3)])->NAME)->TYPE == NULL)
+								{
+									yyerror(string("Unknown type of User defined variable ‘") + (yyvsp[(1) - (3)])->NAME + "’.");
+								}
+								// cout<<"IN Tlookup"<<endl;
+								// cout<<Glookup($1->NAME)->TYPE<<endl;
+							}
+							(yyval)=Make_Node(get_type((yyvsp[(1) - (3)])),Node_Type_ARRAY,'A',(yyvsp[(3) - (3)])->NAME,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
+							(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (3)])->NAME,get_type((yyvsp[(1) - (3)])),1,LOCAL_VARIABLE);
+							(yyval)->Lentry->Next = NULL;
+						}
     break;
 
   case 77:
-#line 891 "interpreter1.y"
+#line 922 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
     break;
 
   case 78:
-#line 892 "interpreter1.y"
+#line 923 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 79:
-#line 893 "interpreter1.y"
-    {}
+#line 924 "interpreter1.y"
+    {(yyval)=Make_Node(Tlookup((yyvsp[(1) - (1)])->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2604 "y.tab.cpp"
+#line 2635 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2814,7 +2845,7 @@ yyreturn:
 }
 
 
-#line 896 "interpreter1.y"
+#line 927 "interpreter1.y"
 
 
 int yyerror(string s)
@@ -2857,7 +2888,7 @@ int main(int argc,char const *argv[])
 	
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
-	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl;
+	cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
 	yyparse();
 	// cout<<"OUT"<<endl;
 	fclose(sim_code_file);

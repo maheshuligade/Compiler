@@ -389,78 +389,83 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 		}
 		else if (Node_Type == Node_Type_FUNCTION_CALL)
 		{
-			if (Glookup(NAME)==NULL)
-			{	
-				yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
-			}
-			else if (Glookup(NAME) != NULL)
+			if ((strcmp(NAME, "initialize") != 0) && (strcmp(NAME, "allocate") != 0) && (strcmp(NAME, "free") != 0))
 			{
-				// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
-				if (Glookup(NAME)->BODY == NULL && (strcmp(NAME ,last_function_used_type_check.top())) != 0)
-				{
-					yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
+				
+	
+				if (Glookup(NAME)==NULL)
+				{	
+					yyerror(std::string ("Function named ‘") + NAME + "’ is  not declared in this scope.");
 				}
-			// }
-			// else
-			// {	
-				// cout<<"Node_Type = "<<ptr1->Node_Type<<endl;
-				if (Glookup(NAME)->Arg_List != NULL)
+				else if (Glookup(NAME) != NULL)
 				{
-					struct Lsymbol *temp = new Lsymbol;
-					struct tnode *temp_2 = new tnode;
-					temp = Glookup(NAME)->Arg_List->Lentry;
-					temp_2 = Arg_List;
-
-					while (temp != NULL && temp_2 != NULL)
+					// cout<<"last_function_used_type_check = "<<last_function_used_type_check.top()<<endl;
+					if (Glookup(NAME)->BODY == NULL && (strcmp(NAME ,last_function_used_type_check.top())) != 0)
 					{
+						yyerror(string("Definiation of function named ‘") + NAME + "’ does not exist in this scope.");
+					}
+				// }
+				// else
+				// {	
+					// cout<<"Node_Type = "<<ptr1->Node_Type<<endl;
+					if (Glookup(NAME)->Arg_List != NULL)
+					{
+						struct Lsymbol *temp = new Lsymbol;
+						struct tnode *temp_2 = new tnode;
+						temp = Glookup(NAME)->Arg_List->Lentry;
+						temp_2 = Arg_List;
 
-						// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-						// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
-						if (temp->TYPE != temp_2->type)
+						while (temp != NULL && temp_2 != NULL)
 						{
-							col=temp_2->col_no;
-							line=temp_2->line_no;
-						// 	//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
-						// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
-							if (temp_2->Node_Type == Node_Type_ARRAY)
+
+							// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
+							// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
+							if (temp->TYPE != temp_2->type)
 							{
-								yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+								col=temp_2->col_no;
+								line=temp_2->line_no;
+							// 	//cout<<"c type="<<temp->TYPE<<" NAME="<<temp->NAME<<endl;
+							// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
+								if (temp_2->Node_Type == Node_Type_ARRAY)
+								{
+									yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+								}
+								else
+								{
+									yyerror(string("function call argument type does not match with declaration."));
+								}
 							}
-							else
+
+							// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->pass_by_type<<endl;
+
+							if (temp->pass_by_type == PASS_BY_REFERENCE && temp_2->Node_Type != Node_Type_ARRAY)
 							{
-								yyerror(string("function call argument type does not match with declaration."));
+								yyerror(string("function call argument pass by type does not match with declaration."));
+
 							}
+
+							temp = temp->Next;
+							temp_2 = temp_2->Arg_List;
 						}
 
-						// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->pass_by_type<<endl;
-
-						if (temp->pass_by_type == PASS_BY_REFERENCE && temp_2->Node_Type != Node_Type_ARRAY)
+						// cout<<"end"<<endl;
+						if (temp_2 != NULL)
 						{
-							yyerror(string("function call argument pass by type does not match with declaration."));
-
+							cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
+						}
+						if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
+						{
+							yyerror("function call number of arguments does not match declaration.");
 						}
 
-						temp = temp->Next;
-						temp_2 = temp_2->Arg_List;
+						delete temp;
+						// delete temp_2; //why need not to free?
 					}
-
-					// cout<<"end"<<endl;
-					if (temp_2 != NULL)
-					{
-						cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
-					}
-					if ((temp !=NULL && temp_2 ==NULL)||(temp ==NULL && temp_2 !=NULL))
-					{
-						yyerror("function call number of arguments does not match declaration.");
-					}
-
-					delete temp;
-					// delete temp_2; //why need not to free?
 				}
 			}
 		}
 	// cout<<"Node_Type"<<expressionTree->ptr1->Node_Type<<endl;
-
+		
 	new_node->type = type;
 	new_node->Node_Type=Node_Type;
 	new_node->NAME=(char *)malloc(20*sizeof(char));
@@ -469,7 +474,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 		if (type == Tlookup(ID_NAME))
 		{
 		
-	cout<<"NAME = "<<NAME<<endl;
+	// cout<<"NAME = "<<NAME<<endl;
 		}
 		strcpy(new_node->NAME,NAME);
 	}

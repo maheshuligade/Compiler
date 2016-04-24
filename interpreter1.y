@@ -67,10 +67,16 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 															fprintf(sim_code_file, "PUSH BP\n");
 															fprintf(sim_code_file, "call main\n");
 															fprintf(sim_code_file, "HALT\n");
-															codegen($$);
+															//codegen($$);
 														}
 													}
-USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{}
+USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{
+																	// cout<<"NAME = "<<$4->NAME<<endl;
+// 
+																	Tinstall($2->NAME,NULL);
+																	// cout<<"NAME = "<<$2->NAME<<endl;
+
+																}
 						|										{}
 						;
 GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL {$$=$2;}
@@ -116,6 +122,7 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													temp=temp->Arg_List;
 												}
 												delete temp;
+
 
 											}
 
@@ -216,6 +223,7 @@ FUNC_DEF_BLOCK:	FUNC_NAME_ARG_LOCAL BODY'}' {
 													of the respective function.
 												**/
 												// $$->Arg_List->Arg_List->Lentry = $1->Arg_List->Lentry;
+
 												if (Glookup($1->NAME) !=  NULL)
 												{
 													Glookup($1->NAME)->BODY = $2; //For storing the fuction body
@@ -278,14 +286,13 @@ FUNC_NAME_ARG_LOCAL: TYPE ID '('ARGS ')' '{' LOCAL_DEF_BLOCK
 												if (Glookup($2->NAME) == NULL)
 												{
 													yyerror(std::string ("Function named ‘") + $2->NAME + "’ is  not declared in this scope.");
-
+													exit(0);
 												}
 												else
 												{
 
 													Glookup($2->NAME)->Local = $$->Lentry;
 												}
-																						
 												// Glookup($2->NAME)->Arg_List->Lentry = $$->Lentry;									
 												last_function_used_type_check.push(($2->NAME));
 
@@ -643,7 +650,7 @@ expr:expr PLUS expr		{
 						}
 	|'('expr')'			{$$=$2;$$->type=$2->type;}
 	|NUM				{cout<<"IN NUM"<<endl;$$=$1;$$->type=$1->type;}
-	|IDS				{$$=$1; $$->type=$1->type;/*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
+	|IDS				{$$=$1; $$->type=$1->type; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
 	|MINUS expr 		{
 							
 							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
@@ -770,6 +777,7 @@ ID_LIST: ID_LIST ',' expr		{
 								// cout<<$3->NAME<<endl;
 							}
 		| expr				{
+
 								$$=new tnode;
 								if ($1->Node_Type == Node_Type_ARRAY)
 								{
@@ -782,11 +790,15 @@ ID_LIST: ID_LIST ',' expr		{
 									// $1->type = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE<<endl;
 									}
-									else if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
-									{
-										// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+									else if(Glookup($1->NAME) != NULL)
+									{	
+										if ($1->Node_Type == Node_Type_ARRAY && Glookup($1->NAME)->size > 1)
+										{
+											// yyerror("Array" + string(" ‘") + $1->NAME + "’ can not be passed to the function.");
+										}
 									}
 								}
+
 								//$$=NULL;
 								// $$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'c');
 								// $$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
@@ -885,12 +897,31 @@ IDS:ID 					{
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 							$$->Lentry->Next = NULL;
 						}
-	|ID DOT ID 			{}
+	|ID DOT ID 			{
+							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
+							if (Glookup($1->NAME) == NULL)
+							{	
+								yyerror(string("User defined variable ‘") + $1->NAME + "’ is  not defined in this scope.");
+								// cout<<"NAME = "<<$1->NAME<<endl;
+							}
+							else if (Glookup($1->NAME) != NULL)
+							{
+								if (Glookup($1->NAME)->TYPE == NULL)
+								{
+									yyerror(string("Unknown type of User defined variable ‘") + $1->NAME + "’.");
+								}
+								// cout<<"IN Tlookup"<<endl;
+								// cout<<Glookup($1->NAME)->TYPE<<endl;
+							}
+							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
+							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
+							$$->Lentry->Next = NULL;
+						}
 	
 	;
 TYPE:INTEGER	{$$=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
 	|BOOLEAN	{$$=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
-	|ID			{}
+	|ID			{$$=Make_Node(Tlookup($1->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
 	;
 
 %%
@@ -935,7 +966,7 @@ int main(int argc,char const *argv[])
 	
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
-	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl;
+	cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
 	yyparse();
 	// cout<<"OUT"<<endl;
 	fclose(sim_code_file);
