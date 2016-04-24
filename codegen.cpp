@@ -1037,3 +1037,47 @@ void assign_binding(struct tnode *expressionTree)
 
 	delete temp;
 }
+
+
+
+void print_code_initialize()
+{
+	/**Prints the cpde for the Library Function initilize()**/
+	fprintf(sim_code_file, "\n\ninitialize:\n");
+	/**Saves the context.**/
+	fprintf(sim_code_file, "PUSH BP\n");
+	fprintf(sim_code_file, "MOV BP,SP\n");
+
+	
+	fprintf(sim_code_file, "MOV SP,BP\n");
+	fprintf(sim_code_file, "POP BP\n");
+	fprintf(sim_code_file, "RET\n");
+
+
+}
+void print_code_allocate()
+{
+	/**Prints the cpde for the Library Function allocate()**/
+	fprintf(sim_code_file, "\n\nallocate:\n");
+	/**Saves the context.**/
+	fprintf(sim_code_file, "PUSH BP\n");
+	fprintf(sim_code_file, "MOV BP,SP\n");
+
+	
+	fprintf(sim_code_file, "MOV SP,BP\n");
+	fprintf(sim_code_file, "POP BP\n");
+	fprintf(sim_code_file, "RET\n");
+}
+void print_code_free()
+{
+	/**Prints the cpde for the Library Function free()**/
+	fprintf(sim_code_file, "\n\nfree:\n");
+	/**Saves the context.**/
+	fprintf(sim_code_file, "PUSH BP\n");
+	fprintf(sim_code_file, "MOV BP,SP\n");
+
+	
+	fprintf(sim_code_file, "MOV SP,BP\n");
+	fprintf(sim_code_file, "POP BP\n");
+	fprintf(sim_code_file, "RET\n");
+}

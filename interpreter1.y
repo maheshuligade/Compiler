@@ -65,9 +65,13 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 															fprintf(sim_code_file, "ADD R0,R1\n");
 															fprintf(sim_code_file, "MOV SP,R0\n");
 															fprintf(sim_code_file, "PUSH BP\n");
+															fprintf(sim_code_file, "call initialize\n");
 															fprintf(sim_code_file, "call main\n");
 															fprintf(sim_code_file, "HALT\n");
 															codegen($$);
+															print_code_initialize();
+															print_code_allocate();
+															print_code_free();
 														}
 													}
 USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{
