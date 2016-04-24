@@ -65,6 +65,7 @@ struct Typetable *Tinstall(char *NAME,struct Fieldlist *Fields)
 
 	if (Tlookup(NAME) == NULL)
 	{
+		cout<<"						="<<Fields<<endl;
 		strcpy(new_node->NAME,NAME);
 		new_node->Fields = new Fieldlist;
 		new_node->Fields = Fields;
@@ -107,12 +108,12 @@ struct Fieldlist *Flookup(char *NAME,struct Fieldlist *List)
 	/**Searches for the field of the given name in the list and returns the pointer to the matchingg entry.**/
 
 	struct Fieldlist *temp = new Fieldlist;
-	temp = Fieldlist_Table;
+	temp = List;
 
 	while(temp != NULL)
 	{
 
-
+		// cout<<"NAME = "<<temp->NAME<<" NAME = "<<NAME<<endl;
 		if (strcmp(temp->NAME,NAME) == 0)
 		{
 		 	return temp;

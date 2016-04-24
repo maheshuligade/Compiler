@@ -529,7 +529,7 @@ static const yytype_uint16 yyrline[] =
      635,   638,   676,   680,   684,   688,   692,   697,   717,   726,
      731,   735,   739,   743,   747,   748,   749,   750,   754,   758,
      762,   766,   770,   774,   778,   782,   786,   790,   794,   798,
-     802,   839,   875,   908,   972,   984,   996,  1020,  1021,  1022
+     802,   839,   875,   908,   972,   984,   996,  1026,  1027,  1028
 };
 #endif
 
@@ -1530,14 +1530,14 @@ yyreduce:
 
 																	// cout<<"size = "<<size<<endl;
 
-																	while(temp_3 != NULL)
-																	{
-																		// cout<<"NAME =    "<<temp_3->NAME<<" type = "<<temp_3->TYPE->NAME<<endl;
+																	// while(temp_3 != NULL)
+																	// {
+																	// 	// cout<<"NAME =    "<<temp_3->NAME<<" type = "<<temp_3->TYPE->NAME<<endl;
 
-																		temp_3 = temp_3->Next;
-																	}
+																	// 	temp_3 = temp_3->Next;
+																	// }
 																	// cout<<"NAME = "<<$2->NAME<<endl;
-																	Tinstall((yyvsp[-3])->NAME,temp_2);
+																	Tinstall((yyvsp[-3])->NAME,temp_3);
 
 																	if (size > 8)
 																	{
@@ -2635,35 +2635,41 @@ yyreduce:
 								// cout<<"IN Tlookup"<<endl;
 								// cout<<"NAME = "<<$1->NAME<<endl;
 								// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
-								// cout<<Flookup($1->NAME,Tlookup($1->type->nA)->Fields)<<endl;
+								// cout<<Glookup($1->NAME)->TYPE->Fields<<endl;
+								// cout<<"Fields = "<<Tlookup($1->type->NAME)<<endl;
+								// cout<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<endl;
+								if (Flookup((yyvsp[0])->NAME,Glookup((yyvsp[-2])->NAME)->TYPE->Fields) == NULL )
+								{
+									yyerror("‘" + string((yyvsp[0])->NAME) + "’ is not a member of user defined variable ‘"+ (yyvsp[-2])->NAME + "’.");
+								}
 							}
 							(yyval)=Make_Node(get_type((yyvsp[-2])),Node_Type_ARRAY,'A',(yyvsp[0])->NAME,(yyvsp[-2]),(yyvsp[0]),NULL,NULL);
 							(yyval)->Lentry = Make_Arg_Node((yyvsp[-2])->NAME,get_type((yyvsp[-2])),1,LOCAL_VARIABLE);
 							(yyval)->Lentry->Next = NULL;
 						}
-#line 2645 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 77:
-#line 1020 "interpreter1.y" /* yacc.c:1646  */
-    {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
 #line 2651 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 78:
-#line 1021 "interpreter1.y" /* yacc.c:1646  */
-    {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
+  case 77:
+#line 1026 "interpreter1.y" /* yacc.c:1646  */
+    {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
 #line 2657 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 79:
-#line 1022 "interpreter1.y" /* yacc.c:1646  */
-    {(yyval)=Make_Node(Tlookup((yyvsp[0])->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
+  case 78:
+#line 1027 "interpreter1.y" /* yacc.c:1646  */
+    {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
 #line 2663 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 79:
+#line 1028 "interpreter1.y" /* yacc.c:1646  */
+    {(yyval)=Make_Node(Tlookup((yyvsp[0])->NAME),TYPE_USER,'T',NULL,NULL,NULL,NULL,NULL);}
+#line 2669 "y.tab.cpp" /* yacc.c:1646  */
+    break;
 
-#line 2667 "y.tab.cpp" /* yacc.c:1646  */
+
+#line 2673 "y.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2891,7 +2897,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1025 "interpreter1.y" /* yacc.c:1906  */
+#line 1031 "interpreter1.y" /* yacc.c:1906  */
 
 
 int yyerror(string s)

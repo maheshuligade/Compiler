@@ -113,14 +113,14 @@ USER_DEFINED_DATATYPES:TYPEDEF ID '{'GLOBAL_DEF_LISTS'}'		{
 
 																	// cout<<"size = "<<size<<endl;
 
-																	while(temp_3 != NULL)
-																	{
-																		// cout<<"NAME =    "<<temp_3->NAME<<" type = "<<temp_3->TYPE->NAME<<endl;
+																	// while(temp_3 != NULL)
+																	// {
+																	// 	// cout<<"NAME =    "<<temp_3->NAME<<" type = "<<temp_3->TYPE->NAME<<endl;
 
-																		temp_3 = temp_3->Next;
-																	}
+																	// 	temp_3 = temp_3->Next;
+																	// }
 																	// cout<<"NAME = "<<$2->NAME<<endl;
-																	Tinstall($2->NAME,temp_2);
+																	Tinstall($2->NAME,temp_3);
 
 																	if (size > 8)
 																	{
@@ -1009,7 +1009,13 @@ IDS:ID 					{
 								// cout<<"IN Tlookup"<<endl;
 								// cout<<"NAME = "<<$1->NAME<<endl;
 								// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
-								// cout<<Flookup($1->NAME,Tlookup($1->type->nA)->Fields)<<endl;
+								// cout<<Glookup($1->NAME)->TYPE->Fields<<endl;
+								// cout<<"Fields = "<<Tlookup($1->type->NAME)<<endl;
+								// cout<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<endl;
+								if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
+								{
+									yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
+								}
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
