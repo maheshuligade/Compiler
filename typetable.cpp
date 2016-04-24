@@ -65,7 +65,7 @@ struct Typetable *Tinstall(char *NAME,struct Fieldlist *Fields)
 
 	if (Tlookup(NAME) == NULL)
 	{
-		cout<<"						="<<Fields<<endl;
+		// cout<<"						="<<Fields<<endl;
 		strcpy(new_node->NAME,NAME);
 		new_node->Fields = new Fieldlist;
 		new_node->Fields = Fields;

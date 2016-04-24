@@ -1,8 +1,4 @@
-typedef name1{
-	integer b;
-	integer a;
-	integer d;
-}
+
 decl
 	integer i;
 	name1 A;

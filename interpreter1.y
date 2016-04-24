@@ -151,7 +151,7 @@ GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL	 {
 															Glookup(temp->NAME)->TYPE = temp->type;
 
 														}
-														else if ((strcmp(temp->type->NAME,INTEGER_NAME) != 0) && (strcmp(temp->type->NAME,BOOLEAN_NAME) != 0) && (strcmp(temp->type->NAME,VOID_NAME) != 0) )
+														else if ((temp->type != NULL)&&(strcmp(temp->type->NAME,INTEGER_NAME) != 0) && (strcmp(temp->type->NAME,BOOLEAN_NAME) != 0) && (strcmp(temp->type->NAME,VOID_NAME) != 0))
 														{
 															Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
 															Glookup(temp->NAME)->TYPE = temp->type;
@@ -264,7 +264,9 @@ ARGS:ARGS SEMICOLON ARG 	{
 						$$->Lentry = Make_Arg_Node_List($1->Lentry,NULL,'A');
 
 					}
-	|				{$$->Lentry = NULL;}
+	|				{	$$ = new tnode;	
+						$$->Lentry = NULL;
+					}
 	;
 
 					
@@ -998,6 +1000,7 @@ IDS:ID 					{
 							if (Glookup($1->NAME) == NULL)
 							{	
 								yyerror(string("User defined variable ‘") + $1->NAME + "’ is  not defined in this scope.");
+								exit(0);
 								// cout<<"NAME = "<<$1->NAME<<endl;
 							}
 							else if (Glookup($1->NAME) != NULL)
@@ -1012,10 +1015,10 @@ IDS:ID 					{
 								// cout<<Glookup($1->NAME)->TYPE->Fields<<endl;
 								// cout<<"Fields = "<<Tlookup($1->type->NAME)<<endl;
 								// cout<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<endl;
-								if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
+								/*if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
 								{
 									yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
-								}
+								}*/
 							}
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'A',$3->NAME,$1,$3,NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
