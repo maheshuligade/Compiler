@@ -522,7 +522,14 @@ int codegen(struct tnode *expressionTree)
 		struct Lsymbol *temp_2 = new Lsymbol;
 
 		temp = expressionTree->Arg_List;
-		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		if ( Glookup(expressionTree->NAME)->Arg_List == NULL)
+		{
+			temp_2 = NULL;
+		}
+		else
+		{
+			temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		}
 
 		/**Getting number of arguments**/
 		int no_of_arg = 0;
@@ -536,7 +543,15 @@ int codegen(struct tnode *expressionTree)
 		// cout<<"no_of_arg = "<<position<<endl;
 		int arg_for_pop = 0;
 
-		temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		if (Glookup(expressionTree->NAME)->Arg_List == NULL)
+		{
+			temp_2 = NULL;
+		}
+		else
+		{
+			temp_2 = Glookup(expressionTree->NAME)->Arg_List->Lentry;
+		}
+
 		while (temp != NULL && temp_2 != NULL)
 		{	arg_for_pop++;
 			// cout<<"NAME = "<<temp->Node_Type<<endl;
@@ -838,7 +853,7 @@ int codegen(struct tnode *expressionTree)
 int get_location(struct tnode *expressionTree)
 {
 	/*This function gives the codegen for  the location,where location = base address + offset*/
-
+	cout<<"expressionTree NAME = "<<expressionTree->NAME<<endl;
 	int reg_1 = 0,reg_2 = 0;
 	int location;
 	// cout<<"Node_Type = "<<expressionTree->ptr2->Node_Type<<endl;
@@ -905,6 +920,12 @@ int get_location(struct tnode *expressionTree)
 			}
 			free_reg(__LINE__);
 			return reg_1;	
+	}
+	else if (expressionTree->value == 'u')
+	{
+		reg_1 = get_reg(__LINE__);
+
+		return reg_1
 	}
 	else 
 	{
