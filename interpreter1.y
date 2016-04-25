@@ -1010,7 +1010,8 @@ IDS:ID 					{
 									// cout<<"NAME = "<<$1->NAME<<endl;
 								}
 							}
-							else if (Glookup($1->NAME) != NULL)
+							
+							if (Glookup($1->NAME) != NULL)
 							{
 								if (Glookup($1->NAME)->TYPE == NULL)
 								{
@@ -1028,13 +1029,37 @@ IDS:ID 					{
 									if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL )
 									{
 										yyerror("‘" + string($3->NAME) + "’ is not a member of user defined variable ‘"+ $1->NAME + "’.");
+										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_ARRAY,'u',$3->NAME,$1,$3,NULL,NULL);
+										$$->Lentry = Make_Arg_Node($1->NAME,Tlookup(VOID_NAME),1,LOCAL_VARIABLE);
+										$$->Lentry->Next = NULL;
+									}
+									else
+									{
+										// cout<<"TYPE = "<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE->NAME<<" NAME= "<<$3->NAME<<endl;
+
+										$$=Make_Node(Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,Node_Type_ARRAY,'u',$3->NAME,$1,$3,NULL,NULL);
+										$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,1,LOCAL_VARIABLE);
+										$$->Lentry->Next = NULL;
 									}
 								}
+
+
+								// if (Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields) == NULL)
+								// {
+								// 	yyerror($3->NAME + string(" is not a member of User defined variable ‘") + $1->NAME + "’.");
+								// }
 								
 							}
-							$$=Make_Node(get_type($1),Node_Type_ARRAY,'u',$3->NAME,$1,$3,NULL,NULL);
-							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
-							$$->Lentry->Next = NULL;
+							else
+							{
+								$$=Make_Node(Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,Node_Type_ARRAY,'u',$3->NAME,$1,$3,NULL,NULL);
+								$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,1,LOCAL_VARIABLE);
+								$$->Lentry->Next = NULL;
+							}
+							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
+							// Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
+							// cout<<"TYPE = "<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)<<" NAME= "<<$3->NAME<<endl;
+							
 						}
 	
 	;
