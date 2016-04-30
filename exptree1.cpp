@@ -418,7 +418,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 						while (temp != NULL && temp_2 != NULL)
 						{
 
-							// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
+							cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
 							cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
 							if (temp->TYPE != temp_2->type)
 							{
@@ -468,11 +468,11 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 							// 	cout<<"temp ="<<char(ptr1->value)<<endl;
 
 							// }
-							if (ptr1->value != 'c')
-							{
+							// if (ptr1->value != 'c')
+							// {
 								yyerror("function call number of arguments does not match declaration.");
 
-							}
+							// }
 						}
 
 						delete temp;

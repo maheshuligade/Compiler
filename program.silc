@@ -1,6 +1,6 @@
 decl
 	integer swap(integer x, y), a, b, result;
-	integer hello();
+	boolean hello();
 enddecl
 
 integer swap(integer x, y){
@@ -16,7 +16,7 @@ begin
 	return 0-2;
 end
 }
-integer hello()
+boolean hello()
 {
 	decl
 	enddecl
@@ -34,7 +34,7 @@ begin
 	result = 98;
     write(a);
     write(b);
-    result = swap(hello(), b);
+    result = swap(hello(), b,3);
     write(a);
     write(b);
 	return 0-1;
