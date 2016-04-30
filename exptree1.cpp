@@ -419,7 +419,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 						{
 
 							// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-							// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
+							cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
 							if (temp->TYPE != temp_2->type)
 							{
 								col=temp_2->col_no;
@@ -453,7 +453,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 						{	
 							if (temp_2->NAME != NULL)
 							{
-								cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
+								// cout<<"NAME temp_2= "<<temp_2->NAME<<endl;
 							}
 						}
 						

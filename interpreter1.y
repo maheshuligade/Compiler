@@ -879,7 +879,27 @@ ID_LIST: ID_LIST ',' expr		{
 								// cout<<$3->NAME<<endl;
 							}
 		| expr				{
+								struct tnode *temp2 = new tnode;
+							temp2 = $1;
+							// temp = Glookup(last_function_used_type_check.top())->Local;
+							while (temp2 != NULL)
+							{
 
+							// 	if (lookup_variable(last_function_used_type_check.top(),temp->NAME)!=NULL)
+							// 	{
+							// 		// cout<<"change"<<endl;
+							// 		temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+									cout<<"		type="<<temp2->type<<" NAME2="<<temp2->NAME<<endl;
+							// 	}
+							// 	else
+							// 	{
+							// 		// cout<<"change2"<<endl;
+							// 		temp->TYPE = Glookup(temp->NAME)->TYPE;
+							// 		// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	}
+							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+								temp2 = temp2->Arg_List;
+							}
 								$$=new tnode;
 								if ($1->Node_Type == Node_Type_ARRAY)
 								{
@@ -912,6 +932,8 @@ ID_LIST: ID_LIST ',' expr		{
 
 							}
 		|					{	
+								$$ = new tnode;
+								$$->Arg_List = new tnode;
 								// $$->Lentry = NULL;
 								$$->Arg_List = NULL;
 							}

@@ -537,7 +537,7 @@ static const yytype_uint16 yyrline[] =
      641,   644,   682,   686,   690,   694,   698,   703,   723,   732,
      737,   741,   745,   749,   753,   754,   755,   756,   760,   764,
      768,   772,   776,   780,   784,   788,   792,   796,   800,   804,
-     808,   845,   881,   914,   978,   990,  1002,  1066,  1067,  1068
+     808,   845,   881,   934,  1000,  1012,  1024,  1088,  1089,  1090
 };
 #endif
 
@@ -2614,7 +2614,27 @@ yyreduce:
   case 72:
 #line 881 "interpreter1.y"
     {
+								struct tnode *temp2 = new tnode;
+							temp2 = (yyvsp[(1) - (1)]);
+							// temp = Glookup(last_function_used_type_check.top())->Local;
+							while (temp2 != NULL)
+							{
 
+							// 	if (lookup_variable(last_function_used_type_check.top(),temp->NAME)!=NULL)
+							// 	{
+							// 		// cout<<"change"<<endl;
+							// 		temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
+									cout<<"		type="<<temp2->type<<" NAME2="<<temp2->NAME<<endl;
+							// 	}
+							// 	else
+							// 	{
+							// 		// cout<<"change2"<<endl;
+							// 		temp->TYPE = Glookup(temp->NAME)->TYPE;
+							// 		// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+							// 	}
+							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
+								temp2 = temp2->Arg_List;
+							}
 								(yyval)=new tnode;
 								if ((yyvsp[(1) - (1)])->Node_Type == Node_Type_ARRAY)
 								{
@@ -2649,15 +2669,17 @@ yyreduce:
     break;
 
   case 73:
-#line 914 "interpreter1.y"
+#line 934 "interpreter1.y"
     {	
+								(yyval) = new tnode;
+								(yyval)->Arg_List = new tnode;
 								// $$->Lentry = NULL;
 								(yyval)->Arg_List = NULL;
 							}
     break;
 
   case 74:
-#line 978 "interpreter1.y"
+#line 1000 "interpreter1.y"
     {	
 							if (Glookup((yyvsp[(1) - (1)])->NAME) != NULL)
 							{	
@@ -2673,7 +2695,7 @@ yyreduce:
     break;
 
   case 75:
-#line 990 "interpreter1.y"
+#line 1012 "interpreter1.y"
     {
 							if (Glookup((yyvsp[(1) - (4)])->NAME)!=NULL)
 							{	
@@ -2689,7 +2711,7 @@ yyreduce:
     break;
 
   case 76:
-#line 1002 "interpreter1.y"
+#line 1024 "interpreter1.y"
     {
 							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
 							if (lookup_variable(last_function_used_type_check.top(),(yyvsp[(1) - (3)])->NAME) == NULL)
@@ -2755,17 +2777,17 @@ yyreduce:
     break;
 
   case 77:
-#line 1066 "interpreter1.y"
+#line 1088 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
     break;
 
   case 78:
-#line 1067 "interpreter1.y"
+#line 1089 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 79:
-#line 1068 "interpreter1.y"
+#line 1090 "interpreter1.y"
     {	
 					// cout<<"NAME = "<<Tlookup($1->NAME)<<endl;
 					if (Tlookup((yyvsp[(1) - (1)])->NAME) == NULL)
@@ -2778,7 +2800,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2782 "y.tab.cpp"
+#line 2804 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2992,7 +3014,7 @@ yyreturn:
 }
 
 
-#line 1078 "interpreter1.y"
+#line 1100 "interpreter1.y"
 
 
 int yyerror(string s)

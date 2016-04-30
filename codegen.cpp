@@ -732,7 +732,7 @@ int codegen(struct tnode *expressionTree)
 		// reg_no = 0;
 		fprintf(sim_code_file, "CALL %s\n",expressionTree->NAME);
 		// cout<<"reg_no = "<<reg_no<<endl;
-		cout<<"reg = "<<reg_push_no<<endl;
+		// cout<<"reg = "<<reg_push_no<<endl;
 		while (reg_push_no > 0)
 		{
 			// cout<<"reg_push_no = "<<register_pushed[--reg_push_no]<<endl;
@@ -853,7 +853,7 @@ int codegen(struct tnode *expressionTree)
 int get_location(struct tnode *expressionTree)
 {
 	/*This function gives the codegen for  the location,where location = base address + offset*/
-	cout<<"expressionTree NAME = "<<expressionTree->NAME<<endl;
+	// cout<<"expressionTree NAME = "<<expressionTree->NAME<<endl;
 	int reg_1 = 0,reg_2 = 0;
 	int location;
 	// cout<<"Node_Type = "<<expressionTree->ptr2->Node_Type<<endl;
