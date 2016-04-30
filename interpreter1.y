@@ -933,9 +933,9 @@ ID_LIST: ID_LIST ',' expr		{
 							}
 		|					{	
 								$$ = new tnode;
-								$$->Arg_List = new tnode;
+								// $$->Arg_List = new tnode;
 								// $$->Lentry = NULL;
-								$$->Arg_List = NULL;
+								$$ = NULL;
 							}
 
 		;
