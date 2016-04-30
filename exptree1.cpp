@@ -389,6 +389,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 		}
 		else if (Node_Type == Node_Type_FUNCTION_CALL)
 		{
+			int arg_no_decl = 0,arg_no_passed = 0;
 			if ((strcmp(NAME, "initialize") != 0) && (strcmp(NAME, "allocate") != 0) && (strcmp(NAME, "free") != 0))
 			{
 				
@@ -415,11 +416,36 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 						temp = Glookup(NAME)->Arg_List->Lentry;
 						temp_2 = Arg_List;
 
+						while (temp != NULL)
+						{
+							arg_no_decl++;
+							temp = temp->Next;
+						}
+						
+						while (temp_2 != NULL)
+						{
+							arg_no_passed++;
+							// if (temp_2->value == 'c')
+							// {
+							// 	cout<<" 		NAME = "<<temp_2->NAME<<endl;
+							// }
+							cout<<char(temp_2->value)<<endl;
+							temp_2 = temp_2->ptr3;
+						}
+
+
+						// cout<<"arg_no_decl = "<<arg_no_decl << " arg_no_passed = "<<arg_no_passed<<endl;
+
+
+						
+						temp = Glookup(NAME)->Arg_List->Lentry;
+						temp_2 = Arg_List;
+						// cout<<last_function_used_type_check.top()<<endl;
 						while (temp != NULL && temp_2 != NULL)
 						{
 
-							cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
-							cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->NAME<<endl;
+							// cout<<"type1="<<temp->TYPE<<" NAME1="<<temp->NAME<<endl;
+							// cout<<"type2="<<temp_2->type<<" NAME2="<<temp_2->Node_Type<<endl;
 							if (temp->TYPE != temp_2->type)
 							{
 								col=temp_2->col_no;
@@ -445,7 +471,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 							}
 
 							temp = temp->Next;
-							temp_2 = temp_2->Arg_List;
+							temp_2 = temp_2->ptr3;
 						}
 
 						// cout<<"end"<<endl;
@@ -475,7 +501,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 							// }
 						}
 
-						delete temp;
+						//delete temp;
 						// delete temp_2; //why need not to free?
 					}
 				}

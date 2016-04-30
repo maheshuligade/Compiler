@@ -169,7 +169,7 @@ GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL	 {
 														temp=temp->Arg_List;
 
 													}
-													delete temp;
+													// delete temp;
 												}
 				|		{$$=NULL;}
 				;
@@ -217,7 +217,7 @@ GLOBAL_DECL:TYPE G_ID_LIST SEMICOLON 		{
 													// }
 													temp=temp->Arg_List;
 												}
-												delete temp;
+												// delete temp;
 
 												$$ = $2;
 											}
@@ -285,7 +285,7 @@ ARG:TYPE L_ID_LIST 	{
 
 							temp=temp->Next;
 						}
-						delete temp;
+						// delete temp;
 
 						$$=$2;
 						$$->Lentry = $2->Lentry;
@@ -476,6 +476,7 @@ LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{
 				|								{	
 													// $$ = NULL;
 													$$ = new tnode;
+													$$->Lentry = new Lsymbol;
 
 													$$->Lentry = NULL;
 												}
@@ -498,7 +499,7 @@ LOCAL_DEF_LISTS:LOCAL_DEF_LISTS  LOCAL_DECL 	{
 													// }
 													// if ($$->Lentry == NULL)
 													// {
-													// 	$$->Lentry = new Lsymbol;
+														$$->Lentry = new Lsymbol;
 													// }
 													$$->Lentry = NULL;
 												}
@@ -522,7 +523,7 @@ LOCAL_DECL:TYPE L_ID_LIST SEMICOLON	{
 													
 													temp=temp->Next;
 												}
-												delete temp;
+												// delete temp;
 
 												$$=$2;
 											}
@@ -629,7 +630,7 @@ RETURN_TYPE:RETURN expr SEMICOLON	{
 									}
 
 Slist: Stmts	{$$=$1; cout<<"IN Slist"<<endl;}
-	 | 			{$$=NULL;}
+	 | 			{$$ = new tnode;	$$=NULL;}
 Stmts:Stmts Stmt 	{		
 
 							$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
@@ -817,7 +818,7 @@ expr:expr PLUS expr		{
 
 
 							// struct tnode *temp = new tnode;
-							// temp = $$->Arg_List;
+							// temp = $$->ptr3;
 							// // temp = Glookup(last_function_used_type_check.top())->Local;
 							// while (temp != NULL)
 							// {
@@ -826,7 +827,7 @@ expr:expr PLUS expr		{
 							// 	{
 							// 		// cout<<"change"<<endl;
 							// 		temp->TYPE = lookup_variable(last_function_used_type_check.top(),temp->NAME)->TYPE;
-							// 		cout<<"		type="<<temp->type<<" NAME2="<<temp->Node_Type<<endl;
+									// cout<<"		type="<<temp->type<<" NAME2="<<temp->NAME<<endl;
 							// 	}
 							// 	else
 							// 	{
@@ -835,7 +836,7 @@ expr:expr PLUS expr		{
 							// 		// cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
 							// 	}
 							// 	cout<<"		type="<<temp->TYPE<<" NAME2="<<temp->NAME<<endl;
-							// 	temp = temp->Arg_List;
+							// 	temp = temp->ptr3;
 							// }
 
 
@@ -859,6 +860,7 @@ ID_LIST: ID_LIST ',' expr		{
 										// yyerror("Array" + string(" ‘") + $3->NAME + "’ can not be passed to the function.");
 									}
 								}
+
 								// $$->Lentry = Make_Arg_Node_List($3->Lentry,$1->Lentry,'c');
 								// cout<<"Node_Type2 = "<<$3->type<<endl;
 								$$ = $1;
@@ -866,17 +868,18 @@ ID_LIST: ID_LIST ',' expr		{
 								struct tnode *temp = new tnode;
 								temp = $1;
 								// cout<<$3->NAME<<endl;
-								while (temp->Arg_List != NULL)
+								while (temp->ptr3 != NULL)
 								{
 									// cout<<"temp = "<<temp->Node_Type<<endl;
-									temp = temp->Arg_List;
+									temp = temp->ptr3;
 								}
 								// temp->Arg_List = new tnode;
-								temp->Arg_List = $3;
+								temp->ptr3 = $3;
 								// $3->Arg_List = $1;
 								// $$->Arg_List = $3;
 								// $3->Arg_List = NULL;
 								// cout<<$3->NAME<<endl;
+
 							}
 		| expr				{
 								$$=new tnode;
@@ -912,7 +915,7 @@ ID_LIST: ID_LIST ',' expr		{
 							}
 		|					{	
 								$$ = new tnode;
-								// $$->Arg_List = new tnode;
+								$$->Arg_List = new tnode;
 								// $$->Lentry = NULL;
 								$$ = NULL;
 							}

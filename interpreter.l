@@ -12,7 +12,7 @@
 %}
 
 %%
-[0-9]+			{column_no+=yyleng;  number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=Tlookup(VOID_NAME); yylval->type=Tlookup(INTEGER_NAME); return NUM;}
+[0-9]+			{column_no+=yyleng;  number=atoi(yytext); yylval=makeLeafNode(number);yylval->type=Tlookup(VOID_NAME); yylval->type=Tlookup(INTEGER_NAME); yylval->NAME = yytext; return NUM;}
 "+"				{column_no+=yyleng; return PLUS;}
 "-"				{column_no+=yyleng; return MINUS;}
 "/"				{column_no+=yyleng; return DIV;}

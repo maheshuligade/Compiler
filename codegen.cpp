@@ -706,11 +706,11 @@ int codegen(struct tnode *expressionTree)
 
 				}
 			}
-			temp = temp->Arg_List;
+			temp = temp->ptr3;
 			temp_2 = temp_2->Next;
 		}
-		delete temp;
-		delete temp_2;
+		// delete temp;
+		// delete temp_2;
 
 		/**Pushing space for the return value.**/
 		register_pushed[reg_push_no++] = reg_1;

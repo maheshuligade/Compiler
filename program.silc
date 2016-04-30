@@ -1,9 +1,10 @@
 decl
-	integer swap(integer x, y), a, b, result;
-	boolean hello();
+	integer A[20];
+	integer quicksort(integer t,lo,hi);
+	integer partition(integer lo,hi);
+	integer swap(integer &x, &y);
 enddecl
-
-integer swap(integer x, y){
+integer swap(integer &x, &y){
 decl
 	integer temp;
 enddecl
@@ -11,33 +12,66 @@ begin
 	temp = x;
 	x = y;
 	y = temp;
-	write(x);
-    write(y);
-	return 0-2;
+	return 0;
 end
 }
-boolean hello()
-{
-	decl
+
+
+integer partition(integer lo, hi){
+	decl	
+		integer pivot, i, j, temp;
 	enddecl
-
 	begin
-
-		return 2;
+		pivot = A[hi];
+		j = lo;
+		i = lo;
+		while (j < hi) do
+			if(A[j] <= pivot) then
+				temp = swap(A[i],A[j]);
+				i = i+1;
+			endif;
+			j = j+1;
+		endwhile;
+		temp = swap(A[i],A[hi]);
+		return i;
 	end
-	
+}
+
+integer quicksort(integer t, lo, hi){
+	decl
+		integer p, temp;
+	enddecl
+	begin
+		if (lo < hi) then
+			p = partition(lo, hi);
+			temp = quicksort(quicksort(p,lo,p-1),p+1, hi);
+		endif;
+		return 0;
+	end
 }
 integer main(){
+decl
+	integer i, n, result;
+enddecl
 begin
-	a = 56;
-	b = 45;
-	result = 98;
-    write(a);
-    write(b);
-    result = swap(hello(), b,3);
-    write(a);
-    write(b);
-	return 0-1;
+	read(n);
+	i = 0;
+	while(i<n) do
+		read(A[i]);
+		i = i+1;
+	endwhile;
+	
+	result = quicksort(0,0,n-1);
+	
+	i = 0;
+	while(i<n) do
+		write(A[i]);
+		i = i+1;
+	endwhile;
+	
+	return 0;
 end
 }
+
+
 
