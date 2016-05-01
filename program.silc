@@ -8,11 +8,11 @@ decl
 	name1 A;
 enddecl
 integer main(){
+decl
+	integer a;
+enddecl
 begin
-	i = initialize();
 	A = allocate();
-	A.A = 3;
-	read(A.c);
 	read(A.b);
 	read(A.a);
 	write(A.b);
