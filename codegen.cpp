@@ -1085,7 +1085,7 @@ void print_code_initialize()
 	
 	// fprintf(sim_code_file, "MOV R2,8\n");
 	// fprintf(sim_code_file, "ADD R2,R0\n");
-	fprintf(sim_code_file, "MOV [R0],0\n");
+	fprintf(sim_code_file, "MOV [R0],-1\n");
 	// fprintf(sim_code_file, "OUT R0\n");
 	// fprintf(sim_code_file, "MOV R7,[R0]\n");
 	// fprintf(sim_code_file, "OUT R7\n");
@@ -1189,6 +1189,9 @@ void print_code_allocate()
 	fprintf(sim_code_file, "MOV BP,SP\n");
 
 	
+	
+
+
 	fprintf(sim_code_file, "MOV SP,BP\n");
 	fprintf(sim_code_file, "POP BP\n");
 	fprintf(sim_code_file, "RET\n");
