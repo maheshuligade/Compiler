@@ -1189,7 +1189,50 @@ void print_code_allocate()
 	fprintf(sim_code_file, "MOV BP,SP\n");
 
 	
-	
+	fprintf(sim_code_file, "MOV  R0,1\n");
+	fprintf(sim_code_file, "PUSH R0\n");
+
+
+	fprintf(sim_code_file, "MOV R1,1\n");
+	fprintf(sim_code_file, "MOV R2,BP\n");
+	fprintf(sim_code_file, "ADD R1,R2\n");
+	fprintf(sim_code_file, "MOV R0,[256]\n");
+	fprintf(sim_code_file, "MOV [R1],R0\n");
+
+
+	fprintf(sim_code_file, "\n\nLabelIf:\n");
+
+	fprintf(sim_code_file, "MOV R1,-1\n");
+	fprintf(sim_code_file, "MOV R2,[256]\n");
+
+
+
+	fprintf(sim_code_file, "NE R1,R2\n");
+	fprintf(sim_code_file, "JZ R1,LabelEndif\n");
+
+
+	fprintf(sim_code_file, "MOV R1,[256]\n");
+	// fprintf(sim_code_file, "OUT R1\n");
+	fprintf(sim_code_file, "MOV R1,[R1]\n");
+	fprintf(sim_code_file, "MOV [256],R1\n");
+	// fprintf(sim_code_file, "OUT R1\n");
+
+	fprintf(sim_code_file, "LabelEndif:\n");
+
+	fprintf(sim_code_file, "POP R0\n");
+
+
+	fprintf(sim_code_file, "MOV R1,BP\n");
+	fprintf(sim_code_file, "MOV R2,2\n");
+	fprintf(sim_code_file, "SUB R1,R2\n");
+
+	fprintf(sim_code_file, "MOV R2,1\n");
+	fprintf(sim_code_file, "MOV R3,BP\n");
+	fprintf(sim_code_file, "ADD R2,R3\n");
+	fprintf(sim_code_file, "MOV R2,[R2]\n");
+	fprintf(sim_code_file, "MOV [R1],R2\n");
+
+	// fprintf(sim_code_file, "OUT R2\n");
 
 
 	fprintf(sim_code_file, "MOV SP,BP\n");
