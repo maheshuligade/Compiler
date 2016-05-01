@@ -94,6 +94,16 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 				
 			// }
 			
+			if ((ptr1->value == 'u' || ptr2->value == 'u') && (ptr1->type != Tlookup(VOID_NAME) && ptr2->type != Tlookup(VOID_NAME)))
+			{
+				cout<<"Node_Type = "<<(ptr1->type->NAME)<<endl;
+				cout<<"Node_Type = "<<(ptr2->type->NAME)<<endl;
+				if (ptr1->type != ptr2->type)
+				{
+						yyerror("Assigning " + string(ptr2->type->NAME)+ " to " + ptr1->type->NAME);
+				}
+			}
+			
 		 }
 		else if (Node_Type==Node_Type_IF)
 		{		

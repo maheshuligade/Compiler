@@ -1,77 +1,25 @@
+typedef name1{
+	integer b;
+	integer a;
+	name1 R;
+}
 decl
-	integer A[20];
-	integer quicksort(integer t,lo,hi);
-	integer partition(integer lo,hi);
-	integer swap(integer &x, &y);
+	integer i;
+	name1 A;
 enddecl
-integer swap(integer &x, &y){
-decl
-	integer temp;
-enddecl
-begin
-	temp = x;
-	x = y;
-	y = temp;
-	return 0;
-end
-}
-
-
-integer partition(integer lo, hi){
-	decl	
-		integer pivot, i, j, temp;
-	enddecl
-	begin
-		pivot = A[hi];
-		j = lo;
-		i = lo;
-		while (j < hi) do
-			if(A[j] <= pivot) then
-				temp = swap(A[i],A[j]);
-				i = i+1;
-			endif;
-			j = j+1;
-		endwhile;
-		temp = swap(A[i],A[hi]);
-		return i;
-	end
-}
-
-integer quicksort(integer t, lo, hi){
-	decl
-		integer p, temp;
-	enddecl
-	begin
-		if (lo < hi) then
-			p = partition(lo, hi);
-			temp = quicksort(quicksort(p,lo,p-1),p+1, hi);
-		endif;
-		return 0;
-	end
-}
 integer main(){
-decl
-	integer i, n, result;
-enddecl
 begin
-	read(n);
-	i = 0;
-	while(i<n) do
-		read(A[i]);
-		i = i+1;
-	endwhile;
-	
-	result = quicksort(0,0,n-1);
-	
-	i = 0;
-	while(i<n) do
-		write(A[i]);
-		i = i+1;
-	endwhile;
-	
+	i = initialize();
+	A = allocate();
+	A.A = 3;
+	read(A.c);
+	read(A.b);
+	read(A.a);
+	write(A.b);
+	write(A.a);
+	i = free(A);
+	write(A.b);
+	write(A.a);
 	return 0;
 end
 }
-
-
-
