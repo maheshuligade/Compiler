@@ -928,7 +928,7 @@ int get_location(struct tnode *expressionTree)
 	else if (expressionTree->value == 'u')
 	{
 		reg_1 = get_reg(__LINE__);
-
+		
 		return reg_1;
 	}
 	else 
@@ -1325,6 +1325,83 @@ void print_code_free()
 
 	// fprintf(sim_code_file, "JMP LabelWhile3\n");
 	// fprintf(sim_code_file, "LabelEnswhile3:\n");
+
+
+
+
+
+
+
+
+
+
+
+
+	fprintf(sim_code_file, "MOV R3,[256]\n");
+	fprintf(sim_code_file, "MOV R4,1\n");
+	fprintf(sim_code_file, "ADD R3,R4\n");
+
+	fprintf(sim_code_file, "MOV R4,7\n");
+	fprintf(sim_code_file, "ADD R4,R3\n");
+	// fprintf(sim_code_file, "ADD R1,R2\n");
+	
+	// fprintf(sim_code_file, "MOV [R1],R0\n");
+	
+
+	fprintf(sim_code_file, "LabelWhile5:\n");
+
+	fprintf(sim_code_file, "MOV R5,R3\n");
+	fprintf(sim_code_file, "LT R5,R4\n");
+	fprintf(sim_code_file, "JZ R5,LabelEndwhile5\n");
+
+	// fprintf(sim_code_file, "OUT R3\n");
+	fprintf(sim_code_file, "MOV [R3],-1\n");
+
+	fprintf(sim_code_file, "MOV R5,1\n");
+	fprintf(sim_code_file, "ADD R3,R5\n");
+	// fprintf(sim_code_file, "JMP L\n");
+
+
+
+
+	// fprintf(sim_code_file, "LT R0,R1\n");
+	// fprintf(sim_code_file, "JZ R0,LabelEndwhile5\n");
+
+
+	// fprintf(sim_code_file, "MOV R1,1\n");
+	// fprintf(sim_code_file, "MOV R2,BP\n");
+	// fprintf(sim_code_file, "ADD R1,R2\n");
+
+	// fprintf(sim_code_file, "MOV R0,[R1]\n");
+	
+
+	// fprintf(sim_code_file, "OUT R0\n");
+
+	// fprintf(sim_code_file, "MOV [R1],-1\n");
+	
+
+	// fprintf(sim_code_file, "MOV R1,1\n");
+	// fprintf(sim_code_file, "MOV R2,BP\n");
+	// fprintf(sim_code_file, "ADD R1,R2\n");
+
+	// // fprintf(sim_code_file, "MOV [R1],-1\n");
+	// fprintf(sim_code_file, "MOV R0,[R1]\n");
+	
+
+	// fprintf(sim_code_file, "OUT R0\n");
+
+	// fprintf(sim_code_file, "MOV R2,1\n");
+	// fprintf(sim_code_file, "ADD R0,R2\n");
+	// fprintf(sim_code_file, "MOV [R1],R0\n");
+
+	fprintf(sim_code_file, "JMP LabelWhile5\n");
+
+	fprintf(sim_code_file, "LabelEndwhile5:\n");
+
+
+
+
+
 
 
 
