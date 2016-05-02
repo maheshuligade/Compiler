@@ -6,6 +6,7 @@ typedef name1{
 decl
 	integer i;
 	name1 A;
+	name1 B;
 enddecl
 integer main(){
 decl
@@ -13,13 +14,16 @@ decl
 enddecl
 begin
 	A = allocate();
-	read(A.b);
-	read(A.a);
-	write(A.b);
-	write(A.a);
+	
+	write(A);
+	A = allocate();
+	write(A);
+	B = allocate();
+	
+	write(B);
 	i = free(A);
-	write(A.b);
-	write(A.a);
+	write(i);
+
 	return 0;
 end
 }
