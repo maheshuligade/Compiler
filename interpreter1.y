@@ -164,6 +164,7 @@ GLOBAL_DEF_BLOCK:DECL GLOBAL_DEF_LISTS ENDDECL	 {
 														}
 														else if ((temp->type != NULL)&&(strcmp(temp->type->NAME,INTEGER_NAME) != 0) && (strcmp(temp->type->NAME,BOOLEAN_NAME) != 0) && (strcmp(temp->type->NAME,VOID_NAME) != 0))
 														{
+															temp->value = 'u';
 															Ginstall(temp->NAME,$1->type,evaluate(temp->ptr2),temp->value,temp);
 															Glookup(temp->NAME)->TYPE = temp->type;
 														}
