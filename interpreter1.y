@@ -41,7 +41,7 @@
 %right NOT
 
 %%
-PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
+PROGRAM: USER_DEFINED_DATATYPES_LIST GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {		
 														$$=Make_Node(Tlookup(VOID_NAME),Node_Type_DUMMY,'D',NULL,NULL,NULL,NULL,NULL);
 														$$->ptr1=$4;
 														$$->ptr2=$3;
@@ -75,8 +75,9 @@ PROGRAM: USER_DEFINED_DATATYPES GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK {
 														}
 													}
 
-
-
+USER_DEFINED_DATATYPES_LIST :USER_DEFINED_DATATYPES_LIST USER_DEFINED_DATATYPES {}
+							|													 {}
+							;
 USER_DEFINED_DATATYPES: TYPEDEF_ID  '{'GLOBAL_DEF_LISTS'}'	{
 
 																	if ($3 == NULL)
@@ -142,7 +143,7 @@ USER_DEFINED_DATATYPES: TYPEDEF_ID  '{'GLOBAL_DEF_LISTS'}'	{
 
 															}
 
-						|										{}
+						// |										{}
 						;
 
 TYPEDEF_ID:TYPEDEF ID			{$$ = new  tnode; $$ = $2; Tinstall($2->NAME,NULL);}
