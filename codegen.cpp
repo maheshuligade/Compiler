@@ -517,7 +517,11 @@ int codegen(struct tnode *expressionTree)
 		// cout<<r<<endl;
 		// reg_no = 0; //For the exception:free_reg problem
 		/**Pushing Arguments  in the stack.**/
-
+		// if (strcmp(expressionTree->NAME,"free") == 0)
+		// {
+		// 	cout<<"NAME = "<<expressionTree->NAME<<endl;
+		// 	cout<<Glookup(expressionTree->NAME)->Arg_List<<endl;
+		// }
 		struct tnode *temp = new tnode;
 		struct Lsymbol *temp_2 = new Lsymbol;
 
@@ -1246,6 +1250,93 @@ void print_code_free()
 	/**Saves the context.**/
 	fprintf(sim_code_file, "PUSH BP\n");
 	fprintf(sim_code_file, "MOV BP,SP\n");
+
+
+	fprintf(sim_code_file, "MOV  R0,1\n");
+	fprintf(sim_code_file, "PUSH R0\n");
+
+
+	fprintf(sim_code_file, "MOV R1,-3\n");
+	fprintf(sim_code_file, "MOV R2,BP\n");
+	fprintf(sim_code_file, "ADD R1,R2\n");
+	fprintf(sim_code_file, "MOV R2,[R1]\n");
+
+
+	fprintf(sim_code_file, "MOV R3,1\n");
+	fprintf(sim_code_file, "MOV R4,BP\n");
+	fprintf(sim_code_file, "ADD R3,R4\n");
+	fprintf(sim_code_file, "MOV [R3],R2\n");
+	
+
+
+
+
+	// fprintf(sim_code_file, "OUT R2\n");
+	fprintf(sim_code_file, "MOV R4,[256]\n");
+	fprintf(sim_code_file, "MOV [R2],R4\n");
+	
+
+
+	fprintf(sim_code_file, "MOV [256],R2\n");
+
+	// fprintf(sim_code_file, "OUT R2\n");
+
+
+
+
+
+	// fprintf(sim_code_file, "MOV R0,0\n");
+
+	// fprintf(sim_code_file, "MOV R1,1\n");
+	// fprintf(sim_code_file, "MOV R2,BP\n");
+	// fprintf(sim_code_file, "ADD R1,R2\n");
+	
+	// fprintf(sim_code_file, "MOV [R1],[256]\n");
+
+
+	// fprintf(sim_code_file, "LabelWhile3:\n");
+
+
+	// fprintf(sim_code_file, "MOV R1,1\n");
+	// fprintf(sim_code_file, "MOV R2,BP\n");
+	// fprintf(sim_code_file, "ADD R1,R2\n");
+	
+	// fprintf(sim_code_file, "MOV R1,[R1]\n");
+
+	// fprintf(sim_code_file, "MOV R2,-1\n");
+
+	// fprintf(sim_code_file, "OUT,R1\n");
+	// // fprintf(sim_code_file, "OUT,R2\n");
+
+	// fprintf(sim_code_file, "NE R1,R2\n");
+	// fprintf(sim_code_file, "JZ	R1, LabelEnswhile3\n");
+
+
+
+
+	// fprintf(sim_code_file, "MOV R5,1\n");
+	// fprintf(sim_code_file, "MOV R6,BP\n");
+	// fprintf(sim_code_file, "ADD R5,R6\n");
+
+	// fprintf(sim_code_file, "MOV R4,[R5]\n");
+	// fprintf(sim_code_file, "MOV R4,[R4]\n");
+	// fprintf(sim_code_file, "MOV [R5],R4\n");
+	
+
+	// fprintf(sim_code_file, "JMP LabelWhile3\n");
+	// fprintf(sim_code_file, "LabelEnswhile3:\n");
+
+
+
+
+
+
+	fprintf(sim_code_file, "POP R0\n");
+
+	fprintf(sim_code_file, "MOV R1,BP\n");
+	fprintf(sim_code_file, "MOV R2,2\n");
+	fprintf(sim_code_file, "SUB R1,R2\n");
+	fprintf(sim_code_file, "MOV [R1],[256]\n");
 
 	
 	fprintf(sim_code_file, "MOV SP,BP\n");

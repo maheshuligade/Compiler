@@ -3059,6 +3059,15 @@ int main(int argc,char const *argv[])
 	Ginstall(INITIALIZE,Tlookup(INTEGER_NAME),1,'f',NULL);
 	Ginstall(ALLOCATE,Tlookup(INTEGER_NAME),1,'f',NULL);
 	Ginstall(FREE,Tlookup(INTEGER_NAME),1,'f',NULL);
+	
+	Glookup(FREE)->Arg_List = new tnode;
+	Glookup(FREE)->Arg_List->Lentry = new Lsymbol;
+
+	Glookup(FREE)->Arg_List->Lentry->NAME = (char *)malloc(20*sizeof(char));
+	strcpy(Glookup(FREE)->Arg_List->Lentry->NAME,"A");
+	Glookup(FREE)->Arg_List->Lentry->TYPE = Tlookup(INTEGER_NAME);
+	Glookup(FREE)->Arg_List->Lentry->pass_by_type = PASS_BY_VALUE;
+	// cout<<Glookup(FREE)->Arg_List<<endl;
 	// /Ginstall($2->NAME,$2->type,size,'U',$4);
 	// Tlookup(INTEGER_NAME);
 	cout<<"IN"<<endl;
