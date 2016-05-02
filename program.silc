@@ -4,8 +4,28 @@ typedef name1{
 	name1 R;
 }
 decl
-	integer i;
+	integer i,function(name1 G);
 enddecl
+
+integer function(name1 G)
+{
+	decl
+		integer a;
+	enddecl
+
+
+	begin
+
+	G.b = 10;
+		write(G.b);
+		write(G.a);
+		write(G.b);
+		
+		return 0;
+	end
+}
+
+
 integer main(){
 decl
 	integer a;
@@ -18,6 +38,9 @@ begin
 	write(A.b);
 	write(A.a);
 
+	function(A);
+	write(A.b);
+	write(A.a);
 	A.b =  5;
 	A.a = 7;
 	write(A.b);
