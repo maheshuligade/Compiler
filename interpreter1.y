@@ -1066,10 +1066,13 @@ IDS:ID 					{
 								
 							}
 							else
-							{
-									$$=Make_Node(Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
-									$$->Fields = Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
-									$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,1,LOCAL_VARIABLE);
+							{	
+									struct Typetable *temp = new Typetable;
+									temp = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
+									// cout<<temp->NAME<<endl;
+									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
+									$$->Fields = Flookup($3->NAME,temp->Fields);
+									$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,temp->Fields)->TYPE,1,LOCAL_VARIABLE);
 									$$->Lentry->Next = NULL;
 							}
 							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
