@@ -4,10 +4,10 @@ typedef name1{
 	name1 R;
 }
 decl
-	integer i,function(name1 G);
+	integer i,function(name1 &G);
 enddecl
 
-integer function(name1 G)
+integer function(name1 &G)
 {
 	decl
 		integer a;
@@ -17,6 +17,7 @@ integer function(name1 G)
 	begin
 
 	G.b = 10;
+	G.a = 10;
 		write(G.b);
 		write(G.a);
 		write(G.b);

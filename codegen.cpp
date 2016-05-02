@@ -973,6 +973,7 @@ int get_location(struct tnode *expressionTree)
 					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 
 					// fprintf(sim_code_file, "OUT R%d",reg_1);
 				}
