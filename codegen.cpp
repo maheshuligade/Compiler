@@ -954,38 +954,43 @@ int get_location(struct tnode *expressionTree)
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 				}
 			}
-			// else
-			// {	
-			// 	// cout<<"pass_by_type = "<<lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type<<endl;			
-			// 	location = lookup_variable(last_function_used.top(),expressionTree->NAME)->Binding;
-			// 	if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_REFERENCE)
-			// 	{
-			// 		// cout<<"location = "<<location<<endl;
-			// 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
-			// 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
-			// 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-			// 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-			// 		// fprintf(sim_code_file, "OUT R%d",reg_1);
-			// 	}
-			// 	else if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_VALUE)
-			// 	{
-			// 		// cout<<"location = "<<location<<endl;
-			// 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
-			// 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
-			// 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-			// 		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-			// 		// fprintf(sim_code_file, "OUT R%d",reg_1);
-			// 	}
-			// 	else
-			// 	{
-			// 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
-			// 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
-			// 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-			// 		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-			// 		// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+			else
+			{	
+				// cout<<"IN location"<<endl;
+				// cout<<"pass_by_type = "<<lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type<<endl;			
+				location = lookup_variable(last_function_used.top(),expressionTree->NAME)->Binding;
+				if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_REFERENCE)
+				{
+					// cout<<"location = "<<location<<endl;
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// fprintf(sim_code_file, "OUT R%d",reg_1);
+				}
+				else if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_VALUE)
+				{
+					// cout<<"location = "<<location<<endl;
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// fprintf(sim_code_file, "OUT R%d",reg_1);
+				}
+				else
+				{
+					// cout<<location<<endl;
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					// fprintf(sim_code_file, "OUT R%d\n",reg_1);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 
-			// 	}
-			// }
+				}
+			}
 			free_reg(__LINE__);
 		return reg_1;
 	}
@@ -1108,7 +1113,15 @@ int count_position(char *NAME,char *Member_NAME)
 
 	int position = 0;
 	struct Fieldlist *temp = new Fieldlist;
-	temp = Tlookup(Glookup(NAME)->TYPE->NAME)->Fields;
+	if (Glookup(NAME) == NULL)
+	{
+		temp = Tlookup(lookup_variable(last_function_used.top(),NAME)->TYPE->NAME)->Fields;
+	}
+	else
+	{
+		temp = Tlookup(Glookup(NAME)->TYPE->NAME)->Fields;
+	
+	}
 	// cout<<NAME<<endl;
 
 	while (temp != NULL)

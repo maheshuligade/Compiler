@@ -5,25 +5,23 @@ typedef name1{
 }
 decl
 	integer i;
-	name1 A;
-	name1 B;
 enddecl
 integer main(){
 decl
 	integer a;
+	name1 A;
 enddecl
 begin
 	A = allocate();
-	
-	write(A);
-	A = allocate();
-	write(A);
-	B = allocate();
-	
-	write(B);
-	i = free(A);
-	write(i);
+	read(A.b);
+	read(A.a);
+	write(A.b);
+	write(A.a);
 
+	A.b =  5;
+	A.a = 7;
+	write(A.b);
+	write(A.a);
 	return 0;
 end
 }

@@ -538,8 +538,8 @@ static const yytype_uint16 yyrline[] =
      642,   643,   651,   654,   692,   696,   700,   704,   708,   713,
      733,   742,   747,   751,   755,   759,   763,   764,   765,   766,
      770,   774,   778,   782,   786,   790,   794,   798,   802,   806,
-     810,   814,   818,   855,   893,   925,   991,  1003,  1015,  1082,
-    1083,  1084
+     810,   814,   818,   855,   893,   925,   991,  1003,  1015,  1085,
+    1086,  1087
 };
 #endif
 
@@ -2768,10 +2768,13 @@ yyreduce:
 								
 							}
 							else
-							{
-									(yyval)=Make_Node(Flookup((yyvsp[(3) - (3)])->NAME,Glookup((yyvsp[(1) - (3)])->NAME)->TYPE->Fields)->TYPE,Node_Type_ARRAY,'u',(yyvsp[(1) - (3)])->NAME,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
-									(yyval)->Fields = Flookup((yyvsp[(3) - (3)])->NAME,Glookup((yyvsp[(1) - (3)])->NAME)->TYPE->Fields);
-									(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (3)])->NAME,Flookup((yyvsp[(3) - (3)])->NAME,Glookup((yyvsp[(1) - (3)])->NAME)->TYPE->Fields)->TYPE,1,LOCAL_VARIABLE);
+							{	
+									struct Typetable *temp = new Typetable;
+									temp = lookup_variable(last_function_used_type_check.top(),(yyvsp[(1) - (3)])->NAME)->TYPE;
+									// cout<<temp->NAME<<endl;
+									(yyval)=Make_Node(Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',(yyvsp[(1) - (3)])->NAME,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
+									(yyval)->Fields = Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields);
+									(yyval)->Lentry = Make_Arg_Node((yyvsp[(1) - (3)])->NAME,Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE,1,LOCAL_VARIABLE);
 									(yyval)->Lentry->Next = NULL;
 							}
 							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
@@ -2782,17 +2785,17 @@ yyreduce:
     break;
 
   case 79:
-#line 1082 "interpreter1.y"
+#line 1085 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(INTEGER_NAME),TYPE_INT,'T',NULL,NULL,NULL,NULL,NULL); }
     break;
 
   case 80:
-#line 1083 "interpreter1.y"
+#line 1086 "interpreter1.y"
     {(yyval)=Make_Node(Tlookup(BOOLEAN_NAME),TYPE_BOOLEAN,'T',NULL,NULL,NULL,NULL,NULL);}
     break;
 
   case 81:
-#line 1084 "interpreter1.y"
+#line 1087 "interpreter1.y"
     {	
 					// cout<<"NAME = "<<Tlookup($1->NAME)<<endl;
 					if (Tlookup((yyvsp[(1) - (1)])->NAME) == NULL)
@@ -2805,7 +2808,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2809 "y.tab.cpp"
+#line 2812 "y.tab.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -3019,7 +3022,7 @@ yyreturn:
 }
 
 
-#line 1094 "interpreter1.y"
+#line 1097 "interpreter1.y"
 
 
 int yyerror(string s)
