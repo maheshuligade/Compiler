@@ -464,7 +464,20 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 							// 	//cout<<"c type2="<<temp_2->TYPE<<" NAME2="<<temp_2->NAME<<endl;
 								if (temp_2->Node_Type == Node_Type_ARRAY)
 								{
-									yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+									if (temp_2->value == 'u' && temp_2->Fields != NULL)
+									{
+										// cout<<char(temp_2->value)<<endl;
+										// cout<<"temp_2 = "<<temp_2->Fields->TYPE->NAME << " temp = "<<temp->TYPE->NAME<<endl;
+										// if (Flookup(temp->NAME,temp_2->Fields) == NULL)
+										if(temp->TYPE != temp_2->Fields->TYPE)
+										{
+											yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+										}
+									}
+									else
+									{
+										yyerror(string("function call argument type of varible named ‘") + temp_2->NAME + "’ does not match with declaration.");
+									}
 								}
 								else
 								{
