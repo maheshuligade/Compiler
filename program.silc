@@ -1,6 +1,7 @@
 typedef name1{
 	integer b;
 	integer a;
+	integer c;
 	name1 R;
 }
 decl
@@ -18,9 +19,11 @@ integer function(name1 &G)
 
 	G.b = 10;
 	G.a = 10;
+	G.c = 20;
 		write(G.b);
 		write(G.a);
 		write(G.b);
+		write(G.c);
 		
 		return 0;
 	end
@@ -33,6 +36,7 @@ decl
 	name1 A;
 enddecl
 begin
+	A = allocate();
 	A = allocate();
 	read(A.b);
 	read(A.a);
