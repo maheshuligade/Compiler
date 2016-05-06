@@ -5,10 +5,10 @@ typedef name1{
 	name1 R;
 }
 decl
-	integer i,function(name1 &G);
+	integer i,function(name1 &G;integer b);
 enddecl
 
-integer function(name1 &G)
+integer function(name1 &G;integer b)
 {
 	decl
 		integer a;
@@ -17,6 +17,7 @@ integer function(name1 &G)
 
 	begin
 
+	write(b);
 	G.b = 10;
 	G.a = 10;
 	G.c = 20;
@@ -24,7 +25,7 @@ integer function(name1 &G)
 		write(G.a);
 		write(G.b);
 		write(G.c);
-		
+	b = 5;
 		return 0;
 	end
 }
@@ -42,14 +43,15 @@ begin
 	read(A.a);
 	write(A.b);
 	write(A.a);
-
-	function(A);
+	A.c = 30;
+	function(A,A.c);
 	write(A.b);
 	write(A.a);
 	A.b =  5;
 	A.a = 7;
 	write(A.b);
 	write(A.a);
+	write(A.c);
 	return 0;
 end
 }
