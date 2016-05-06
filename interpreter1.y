@@ -765,7 +765,13 @@ expr:expr PLUS expr		{
 						}
 	|'('expr')'			{$$=$2;$$->type=$2->type;}
 	|NUM				{cout<<"IN NUM"<<endl;$$=$1;$$->type=$1->type;}
-	|IDS				{$$=$1; $$->type=$1->type; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/}
+	|IDS				{
+							$$=$1; $$->type=$1->type; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/
+							if (($1->type != Tlookup(INTEGER_NAME)) && ($1->type != Tlookup(BOOLEAN_NAME)))
+							{
+								$1->value = 'u';
+							}
+						}
 	|MINUS expr 		{
 							
 							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MINUS,'-',NULL,makeLeafNode(0),$2,NULL,NULL);
