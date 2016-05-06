@@ -291,7 +291,10 @@ ARG:TYPE L_ID_LIST 	{
 						while (temp!=NULL)
 						{
 							temp->TYPE=$1->type;
-
+							if ((temp->TYPE != Tlookup(INTEGER_NAME)) && (temp->TYPE != Tlookup(BOOLEAN_NAME)))
+							{
+								temp->value = 'u';
+							}
 							temp=temp->Next;
 						}
 						// delete temp;
