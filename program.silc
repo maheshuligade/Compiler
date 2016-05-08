@@ -39,6 +39,7 @@ enddecl
 begin
 	A = allocate();
 	A = allocate();
+	A = allocate();
 	read(A.b);
 	read(A.a);
 	write(A.b);

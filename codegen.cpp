@@ -206,6 +206,21 @@ int codegen(struct tnode *expressionTree)
 			// 	reg_2 = get_reg(__LINE__);
 			// }
 			reg_1 = get_location(expressionTree->ptr1);
+			if (expressionTree->ptr1->value == 'u')
+			{ 
+				reg_2 = get_reg(__LINE__);
+				fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+				if (expressionTree->Fields == NULL)
+				{
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+				}
+				else
+				{
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->ptr1->NAME,expressionTree->ptr1->Fields->NAME));
+				}
+				fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+				free_reg(__LINE__);
+			}
 			reg_2 = codegen(expressionTree->ptr2);
 			// cout<<"Node_Type in ASSIGNMENT = "<<expressionTree->ptr2->Node_Type<<endl;
 			fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_1,reg_2);
@@ -313,6 +328,20 @@ int codegen(struct tnode *expressionTree)
 		{
 			reg_1=get_location(expressionTree->ptr1);
 			reg_2=get_reg(__LINE__);
+			if (expressionTree->ptr1->value == 'u')
+			{
+				// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+				if (expressionTree->Fields == NULL)
+				{
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+				}
+				else
+				{
+					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->ptr1->NAME,expressionTree->ptr1->Fields->NAME));
+				}
+				fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+			
+			}
 
 			fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
 			fprintf(sim_code_file, "OUT R%d\n",reg_2);
@@ -575,16 +604,6 @@ int codegen(struct tnode *expressionTree)
 					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					// fprintf(sim_code_file, "OUT R%d\n",reg_1);
 
-					if (temp->Fields == NULL)
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
-					}
-					else
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(temp->NAME,temp->Fields->NAME));
-					}
-					// cout<<"count_position = "<<count_position(temp->NAME,temp->Fields->NAME)<<endl;
-					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 					// MOV R3,BP
 					// ADD R2,R3
 					// MOV R2,[R2]
@@ -689,7 +708,7 @@ int codegen(struct tnode *expressionTree)
 			else if (temp_2->pass_by_type == PASS_BY_VALUE)
 			{
 				// cout<<"Value = "<<get_variable_binding(string(last_function_used.top()),temp->NAME)<<endl;
-				cout<<count_position(temp->NAME,temp->Fields->NAME)<<endl;
+				// cout<<count_position(temp->NAME,temp->Fields->NAME)<<endl;
 				if (temp->Node_Type == Node_Type_ARRAY)
 				{
 					reg_1 = get_reg(__LINE__);
@@ -923,6 +942,14 @@ int get_location(struct tnode *expressionTree)
 	// cout<<"expressionTree NAME = "<<expressionTree->NAME<<endl;
 	int reg_1 = 0,reg_2 = 0;
 	int location;
+	if (expressionTree->Fields != NULL)
+	{
+		if (expressionTree->Fields->Next != NULL)
+		{
+			// cout<<"                    "<<expressionTree->Fields->Next->NAME<<endl;
+		}
+				// cout<<""<<endl;
+	}
 	// cout<<"Node_Type = "<<expressionTree->ptr2->Node_Type<<endl;
 	if (expressionTree->value=='A')
 	{		
@@ -1006,7 +1033,14 @@ int get_location(struct tnode *expressionTree)
 					// cout<<"location = "<<location<<endl;
 					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
 					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-					fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					if (expressionTree->Fields == NULL)
+					{
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+					}
+					else
+					{
+						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					}
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 				}
 			}
@@ -1093,16 +1127,16 @@ int get_location(struct tnode *expressionTree)
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-					if (expressionTree->Fields == NULL)
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
-					}
-					else
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
-					}
-					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// if (expressionTree->Fields == NULL)
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+					// }
+					// else
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					// }
+					// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 
 				}
 			}
@@ -1238,15 +1272,18 @@ int count_position(char *NAME,char *Member_NAME)
 	
 	}
 	// cout<<NAME<<endl;
+	// cout<<NAME<<"."<<Member_NAME<<endl;
 
 	while (temp != NULL)
 	{
 		if (strcmp(temp->NAME,Member_NAME) == 0)
 		{
-			return position;
+			/**The first position contains the pointer to the heap**/
+			// cout<<"position = "<<position+1<<endl;
+			return position+1;
 		}
 		// cout<<"NAME = "<<temp->NAME<<endl;
-		position++;
+		position++;	
 		temp = temp->Next;
 	}
 	cout<<"exception:count_position"<<endl;
