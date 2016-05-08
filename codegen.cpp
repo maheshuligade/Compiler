@@ -3,6 +3,7 @@
 #include "exptree.hpp"
 #include "y.tab.hpp"
 #include <string>
+#include <string.h>
 // 
 // int reg=0;
 // int left_value,right_value;
@@ -212,7 +213,7 @@ int codegen(struct tnode *expressionTree)
 				cout<<"      		"<<expressionTree->ptr1->Fields->TYPE->NAME<<" "<<expressionTree->ptr1->Fields->NAME<<endl;
 				if (expressionTree->ptr1->Fields->Next != NULL && expressionTree->ptr1->Fields->TYPE != Tlookup(INTEGER_NAME) && expressionTree->ptr1->Fields->TYPE != Tlookup(BOOLEAN_NAME) )
 				{
-					cout<<"expression = "<<expressionTree->ptr1->Fields->Next->Next->NAME<<endl;
+					// cout<<"expression = "<<expressionTree->ptr1->Fields->Next->Next->NAME<<endl;
 					fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_1,reg_1);
 
 				}

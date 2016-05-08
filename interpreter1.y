@@ -1082,25 +1082,42 @@ IDS:ID 					{
 									struct Fieldlist *temp_2 = new Fieldlist;
 
 									temp_2 = $1->Fields;
-									while (temp_2 != NULL)
+									if ($1->Fields == NULL)
 									{
-										cout<<"         "<<temp_2->NAME<<endl;
-										temp_2 = temp_2->Next;
+										$1->Fields = new Fieldlist;
+										$1->Fields = Flookup($3->NAME,temp->Fields);
+
 									}
-									temp_2 = new Fieldlist;
-									temp_2 = Flookup($3->NAME,temp->Fields);
-									$$->Fields = new Fieldlist;
+									else
+									{
+										while (temp_2 != NULL)
+										{
+											// cout<<"         "<<temp_2->NAME<<endl;
+											temp_2 = temp_2->Next;
+										}
+										temp_2 = new Fieldlist;
+										temp_2 = Flookup($3->NAME,temp->Fields);
+									}
+									// cout<<"             "<<temp<<endl;
+
+									// $$->Fields = new Fieldlist;
+									
 									$$->Fields = $1->Fields;
 									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
 									// $$->Fields = new Fieldlist;
 									// $$->Fields = Flookup($3->NAME,temp->Fields);
 									// $$->Fields->Next = new Fieldlist;
+									if ($1->Fields == NULL)
+									{
+										cout<<"                                     NULL"<<endl;
+									}
+									$$->Fields = $1->Fields;
 									$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,temp->Fields)->TYPE,1,LOCAL_VARIABLE);
 									$$->Lentry->Next = NULL;
 
 
 
-									cout<<"before"<<endl;
+									cout<<"\nbefore"<<endl;
 									cout<<$1->NAME<<"."<<$3->NAME<<endl;
 									temp_2 = $1->Fields;
 									while (temp_2 != NULL)
@@ -1108,7 +1125,7 @@ IDS:ID 					{
 										cout<<"         "<<temp_2->NAME<<endl;
 										temp_2 = temp_2->Next;
 									}
-									cout<<"after "<<endl;
+									cout<<"after\n"<<endl;
 							}
 							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
 							// Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
