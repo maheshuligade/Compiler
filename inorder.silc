@@ -49,11 +49,13 @@ begin
 	
 	A = allocate();
 	A.R = allocate();
-	A.R.data = 3;
+	A.R.R.data = 3;
+	A.data = 5;
 	
 	write(A);
 	write(A.R);
 	write(A.data);
+	write(A.R.data);
 	
 	return 0;
 end

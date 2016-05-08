@@ -1079,10 +1079,36 @@ IDS:ID 					{
 									struct Typetable *temp = new Typetable;
 									temp = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<temp->NAME<<endl;
+									struct Fieldlist *temp_2 = new Fieldlist;
+
+									temp_2 = $1->Fields;
+									while (temp_2 != NULL)
+									{
+										cout<<"         "<<temp_2->NAME<<endl;
+										temp_2 = temp_2->Next;
+									}
+									temp_2 = new Fieldlist;
+									temp_2 = Flookup($3->NAME,temp->Fields);
+									$$->Fields = new Fieldlist;
+									$$->Fields = $1->Fields;
 									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
-									$$->Fields = Flookup($3->NAME,temp->Fields);
+									// $$->Fields = new Fieldlist;
+									// $$->Fields = Flookup($3->NAME,temp->Fields);
+									// $$->Fields->Next = new Fieldlist;
 									$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,temp->Fields)->TYPE,1,LOCAL_VARIABLE);
 									$$->Lentry->Next = NULL;
+
+
+
+									cout<<"before"<<endl;
+									cout<<$1->NAME<<"."<<$3->NAME<<endl;
+									temp_2 = $1->Fields;
+									while (temp_2 != NULL)
+									{
+										cout<<"         "<<temp_2->NAME<<endl;
+										temp_2 = temp_2->Next;
+									}
+									cout<<"after "<<endl;
 							}
 							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
 							// Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
