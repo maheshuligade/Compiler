@@ -45,6 +45,7 @@ begin
 	write(A.b);
 	write(A.a);
 	A.c = 30;
+
 	function(A,A.c);
 	write(A.b);
 	write(A.a);

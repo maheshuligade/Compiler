@@ -1,30 +1,60 @@
+typedef bst{
+	integer data;
+	bst L;
+	bst R;
+}
+decl
+	integer i,inorder(bst G);
+	bst insert(bst G);
+enddecl
+bst insert(bst G)
+{
+	decl
+		integer a;
+	enddecl
+
+	begin
+
+	 return G;
+	end
+
+}
+
+integer inorder(bst G)
+{
+	decl
+		integer a;
+	enddecl
+
+
+	begin
+		if(G == -1) then
+			
+		else 
+			a = inorder(G.L);
+			write(G.data);
+			a = inorder(G.R);
+		endif;
+		return 0;
+	end
+}
+
+	
 integer main(){
 decl
-	integer pointer;
+	integer a;
+	bst A;
 enddecl
 begin
-	pointer = allocate();
-	write(pointer);
-
-	pointer = allocate();
-	write(pointer);
 	
-	pointer = allocate();
-	write(pointer);
+	A = allocate();
+	A.R = allocate();
+	A.R.data = 3;
 	
-	pointer = allocate();
-	write(pointer);
+	write(A);
+	write(A.R);
+	write(A.data);
 	
-	pointer = allocate();
-	write(pointer);
-	
-	pointer = free(0);
-	write(pointer);
-	
-	pointer = allocate();
-	write(pointer);
-	pointer = allocate();
-	write(pointer);
-    return 0;
+	return 0;
 end
 }
