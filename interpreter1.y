@@ -1021,7 +1021,7 @@ IDS:ID 					{
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 							$$->Lentry->Next = NULL;
 						}
-	|ID DOT ID 			{
+	|IDS DOT ID 			{
 							// cout<<Glookup($1->NAME)->TYPE->NAME<<endl;
 							if (lookup_variable(last_function_used_type_check.top(),$1->NAME) == NULL)
 							{

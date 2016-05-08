@@ -98,7 +98,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 			{
 				cout<<"Node_Type = "<<(ptr1->type->NAME)<<endl;
 				cout<<"Node_Type = "<<(ptr2->type->NAME)<<endl;
-				if (ptr1->type != ptr2->type)
+				if (ptr1->type != ptr2->type  && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))))
 				{
 						yyerror("Assigning " + string(ptr2->type->NAME)+ " to " + ptr1->type->NAME);
 				}
@@ -208,7 +208,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 					yyerror("compairing different types.");
 				}
 		}
-		else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE)&&  ptr1->type!=ptr2->type)
+		else if ((Node_Type==Node_Type_EQ ||Node_Type==Node_Type_NE))
 		{	
 				if (ptr1->Node_Type==Node_Type_ARRAY)
 				{
@@ -250,7 +250,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
 				}*/
-				if (ptr1_type!=ptr2_type)
+				if (ptr1_type!=ptr2_type && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))) )
 				{	
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
