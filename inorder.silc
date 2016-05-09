@@ -50,17 +50,15 @@ begin
 	A = allocate();
 	A.L = allocate();
 	A.R = allocate();
-	A.L.R = allocate();
-	A.L.L = allocate();
-	A.L.R.data = 3;
-	A.L.L.data = 7;
 	A.data = 5;
+	A.L.data = 4;
+	A.R.data = 7;
 	
 	write(A);
 	write(A.R);
+	write(A.L.data);
 	write(A.data);
-	write(A.L.R.data);
-	write(A.L.L.data);
+	write(A.R.data);
 	
 	return 0;
 end

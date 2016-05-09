@@ -364,7 +364,9 @@ int codegen(struct tnode *expressionTree)
 		reg_1=get_reg(__LINE__);
 		reg_2=get_location(expressionTree->ptr1);
 	
+
 		fprintf(sim_code_file, "IN R%d\n",reg_1);
+		
 		fprintf(sim_code_file, "MOV [R%d],R%d\n",reg_2,reg_1);
 		
 		free_reg(__LINE__);
