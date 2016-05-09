@@ -161,6 +161,7 @@ void print_code_free();
 
 /**Returns the position of the member into the User defined variable.**/
 int count_position(char *NAME,char *Member_NAME);
+struct Fieldlist *Make_Field_list(struct tnode *Node_1,struct tnode *Node_2);
 /**	Stack that stores the last fucntion name seen.It is used for the type_check of the Node_Type_FUNCTION_CALL 
 	type_check
 **/

@@ -1702,3 +1702,25 @@ struct tnode *Make_Arg_Node_List_for_global(struct tnode *Node_1,struct tnode *N
 	
 	return Node_1;
 }
+struct Fieldlist *Make_Field_list(struct tnode *Node_1,struct tnode *Node_2)
+{
+	struct Fieldlist *temp = new Fieldlist;	
+
+	temp = Node_1->Fields;
+
+
+	if (temp == NULL)
+	{
+
+
+	}
+	while (temp != NULL)
+	{
+		cout<< "   				  "  << temp->NAME<<endl;
+		temp = temp->Next;
+	}
+
+
+
+	return Node_1->Fields;
+}

@@ -940,6 +940,16 @@ int get_location(struct tnode *expressionTree)
 			// cout<<"                    "<<expressionTree->Fields->Next->NAME<<endl;
 		}
 				// cout<<""<<endl;
+		struct Fieldlist *temp = new Fieldlist;
+		while (temp != NULL)
+		{
+			if (temp->NAME != NULL)
+			{
+				cout<<"              							" <<temp->NAME<<endl;
+			
+			}
+			temp = temp->Next;
+		}
 	}
 	// cout<<"Node_Type = "<<expressionTree->ptr2->Node_Type<<endl;
 	if (expressionTree->value=='A')

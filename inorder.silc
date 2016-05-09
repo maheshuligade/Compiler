@@ -48,14 +48,19 @@ enddecl
 begin
 	
 	A = allocate();
+	A.L = allocate();
 	A.R = allocate();
-	A.R.R.data = 3;
+	A.L.R = allocate();
+	A.L.L = allocate();
+	A.L.R.data = 3;
+	A.L.L.data = 7;
 	A.data = 5;
 	
 	write(A);
 	write(A.R);
 	write(A.data);
-	write(A.R.data);
+	write(A.L.R.data);
+	write(A.L.L.data);
 	
 	return 0;
 end

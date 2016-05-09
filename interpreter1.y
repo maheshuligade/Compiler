@@ -1058,7 +1058,7 @@ IDS:ID 					{
 									}
 									else
 									{
-										// cout<<"TYPE = "<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE->NAME<<" NAME= "<<$3->NAME<<endl;
+											// cout<<"TYPE = "<<Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE->NAME<<" NAME= "<<$3->NAME<<endl;
 
 										$$ = Make_Node(Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,NULL,NULL,NULL,NULL);
 										$$->Fields = Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
@@ -1074,58 +1074,92 @@ IDS:ID 					{
 								// }
 								
 							}
-							else
+							else	
 							{	
 									struct Typetable *temp = new Typetable;
 									temp = lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE;
 									// cout<<temp->NAME<<endl;
 									struct Fieldlist *temp_2 = new Fieldlist;
-
 									temp_2 = $1->Fields;
+
 									if ($1->Fields == NULL)
 									{
 										$1->Fields = new Fieldlist;
-										$1->Fields = Flookup($3->NAME,temp->Fields);
-
+										// $1->Fields = Flookup($3->NAME,temp->Fields);
+										// $1->Fields->Next = NULL;
+										$1->Fields->NAME = (char *)malloc(20*sizeof(char));
+										// cout<<$1->Fields->NAME<<endl;
+										strcpy($1->Fields->NAME,$3->NAME);
+										$1->Fields->TYPE = new Typetable;
+										$1->Fields->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
+										// cout<< "        "<<$1->Fields->NAME<<endl;
+										$1->Fields->Next = NULL;
+										// $1->Fields->Next = new Fieldlist;
+										// $1->Fields->Next = $3->Fields;
 									}
 									else
 									{
+
+										cout<<"in list"<<endl;
+									
 										while (temp_2 != NULL)
 										{
-											// cout<<"         "<<temp_2->NAME<<endl;
+											cout<<"         "<<temp_2->NAME<<endl;
 											temp_2 = temp_2->Next;
 										}
 										temp_2 = new Fieldlist;
-										temp_2 = Flookup($3->NAME,temp->Fields);
+										temp_2->NAME =  (char *)malloc(20*sizeof(char));
+										strcpy(temp_2->NAME,$3->NAME);
+										temp_2->TYPE = new Typetable;
+										temp_2->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
+										// temp_2->Next = new Fieldlist;
+										// temp_2->Next = $3->Fields;
+										// temp_2 = Flookup($3->NAME,temp->Fields);
+										// temp_2->Next = NULL;
+										// cout<<$3->NAME<<endl;
+
+										// temp_2->Next = new Fieldlist;
+										// temp_2->Next->NAME =  (char *)malloc(20*sizeof(char));
+										// strcpy(temp_2->Next->NAME,$3->NAME);
+										// temp_2->Next->TYPE = new Typetable;
+										// temp_2->Next->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
+
+										$1->Fields->Next = new Fieldlist;
+										$1->Fields->Next->NAME =  (char *)malloc(20*sizeof(char));
+										strcpy( $1->Fields->Next->NAME,$3->NAME);
+										$1->Fields->Next->TYPE = new Typetable;
+										$1->Fields->Next->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
 									}
 									// cout<<"             "<<temp<<endl;
 
 									// $$->Fields = new Fieldlist;
 									
-									$$->Fields = $1->Fields;
-									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
+									// $$->Fields = $1->Fields;
+									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,		NULL,NULL);
 									// $$->Fields = new Fieldlist;
 									// $$->Fields = Flookup($3->NAME,temp->Fields);
 									// $$->Fields->Next = new Fieldlist;
-									if ($1->Fields == NULL)
-									{
-										cout<<"                                     NULL"<<endl;
-									}
+									// if ($1->Fields == NULL)
+									// {
+									// 	cout<<"                                     NULL"<<endl;
+									// }
+									
+									$$->Fields = new Fieldlist;
 									$$->Fields = $1->Fields;
 									$$->Lentry = Make_Arg_Node($1->NAME,Flookup($3->NAME,temp->Fields)->TYPE,1,LOCAL_VARIABLE);
 									$$->Lentry->Next = NULL;
 
 
 
-									cout<<"\nbefore"<<endl;
-									cout<<$1->NAME<<"."<<$3->NAME<<endl;
-									temp_2 = $1->Fields;
-									while (temp_2 != NULL)
-									{
-										cout<<"         "<<temp_2->NAME<<endl;
-										temp_2 = temp_2->Next;
-									}
-									cout<<"after\n"<<endl;
+									// cout<<"\nbefore"<<endl;
+									// cout<<$1->NAME<<"."<<$3->NAME<<endl;
+									// temp_2 = $1->Fields;
+									// while (temp_2 != NULL)
+									// {
+									// 	cout<<"         "<<temp_2->NAME<<endl;
+									// 	temp_2 = temp_2->Next;
+									// }
+									// cout<<"after\n"<<endl;
 							}
 							// cout<<Glookup($1->NAME)->TYPE->Fields->TYPE->NAME<<endl;
 							// Flookup($3->NAME,Glookup($1->NAME)->TYPE->Fields);
