@@ -52,13 +52,6 @@ begin
 	A.R = allocate();
 	A.data = 5;
 	A.L.data = 4;
-	A.R.data = 7;
-	
-	write(A);
-	write(A.R);
-	write(A.L.data);
-	write(A.data);
-	write(A.R.data);
 	
 	return 0;
 end

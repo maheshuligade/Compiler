@@ -210,7 +210,7 @@ int codegen(struct tnode *expressionTree)
 			reg_2 = codegen(expressionTree->ptr2);
 			if (expressionTree->ptr1->Fields != NULL)
 			{
-				cout<<"      		"<<expressionTree->ptr1->Fields->TYPE->NAME<<" "<<expressionTree->ptr1->Fields->NAME<<endl;
+				// cout<<"      		"<<expressionTree->ptr1->Fields->TYPE->NAME<<" "<<expressionTree->ptr1->Fields->NAME<<endl;
 				if (expressionTree->ptr1->Fields->Next != NULL && expressionTree->ptr1->Fields->TYPE != Tlookup(INTEGER_NAME) && expressionTree->ptr1->Fields->TYPE != Tlookup(BOOLEAN_NAME) )
 				{
 					// cout<<"expression = "<<expressionTree->ptr1->Fields->Next->Next->NAME<<endl;

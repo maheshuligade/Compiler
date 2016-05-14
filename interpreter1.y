@@ -1135,7 +1135,7 @@ IDS:ID 					{
 									// $$->Fields = new Fieldlist;
 									
 									// $$->Fields = $1->Fields;
-									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,		NULL,NULL);
+									$$=Make_Node(Flookup($3->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',$1->NAME,$1,$3,NULL,NULL);
 									// $$->Fields = new Fieldlist;
 									// $$->Fields = Flookup($3->NAME,temp->Fields);
 									// $$->Fields->Next = new Fieldlist;

@@ -2837,7 +2837,7 @@ yyreduce:
 									// $$->Fields = new Fieldlist;
 									
 									// $$->Fields = $1->Fields;
-									(yyval)=Make_Node(Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',(yyvsp[(1) - (3)])->NAME,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),		NULL,NULL);
+									(yyval)=Make_Node(Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE,Node_Type_ARRAY,'u',(yyvsp[(1) - (3)])->NAME,(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]),NULL,NULL);
 									// $$->Fields = new Fieldlist;
 									// $$->Fields = Flookup($3->NAME,temp->Fields);
 									// $$->Fields->Next = new Fieldlist;
