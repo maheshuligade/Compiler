@@ -51,7 +51,7 @@ PROGRAM: USER_DEFINED_DATATYPES_LIST GLOBAL_DEF_BLOCK FUNC_DEF_BLOCKS MAIN_BLOCK
 														// 	cout<<last_function_used_type_check.top()<<endl;
 														// 	last_function_used_type_check.pop();
 														// }
-														cout<<"END"<<endl;
+														// cout<<"END"<<endl;
 														if (no_of_error==0)
 														{
 															//type_check($$);
@@ -418,7 +418,7 @@ MAIN_BLOCK:MAIN_NAME_ARG_LOCAL BODY '}'
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
-												cout<<"IN main body"<<endl;
+												// cout<<"IN main body"<<endl;
 												Glookup($1->NAME)->BODY = $2; //For storing the fuction body
 												$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_FUNCTION_DEF,'f',$1->NAME,$2,NULL,NULL,$1->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
@@ -473,7 +473,7 @@ MAIN_NAME_ARG_LOCAL: INTEGER MAIN '(' ARGS')'
 											//	Glookup($2->NAME)->Arg_List->Arg_List = new tnode;
 												// Glookup($2->NAME)->Arg_List->Arg_List = $4;									
 												last_function_used_type_check.push(($2->NAME));
-												cout<<"After main Local"<<endl;
+												// cout<<"After main Local"<<endl;
 											}
 LOCAL_DEF_BLOCK:DECL LOCAL_DEF_LISTS ENDDECL	{	
 													// $$ = $2;
@@ -614,7 +614,7 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										$$->ptr1=$2;
 										$$->ptr2=$3;
 										// evaluate($$);
-										cout<<"In body"<<endl;
+										// cout<<"In body"<<endl;
 										// 	<<"Memory"<<endl;
 										// for (int i = 0; i < 20; i++)
 										// {
@@ -623,7 +623,7 @@ BODY: BEGIN1 Slist RETURN_TYPE END 	{
 										// exit(0);
 									}
 RETURN_TYPE:RETURN expr SEMICOLON	{	
-										cout<<"IN return"<<endl;
+										// cout<<"IN return"<<endl;
 										//cout<<"Node_Type="<<$2->Node_Type<<endl;
 										if ($2->Node_Type == Node_Type_ARRAY)
 										{
@@ -641,7 +641,7 @@ RETURN_TYPE:RETURN expr SEMICOLON	{
 										$$=Make_Node($2->type,Node_Type_RETURN,'R',NULL,$2,NULL,NULL,NULL);
 									}
 
-Slist: Stmts	{$$=$1; cout<<"IN Slist"<<endl;}
+Slist: Stmts	{$$=$1; /*cout<<"IN Slist"<<endl;*/}
 	 | 			{$$ = new tnode;	$$=NULL;}
 Stmts:Stmts Stmt 	{		
 
@@ -693,11 +693,11 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 	// 									//cout<<"size="<<evaluate($2->ptr2)<<endl;
 	// 								}
 	|READ'('IDS')'	SEMICOLON  		{
-										cout<<"IN read"<<endl;
+										// cout<<"IN read"<<endl;
 										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_READ,'r',NULL,$3,NULL,NULL,NULL);
 									}
 	|WRITE'('expr')' SEMICOLON		{	
-										cout<<"In write"<<endl;
+										// cout<<"In write"<<endl;
 										$$=Make_Node(Tlookup(VOID_NAME),Node_Type_WRITE,'W',NULL,$3,NULL,NULL,NULL);
 									}
 	|IF '('expr')'THEN Slist ENDIF SEMICOLON{
@@ -764,7 +764,7 @@ expr:expr PLUS expr		{
 							$$=Make_Node(Tlookup(INTEGER_NAME),Node_Type_MODULUS,'%',NULL,$1,$3,NULL,NULL);
 						}
 	|'('expr')'			{$$=$2;$$->type=$2->type;}
-	|NUM				{cout<<"IN NUM"<<endl;$$=$1;$$->type=$1->type;}
+	|NUM				{/*cout<<"IN NUM"<<endl;*/$$=$1;$$->type=$1->type;}
 	|IDS				{
 							$$=$1; $$->type=$1->type; /*cout<<"IDS="<<evaluate($1->ptr2)<<endl;*/
 							if (($1->type != Tlookup(INTEGER_NAME)) && ($1->type != Tlookup(BOOLEAN_NAME)))
@@ -1241,7 +1241,7 @@ int main(int argc,char const *argv[])
 	// cout<<Glookup(FREE)->Arg_List<<endl;
 	// /Ginstall($2->NAME,$2->type,size,'U',$4);
 	// Tlookup(INTEGER_NAME);
-	cout<<"IN"<<endl;
+	// cout<<"IN"<<endl;
 	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
 	yyparse();
 	// cout<<"OUT"<<endl;

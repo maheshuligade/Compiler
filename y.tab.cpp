@@ -1611,7 +1611,7 @@ yyreduce:
 														// 	cout<<last_function_used_type_check.top()<<endl;
 														// 	last_function_used_type_check.pop();
 														// }
-														cout<<"END"<<endl;
+														// cout<<"END"<<endl;
 														if (no_of_error==0)
 														{
 															//type_check($$);
@@ -2016,7 +2016,7 @@ yyreduce:
 													declaration.for that we need to install main function in the global symbol 
 													table.
 												**/
-												cout<<"IN main body"<<endl;
+												// cout<<"IN main body"<<endl;
 												Glookup((yyvsp[(1) - (3)])->NAME)->BODY = (yyvsp[(2) - (3)]); //For storing the fuction body
 												(yyval)=Make_Node(Tlookup(INTEGER_NAME),Node_Type_FUNCTION_DEF,'f',(yyvsp[(1) - (3)])->NAME,(yyvsp[(2) - (3)]),NULL,NULL,(yyvsp[(1) - (3)])->Arg_List);
 												// $$->Lentry = Make_Arg_Node_List($7->Lentry,$4->Lentry);
@@ -2075,7 +2075,7 @@ yyreduce:
 											//	Glookup($2->NAME)->Arg_List->Arg_List = new tnode;
 												// Glookup($2->NAME)->Arg_List->Arg_List = $4;									
 												last_function_used_type_check.push(((yyvsp[(2) - (7)])->NAME));
-												cout<<"After main Local"<<endl;
+												// cout<<"After main Local"<<endl;
 											}
     break;
 
@@ -2227,7 +2227,7 @@ yyreduce:
 										(yyval)->ptr1=(yyvsp[(2) - (4)]);
 										(yyval)->ptr2=(yyvsp[(3) - (4)]);
 										// evaluate($$);
-										cout<<"In body"<<endl;
+										// cout<<"In body"<<endl;
 										// 	<<"Memory"<<endl;
 										// for (int i = 0; i < 20; i++)
 										// {
@@ -2240,7 +2240,7 @@ yyreduce:
   case 38:
 #line 625 "interpreter1.y"
     {	
-										cout<<"IN return"<<endl;
+										// cout<<"IN return"<<endl;
 										//cout<<"Node_Type="<<$2->Node_Type<<endl;
 										if ((yyvsp[(2) - (3)])->Node_Type == Node_Type_ARRAY)
 										{
@@ -2261,7 +2261,7 @@ yyreduce:
 
   case 39:
 #line 644 "interpreter1.y"
-    {(yyval)=(yyvsp[(1) - (1)]); cout<<"IN Slist"<<endl;}
+    {(yyval)=(yyvsp[(1) - (1)]); /*cout<<"IN Slist"<<endl;*/}
     break;
 
   case 40:
@@ -2325,7 +2325,7 @@ yyreduce:
   case 44:
 #line 695 "interpreter1.y"
     {
-										cout<<"IN read"<<endl;
+										// cout<<"IN read"<<endl;
 										(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_READ,'r',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
 									}
     break;
@@ -2333,7 +2333,7 @@ yyreduce:
   case 45:
 #line 699 "interpreter1.y"
     {	
-										cout<<"In write"<<endl;
+										// cout<<"In write"<<endl;
 										(yyval)=Make_Node(Tlookup(VOID_NAME),Node_Type_WRITE,'W',NULL,(yyvsp[(3) - (5)]),NULL,NULL,NULL);
 									}
     break;
@@ -2444,7 +2444,7 @@ yyreduce:
 
   case 57:
 #line 767 "interpreter1.y"
-    {cout<<"IN NUM"<<endl;(yyval)=(yyvsp[(1) - (1)]);(yyval)->type=(yyvsp[(1) - (1)])->type;}
+    {/*cout<<"IN NUM"<<endl;*/(yyval)=(yyvsp[(1) - (1)]);(yyval)->type=(yyvsp[(1) - (1)])->type;}
     break;
 
   case 58:
@@ -3170,7 +3170,7 @@ int main(int argc,char const *argv[])
 	// cout<<Glookup(FREE)->Arg_List<<endl;
 	// /Ginstall($2->NAME,$2->type,size,'U',$4);
 	// Tlookup(INTEGER_NAME);
-	cout<<"IN"<<endl;
+	// cout<<"IN"<<endl;
 	// cout<<"Tlookup = "<<Tlookup(INTEGER_NAME)<<endl; //Why not to remove?
 	yyparse();
 	// cout<<"OUT"<<endl;

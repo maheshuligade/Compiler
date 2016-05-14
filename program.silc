@@ -33,7 +33,7 @@ integer function(name1 &G;integer b)
 
 integer main(){
 decl
-	integer a;
+	integer a;	
 	name1 A;
 enddecl
 begin
