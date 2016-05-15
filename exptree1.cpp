@@ -98,7 +98,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 			{
 				// cout<<"Node_Type = "<<(ptr1->type->NAME)<<endl;
 				// cout<<"Node_Type = "<<(ptr2->type->NAME)<<endl;
-				if (ptr1->type != ptr2->type  && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))))
+				if (ptr1->type != ptr2->type  && !((ptr1->type != Tlookup(INTEGER_NAME) && ptr1->type != Tlookup(BOOLEAN_NAME) && ptr2->type == Tlookup(INTEGER_NAME)) ||(ptr2->type != Tlookup(INTEGER_NAME) && ptr2->type != Tlookup(BOOLEAN_NAME) && ptr1->type == Tlookup(INTEGER_NAME))))
 				{
 						yyerror("Assigning " + string(ptr2->type->NAME)+ " to " + ptr1->type->NAME);
 				}
