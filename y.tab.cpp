@@ -2802,18 +2802,18 @@ yyreduce:
 									else
 									{
 
-										cout<<"in list"<<endl;
+										// cout<<"in list"<<endl;
 									
-										while (temp_2 != NULL)
+										while (temp_2->Next != NULL)
 										{
-											cout<<"         "<<temp_2->NAME<<endl;
+											// cout<<"         "<<temp_2->NAME<<endl;
 											temp_2 = temp_2->Next;
 										}
-										temp_2 = new Fieldlist;
-										temp_2->NAME =  (char *)malloc(20*sizeof(char));
-										strcpy(temp_2->NAME,(yyvsp[(3) - (3)])->NAME);
-										temp_2->TYPE = new Typetable;
-										temp_2->TYPE = Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE;
+										temp_2->Next = new Fieldlist;
+										temp_2->Next->NAME =  (char *)malloc(20*sizeof(char));
+										strcpy(temp_2->Next->NAME,(yyvsp[(3) - (3)])->NAME);
+										temp_2->Next->TYPE = new Typetable;
+										temp_2->Next->TYPE = Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE;
 										// temp_2->Next = new Fieldlist;
 										// temp_2->Next = $3->Fields;
 										// temp_2 = Flookup($3->NAME,temp->Fields);
@@ -2826,11 +2826,11 @@ yyreduce:
 										// temp_2->Next->TYPE = new Typetable;
 										// temp_2->Next->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
 
-										(yyvsp[(1) - (3)])->Fields->Next = new Fieldlist;
-										(yyvsp[(1) - (3)])->Fields->Next->NAME =  (char *)malloc(20*sizeof(char));
-										strcpy( (yyvsp[(1) - (3)])->Fields->Next->NAME,(yyvsp[(3) - (3)])->NAME);
-										(yyvsp[(1) - (3)])->Fields->Next->TYPE = new Typetable;
-										(yyvsp[(1) - (3)])->Fields->Next->TYPE = Flookup((yyvsp[(3) - (3)])->NAME,temp->Fields)->TYPE;
+										// $1->Fields->Next = new Fieldlist;
+										// $1->Fields->Next->NAME =  (char *)malloc(20*sizeof(char));
+										// strcpy( $1->Fields->Next->NAME,$3->NAME);
+										// $1->Fields->Next->TYPE = new Typetable;
+										// $1->Fields->Next->TYPE = Flookup($3->NAME,temp->Fields)->TYPE;
 									}
 									// cout<<"             "<<temp<<endl;
 

@@ -4,41 +4,8 @@ typedef bst{
 	bst R;
 }
 decl
-	integer i,inorder(bst G);
-	bst insert(bst G);
+	integer i;
 enddecl
-bst insert(bst G)
-{
-	decl
-		integer a;
-	enddecl
-
-	begin
-
-	 return G;
-	end
-
-}
-
-integer inorder(bst G)
-{
-	decl
-		integer a;
-	enddecl
-
-
-	begin
-		if(G == -1) then
-			
-		else 
-			a = inorder(G.L);
-			write(G.data);
-			a = inorder(G.R);
-		endif;
-		return 0;
-	end
-}
-
 	
 integer main(){
 decl
@@ -48,11 +15,12 @@ enddecl
 begin
 	
 	A = allocate();
-	A.L = allocate();
 	A.R = allocate();
-	A.data = 5;
-	A.L.data = 4;
-	
+	A.R.R = allocate();
+	A.R.L = allocate();
+	write(A.R.R);
+	write(A.R);
+	write(A);
 	return 0;
 end
 }
