@@ -667,6 +667,17 @@ Stmt:IDS EQUAL expr SEMICOLON		{
 											$$=Make_Node($1->type,Node_Type_ASSIGNMENT,'=',$1->NAME,$1,$3,NULL,NULL);
 											// cout<<"ptr1="<<endl;
 										//}
+										// cout<<char(lookup_variable(last_function_used_type_check.top(),$1->NAME)->value)<<endl;
+										if (lookup_variable(last_function_used_type_check.top(),$1->NAME) != NULL)
+										{
+											if (lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE != Tlookup(INTEGER_NAME) && lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE != Tlookup(BOOLEAN_NAME))
+											{
+												lookup_variable(last_function_used_type_check.top(),$1->NAME)->value = 'u';
+												$1->value = 'u';
+												// cout<<lookup_variable(last_function_used_type_check.top(),$1->NAME)->TYPE->NAME<<endl;
+											}
+										}
+										// cout<<char(lookup_variable(last_function_used_type_check.top(),$1->NAME)->value)<<endl;
 
 										// if ($3->value == 'c')
 										// {
@@ -1005,6 +1016,8 @@ IDS:ID 					{
 									yyerror(string("‘") + $1->NAME + "’ was declared as array.");
 								}	
 							}
+							// cout<<Glookup($1->NAME)<<endl;
+							// cout<<$1->NAME<<" "<<$1->type->NAME<<endl;
 							$$=Make_Node(get_type($1),Node_Type_ARRAY,'a',$1->NAME,$1,makeLeafNode(1),NULL,NULL);
 							$$->Lentry = Make_Arg_Node($1->NAME,get_type($1),1,LOCAL_VARIABLE);
 							$$->Lentry->Next = NULL;

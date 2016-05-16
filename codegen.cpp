@@ -206,6 +206,8 @@ int codegen(struct tnode *expressionTree)
 			// {
 			// 	reg_2 = get_reg(__LINE__);
 			// }
+			// cout<<(lookup_variable(last_function_used_type_check.top(),expressionTree->ptr1->NAME)->TYPE->NAME)<<endl;
+
 			reg_1 = get_location(expressionTree->ptr1);
 			reg_2 = codegen(expressionTree->ptr2);
 			// if (expressionTree->ptr1->Fields != NULL)
@@ -1131,19 +1133,48 @@ int get_location(struct tnode *expressionTree)
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					
-					if (expressionTree->Fields == NULL)
+					// if (expressionTree->Fields == NULL)
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+					// }
+					// else
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					// }
+					// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+
+					struct Fieldlist *temp = new Fieldlist;
+					temp = expressionTree->Fields;
+					while (temp != NULL)
 					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+						if (temp->NAME != NULL)
+						{
+							cout<<temp->NAME<<".";
+							// cout<<"              							" <<temp->NAME<<endl;
+							// cout<<"              							" <<temp->NAME<<" "<<count_position(expressionTree->NAME,temp->NAME)<<endl;
+							// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
+							// fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+							// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							
+							if (expressionTree->Fields == NULL)
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+							}
+							else
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,temp->NAME));
+							}
+							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+						
+						}
+						temp = temp->Next;
 					}
-					else
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
-					}
-					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 
 				}
+				cout<<endl;
 			}
 			free_reg(__LINE__);
 		return reg_1;
