@@ -202,7 +202,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 				// 	//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 				// 	yyerror("compairing different types.");
 				// }
-				if (ptr1_type!=ptr2_type)
+				if (ptr1_type!=ptr2_type && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))))
 				{	
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
@@ -250,7 +250,7 @@ struct tnode* Make_Node(struct Typetable *type,int Node_Type,int value,char *NAM
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
 				}*/
-				if (ptr1_type!=ptr2_type && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))) )
+				if (ptr1_type!=ptr2_type && !((ptr1_type != Tlookup(INTEGER_NAME) && ptr1_type != Tlookup(BOOLEAN_NAME) && ptr2_type == Tlookup(INTEGER_NAME)) ||(ptr2_type != Tlookup(INTEGER_NAME) && ptr2_type != Tlookup(BOOLEAN_NAME) && ptr1_type == Tlookup(INTEGER_NAME))))
 				{	
 					//cout<<"ptr1="<<ptr1_type<<"ptr2="<<ptr2_type<<endl;
 					yyerror("compairing different types.");
