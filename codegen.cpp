@@ -666,7 +666,7 @@ int codegen(struct tnode *expressionTree)
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					free_reg(__LINE__);
 				}
-
+				free_reg(__LINE__);
 			}
 			else if (temp_2->pass_by_type == PASS_BY_REFERENCE)
 			{
@@ -748,6 +748,7 @@ int codegen(struct tnode *expressionTree)
 				// }
 
 				free_reg(__LINE__);
+
 			}
 			else if (temp_2->pass_by_type == PASS_BY_VALUE)
 			{
@@ -796,7 +797,14 @@ int codegen(struct tnode *expressionTree)
 							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 							if (temp->value == 'u')
 							{
-								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(temp->NAME,temp->Fields->NAME));
+								if (expressionTree->Fields == NULL)
+								{
+									fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+								}
+								else
+								{
+									fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(temp->NAME,temp->Fields->NAME));
+								}
 								fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 							}
 							register_pushed[reg_push_no++] = reg_1;
@@ -909,17 +917,28 @@ int codegen(struct tnode *expressionTree)
 		// cout<<"arg_for_pop = "<<arg_for_pop<<endl;
 		// cout<<"r = "<<r<<endl;
 		// cout<<"no_of_local_var = "<<no_of_local_var<<endl;
+		if (strcmp(expressionTree->NAME,"free") == 0 && expressionTree->Arg_List->Lentry != NULL)
+		{
+			/**Invalid the location of the User defined variable**/
+			// cout<<Glookup(expressionTree->Arg_List->Lentry->NAME)<<endl;
+			// Glookup(expressionTree->Arg_List->Lentry->NAME)->Binding = -1;
+			// reg_2 = get_reg(__LINE__);
+
+			// // bind = lookup_variable((last_function_used.top()),(temp->NAME))->Binding;
+			// // cout<<"NAME = "<<expressionTree->Arg_List->NAME<<endl;
+			// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
+			// fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
+			// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+			// fprintf(sim_code_file, "MOV [R%d],-1\n",reg_1);
+			// // fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+			// free_reg(__LINE__);
+		}
 		fprintf(sim_code_file, "MOV R%d,BP\n",reg_1);
 		fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,arg_for_pop + r + 2 + no_of_local_var);
 		fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 		fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 		// fprintf(sim_code_file, "OUT R%d\n",reg_1);
 
-		if (strcmp(expressionTree->NAME,"free") == 0 && expressionTree->Arg_List->Lentry != NULL)
-		{
-			/**Invalid the location of the User defined variable**/
-			Glookup(expressionTree->Arg_List->Lentry->NAME)->Binding = -1;
-		}
 
 		free_reg(__LINE__);
 		return reg_1;
@@ -1245,7 +1264,7 @@ int get_location(struct tnode *expressionTree)
 					{
 						if (temp->NAME != NULL)
 						{
-							cout<<temp->NAME<<".";
+							// cout<<temp->NAME<<".";
 							// cout<<"              							" <<temp->NAME<<endl;
 							// cout<<"              							" <<temp->NAME<<" "<<count_position(expressionTree->NAME,temp->NAME)<<endl;
 							// fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,location);
@@ -1268,7 +1287,7 @@ int get_location(struct tnode *expressionTree)
 					}
 
 				}
-				cout<<endl;
+				// cout<<endl;
 			}
 			free_reg(__LINE__);
 		return reg_1;
@@ -1792,7 +1811,9 @@ void print_code_free()
 	fprintf(sim_code_file, "MOV R1,BP\n");
 	fprintf(sim_code_file, "MOV R2,2\n");
 	fprintf(sim_code_file, "SUB R1,R2\n");
-	fprintf(sim_code_file, "MOV [R1],[256]\n");
+	// fprintf(sim_code_file, "MOV [R1],[256]\n");
+	/**Free returns the NULL pointer**/
+	fprintf(sim_code_file, "MOV [R1],-1\n");
 
 	
 	fprintf(sim_code_file, "MOV SP,BP\n");

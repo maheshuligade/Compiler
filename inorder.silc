@@ -6,7 +6,88 @@ typedef bst{
 decl
 	integer i,inorder(bst G);
 	bst insert(bst G;integer d);
+	bst delete(bst G;integer d);
+	integer getmin(bst G);
+	integer getmax(bst G);
 enddecl
+
+integer getmin(bst G)
+{
+	decl
+		integer a;
+	enddecl
+
+	begin
+
+		if(G.L == -1) then
+			a = G.data;
+		else
+			a = getmin(G.L);
+		endif;
+
+		return a;
+	end
+
+}
+integer getmax(bst G)
+{
+	decl
+		integer a;
+	enddecl
+
+	begin
+
+		if(G.R == -1) then
+			a = G.data;
+		else
+			a = getmax(G.R);
+		endif;
+
+		return a;
+	end
+
+}
+bst delete(bst G;integer d)
+{
+	decl
+		integer a,l;
+	enddecl
+
+	begin
+	
+	if(G == -1) then
+
+
+	else
+		if(G.data == d) then
+
+			l = G;
+			if(G.L != -1 AND G.R != -1) then
+				d = getmax(G.L);
+				G.data = d;
+				G.L = delete(G.L,d);
+			else
+				if(G.L == -1) then
+					G = G.R;
+				else
+					 if(G.R == -1) then
+						G = G.L;
+					endif;
+				endif;
+			endif;
+		else 
+			if(G.data >= d) then
+				G.L = delete(G.L,d);
+			else
+				G.R = delete(G.R,d);
+			endif;
+		endif;
+	endif;
+	return G;
+	end
+
+}
+
 bst insert(bst G;integer d)
 {
 	decl
@@ -67,6 +148,8 @@ begin
 	A = insert(A,3);
 	A = insert(A,5);
 	A = insert(A,9);
+	a = inorder(A);
+	a = delete(A,4);
 	a = inorder(A);
 	return 0;
 end
