@@ -5,17 +5,28 @@ typedef bst{
 }
 decl
 	integer i,inorder(bst G);
-	bst insert(bst G);
+	bst insert(bst G;integer d);
 enddecl
-bst insert(bst G)
+bst insert(bst G;integer d)
 {
 	decl
 		integer a;
 	enddecl
 
 	begin
-
-	 return G;
+	
+	
+	if(G == -1) then 
+		G = allocate();
+		G.data = d;
+	else 
+		if(G.data >= d) then
+			G.L = insert(G.L,d);
+		else
+			G.R = insert(G.R,d);
+		endif;
+	endif;
+	return G;
 	end
 
 }
@@ -28,7 +39,13 @@ integer inorder(bst G)
 
 
 	begin
-		write(G);
+		if(G == -1) then
+			
+		else 
+			a = inorder(G.L);
+			write(G.data);
+			a = inorder(G.R);
+		endif;
 		return 0;
 	end
 }
@@ -46,8 +63,11 @@ begin
 	A.R = allocate();
 	A.data = 5;
 	A.L.data = 4;
-	write(A.L.R);
-	a = inorder(A.R.L);
+	A.R.data = 6;
+	A = insert(A,3);
+	A = insert(A,5);
+	A = insert(A,9);
+	a = inorder(A);
 	return 0;
 end
 }
