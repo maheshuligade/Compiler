@@ -596,12 +596,37 @@ int codegen(struct tnode *expressionTree)
 					fprintf(sim_code_file, "MOV R%d,%d\n",reg_1,bind);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					// fprintf(sim_code_file, "OUT R%d\n",reg_1);
 
 					// MOV R3,BP
 					// ADD R2,R3
 					// MOV R2,[R2]
+					// cout<<expressionTree->ptr1->NAME<<endl;
+					struct Fieldlist *temp_3 = new Fieldlist;
+					temp_3 = expressionTree->ptr1->Fields;
+					while (temp_3 != NULL)
+					{
+						if (temp_3->NAME != NULL)
+						{
+							// cout<<"NAME = "<<temp_3->NAME<<endl;
+							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							
+							if (expressionTree->ptr1->Fields == NULL)
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+							}
+							else
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->ptr1->NAME,temp_3->NAME));
+							}
+							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+						
+						}
+						temp_3 = temp_3->Next;
+					}
+
+					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					register_pushed[reg_push_no++] = reg_1;
 					fprintf(sim_code_file, "PUSH R%d\n",reg_1);
 					free_reg(__LINE__);

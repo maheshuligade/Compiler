@@ -28,16 +28,7 @@ integer inorder(bst G)
 
 
 	begin
-		if(G == -1) then
-			
-		else 
-			write(G.data);
-			write(G.R);
-			write(G.L);
-			write(G.L.L);
-			write(G.L.R);
-			write(G);
-		endif;
+		write(G);
 		return 0;
 	end
 }
@@ -55,9 +46,8 @@ begin
 	A.R = allocate();
 	A.data = 5;
 	A.L.data = 4;
-	A.R.data = 6;
-	a = inorder(A);
-	
+	write(A.L.R);
+	a = inorder(A.R.L);
 	return 0;
 end
 }
