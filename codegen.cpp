@@ -1067,19 +1067,40 @@ int get_location(struct tnode *expressionTree)
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-					if (expressionTree->Fields == NULL)
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
-					}
-					else
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
-					}
-					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// if (expressionTree->Fields == NULL)
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+					// }
+					// else
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					// }
+					// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 
 					// fprintf(sim_code_file, "OUT R%d",reg_1);
+					struct Fieldlist *temp = new Fieldlist;
+					temp = expressionTree->Fields;
+					while (temp != NULL)
+					{
+						if (temp->NAME != NULL)
+						{
+							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							
+							if (expressionTree->Fields == NULL)
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+							}
+							else
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,temp->NAME));
+							}
+							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+						
+						}
+						temp = temp->Next;
+					}
 				}
 				else if (lookup_variable(last_function_used.top(),expressionTree->NAME)->pass_by_type == PASS_BY_VALUE)
 				{
@@ -1104,16 +1125,40 @@ int get_location(struct tnode *expressionTree)
 					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
 					fprintf(sim_code_file, "MOV R%d,BP\n",reg_2);
 					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
-					fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
-					if (expressionTree->Fields == NULL)
+					// fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+					// if (expressionTree->Fields == NULL)
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+					// }
+					// else
+					// {
+					// 	fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
+					// }
+					// fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+
+					struct Fieldlist *temp = new Fieldlist;
+					temp = expressionTree->Fields;
+					while (temp != NULL)
 					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+						if (temp->NAME != NULL)
+						{
+							fprintf(sim_code_file, "MOV R%d,[R%d]\n",reg_1,reg_1);
+							
+							if (expressionTree->Fields == NULL)
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,0);
+							}
+							else
+							{
+								fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,temp->NAME));
+							}
+							fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+						
+						}
+						temp = temp->Next;
 					}
-					else
-					{
-						fprintf(sim_code_file, "MOV R%d,%d\n",reg_2,count_position(expressionTree->NAME,expressionTree->Fields->NAME));
-					}
-					fprintf(sim_code_file, "ADD R%d,R%d\n",reg_1,reg_2);
+
+
 				}
 				else
 				{
