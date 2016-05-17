@@ -19,7 +19,9 @@ begin
 	A.L = allocate();
 	A.R.R = allocate();
 	A.R.L = allocate();
+	write(A.R.L.L);
 	write(A.R.R);
+	write(A.L);
 	write(A.R);
 	write(A);
 	return 0;

@@ -322,24 +322,24 @@ int codegen(struct tnode *expressionTree)
 		/*MEMORY_LOC will get the value of the location of the variable.The location is calculated by the 
 		base value (Binding)  plus the offset value*/
 		fprintf(sim_code_file, "\n");
-		if (expressionTree->ptr1->Node_Type == Node_Type_ARRAY)
-		{
-			reg_1=get_location(expressionTree->ptr1);
-			reg_2=get_reg(__LINE__);
+		// if (expressionTree->ptr1->Node_Type == Node_Type_ARRAY)
+		// {
+		// 	reg_1=get_location(expressionTree->ptr1);
+		// 	reg_2=get_reg(__LINE__);
 
-			fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
-			if (expressionTree->ptr1->Fields != NULL)
-			{
-				if (expressionTree->ptr1->Fields->Next != NULL)
-				{
-					// cout<<"expression = "<<expressionTree->ptr1->Fields->Next->Next->NAME<<endl;
-					fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_2);
+		// 	fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_1);
+		// 	if (expressionTree->ptr1->Fields != NULL)
+		// 	{
+		// 		if (expressionTree->ptr1->Fields->Next != NULL)
+		// 		{
+		// 			// cout<<"expression = "<<expressionTree->ptr1->Fields->Next->Next->NAME<<endl;
+		// 			fprintf(sim_code_file, "\nMOV R%d,[R%d]\n",reg_2,reg_2);
 
-				}
-			}
-			fprintf(sim_code_file, "OUT R%d\n",reg_2);
-		}
-		else
+		// 		}
+		// 	}
+		// 	fprintf(sim_code_file, "OUT R%d\n",reg_2);
+		// }
+		// else
 		{
 			reg_1 = codegen(expressionTree->ptr1);
 			reg_2=get_reg(__LINE__);
