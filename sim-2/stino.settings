@@ -1,0 +1,6 @@
+{
+    "full_compilation": true, 
+    "serial_port": 0, 
+    "show_compilation_output": false, 
+    "verify_code": true
+}
